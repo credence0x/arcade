@@ -5,7 +5,7 @@
 use bushido_trophy::types::task::Task;
 
 #[derive(Clone, Drop, Serde)]
-#[dojo::event(historical: true)]
+#[dojo::event]
 pub struct TrophyCreation {
     #[key]
     id: felt252,
@@ -23,7 +23,7 @@ pub struct TrophyCreation {
 }
 
 #[derive(Copy, Drop, Serde)]
-#[dojo::event(historical: true)]
+#[dojo::event]
 pub struct TrophyProgression {
     #[key]
     player_id: felt252,
