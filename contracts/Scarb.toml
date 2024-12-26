@@ -10,7 +10,7 @@ sierra-replace-ids = true
 dev = "sozo clean && sozo build --typescript && sozo migrate plan && sozo migrate apply"
 
 [dependencies]
-dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.5" }
+dojo = { git = "https://github.com/dojoengine/dojo", tag = "v1.0.9" }
 achievement = { path = ".." }
 controller = { path = ".." }
 provider = { path = ".." }
