@@ -8,37 +8,37 @@ use achievement::types::task::Task;
 #[dojo::event]
 pub struct TrophyCreation {
     #[key]
-    id: felt252,
-    hidden: bool,
-    index: u8,
-    points: u16,
-    start: u64,
-    end: u64,
-    group: felt252,
-    icon: felt252,
-    title: felt252,
-    description: ByteArray,
-    tasks: Span<Task>,
-    data: ByteArray,
+    pub id: felt252,
+    pub hidden: bool,
+    pub index: u8,
+    pub points: u16,
+    pub start: u64,
+    pub end: u64,
+    pub group: felt252,
+    pub icon: felt252,
+    pub title: felt252,
+    pub description: ByteArray,
+    pub tasks: Span<Task>,
+    pub data: ByteArray,
 }
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::event]
 pub struct TrophyProgression {
     #[key]
-    player_id: felt252,
+    pub player_id: felt252,
     #[key]
-    task_id: felt252,
-    count: u32,
-    time: u64,
+    pub task_id: felt252,
+    pub count: u32,
+    pub time: u64,
 }
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::event]
 pub struct TrophyPinning {
     #[key]
-    player_id: felt252,
+    pub player_id: felt252,
     #[key]
-    achievement_id: felt252,
-    time: u64,
+    pub achievement_id: felt252,
+    pub time: u64,
 }

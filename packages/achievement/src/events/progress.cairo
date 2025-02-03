@@ -1,6 +1,6 @@
 // Internal imports
 
-use achievement::events::index::TrophyProgression;
+pub use achievement::events::index::TrophyProgression;
 
 // Errors
 
@@ -11,9 +11,9 @@ pub mod errors {
 // Implementations
 
 #[generate_trait]
-impl ProgressImpl of ProgressTrait {
+pub impl ProgressImpl of ProgressTrait {
     #[inline]
-    fn new(player_id: felt252, task_id: felt252, count: u32, time: u64,) -> TrophyProgression {
+    fn new(player_id: felt252, task_id: felt252, count: u32, time: u64) -> TrophyProgression {
         // [Check] Inputs
         ProgressAssert::assert_valid_task(task_id);
         // [Return] Progress
@@ -22,7 +22,7 @@ impl ProgressImpl of ProgressTrait {
 }
 
 #[generate_trait]
-impl ProgressAssert of AssertTrait {
+pub impl ProgressAssert of AssertTrait {
     #[inline]
     fn assert_valid_task(task_id: felt252) {
         assert(task_id != 0, errors::PROGRESS_INVALID_TASK);
@@ -44,13 +44,13 @@ mod tests {
 
     #[test]
     fn test_achievement_progress_new() {
-        let progress = ProgressTrait::new(PLAYER_ID, TASK_ID, COUNT, TIME,);
-
-        assert_eq!(progress.player_id, PLAYER_ID);
-        assert_eq!(progress.task_id, TASK_ID);
-        assert_eq!(progress.count, COUNT);
-        assert_eq!(progress.time, TIME);
+        let progress = ProgressTrait::new(PLAYER_ID, TASK_ID, COUNT, TIME);
+        assert(progress.player_id == PLAYER_ID, 'Invalid player id');
+        assert(progress.task_id == TASK_ID, 'Invalid task id');
+        assert(progress.count == COUNT, 'Invalid count');
+        assert(progress.time == TIME, 'Invalid time');
     }
+
     #[test]
     #[should_panic(expected: ('Progress: invalid task',))]
     fn test_achievement_progress_new_invalid_task() {

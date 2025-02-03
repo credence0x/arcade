@@ -1,6 +1,6 @@
 // Internal imports
 
-use achievement::events::index::TrophyPinning;
+pub use achievement::events::index::TrophyPinning;
 
 // Errors
 
@@ -11,7 +11,7 @@ pub mod errors {
 // Implementations
 
 #[generate_trait]
-impl PinningImpl of PinningTrait {
+pub impl PinningImpl of PinningTrait {
     #[inline]
     fn new(player_id: felt252, achievement_id: felt252, time: u64) -> TrophyPinning {
         // [Check] Inputs
@@ -22,7 +22,7 @@ impl PinningImpl of PinningTrait {
 }
 
 #[generate_trait]
-impl PinningAssert of AssertTrait {
+pub impl PinningAssert of AssertTrait {
     #[inline]
     fn assert_valid_id(achievement_id: felt252) {
         assert(achievement_id != 0, errors::PINNING_INVALID_ID);
@@ -43,10 +43,10 @@ mod tests {
 
     #[test]
     fn test_pinning_new() {
-        let pinning = PinningTrait::new(PLAYER_ID, ACHIEVEMENT_ID, TIME,);
-        assert_eq!(pinning.player_id, PLAYER_ID);
-        assert_eq!(pinning.achievement_id, ACHIEVEMENT_ID);
-        assert_eq!(pinning.time, TIME);
+        let pinning = PinningTrait::new(PLAYER_ID, ACHIEVEMENT_ID, TIME);
+        assert(pinning.player_id == PLAYER_ID, 'Invalid player id');
+        assert(pinning.achievement_id == ACHIEVEMENT_ID, 'Invalid achievement id');
+        assert(pinning.time == TIME, 'Invalid time');
     }
 
     #[test]

@@ -1,45 +1,40 @@
-mod setup {
-    // Core imports
-
-    use core::debug::PrintTrait;
-
+pub mod setup {
     // Starknet imports
 
     use starknet::ContractAddress;
-    use starknet::testing;
-    use starknet::testing::{set_contract_address, set_block_timestamp};
+    use starknet::testing::set_contract_address;
 
     // Dojo imports
 
     use dojo::world::{WorldStorage, WorldStorageTrait};
     use dojo_cairo_test::{
         spawn_test_world, NamespaceDef, ContractDef, TestResource, ContractDefTrait,
-        WorldStorageTestTrait
+        WorldStorageTestTrait,
     };
 
     // Internal imports
 
     use achievement::events::{index as events};
-    use achievement::tests::mocks::achiever::{Achiever, IAchiever, IAchieverDispatcher};
+    use achievement::tests::mocks::achiever::{Achiever, IAchieverDispatcher};
 
     // Constant
 
-    fn OWNER() -> ContractAddress {
+    pub fn OWNER() -> ContractAddress {
         starknet::contract_address_const::<'OWNER'>()
     }
 
-    fn PLAYER() -> ContractAddress {
+    pub fn PLAYER() -> ContractAddress {
         starknet::contract_address_const::<'PLAYER'>()
     }
 
     #[derive(Copy, Drop)]
-    struct Systems {
-        achiever: IAchieverDispatcher,
+    pub struct Systems {
+        pub achiever: IAchieverDispatcher,
     }
 
     #[derive(Copy, Drop)]
-    struct Context {
-        player_id: felt252,
+    pub struct Context {
+        pub player_id: felt252,
     }
 
     /// Drop all events from the given contract address
@@ -55,12 +50,14 @@ mod setup {
     #[inline]
     fn setup_namespace() -> NamespaceDef {
         NamespaceDef {
-            namespace: "namespace", resources: [
+            namespace: "namespace",
+            resources: [
                 TestResource::Event(events::e_TrophyCreation::TEST_CLASS_HASH),
                 TestResource::Event(events::e_TrophyProgression::TEST_CLASS_HASH),
                 TestResource::Event(events::e_TrophyPinning::TEST_CLASS_HASH),
                 TestResource::Contract(Achiever::TEST_CLASS_HASH),
-            ].span()
+            ]
+                .span(),
         }
     }
 
@@ -68,11 +65,12 @@ mod setup {
         [
             ContractDefTrait::new(@"namespace", @"Achiever")
                 .with_writer_of([dojo::utils::bytearray_hash(@"namespace")].span()),
-        ].span()
+        ]
+            .span()
     }
 
     #[inline]
-    fn spawn_game() -> (WorldStorage, Systems, Context) {
+    pub fn spawn_game() -> (WorldStorage, Systems, Context) {
         // [Setup] World
         set_contract_address(OWNER());
         let namespace_def = setup_namespace();

@@ -1,28 +1,28 @@
 mod store;
 
 mod types {
-    mod index;
-    mod task;
+    pub mod index;
+    pub mod task;
 }
 
 mod events {
-    mod index;
-    mod creation;
-    mod progress;
-    mod pinning;
+    pub mod index;
+    pub mod creation;
+    pub mod progress;
+    pub mod pinning;
 }
 
 mod components {
-    mod achievable;
-    mod pinnable;
+    pub mod achievable;
+    pub mod pinnable;
 }
 
 #[cfg(test)]
 mod tests {
-    mod setup;
-    mod test_achievable;
+    pub mod setup;
+    pub mod test_achievable;
 
-    mod mocks {
-        mod achiever;
+    pub mod mocks {
+        pub mod achiever;
     }
 }

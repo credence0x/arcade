@@ -1,9 +1,5 @@
 #[starknet::component]
-mod AchievableComponent {
-    // Core imports
-
-    use core::debug::PrintTrait;
-
+pub mod AchievableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -20,17 +16,17 @@ mod AchievableComponent {
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         /// Create an achievement
         ///
@@ -83,7 +79,7 @@ mod AchievableComponent {
                     title,
                     description,
                     tasks,
-                    data
+                    data,
                 );
         }
 

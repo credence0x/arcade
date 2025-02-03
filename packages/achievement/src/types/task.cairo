@@ -1,6 +1,6 @@
 // Internal imports
 
-use achievement::types::index::Task;
+pub use achievement::types::index::Task;
 
 // Errors
 
@@ -13,9 +13,9 @@ pub mod errors {
 // Implementations
 
 #[generate_trait]
-impl TaskImpl of TaskTrait {
+pub impl TaskImpl of TaskTrait {
     #[inline]
-    fn new(id: felt252, total: u32, description: ByteArray,) -> Task {
+    fn new(id: felt252, total: u32, description: ByteArray) -> Task {
         // [Check] Inputs
         TaskAssert::assert_valid_id(id);
         TaskAssert::assert_valid_total(total);
@@ -26,7 +26,7 @@ impl TaskImpl of TaskTrait {
 }
 
 #[generate_trait]
-impl TaskAssert of AssertTrait {
+pub impl TaskAssert of AssertTrait {
     #[inline]
     fn assert_valid_id(id: felt252) {
         assert(id != 0, errors::TASK_INVALID_ID);
@@ -47,7 +47,7 @@ impl TaskAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{TaskTrait, Task};
+    use super::TaskTrait;
 
     // Constants
 
@@ -57,9 +57,9 @@ mod tests {
     #[test]
     fn test_task_creation_new() {
         let achievement = TaskTrait::new(ID, TOTAL, "DESCRIPTION");
-        assert_eq!(achievement.id, ID);
-        assert_eq!(achievement.total, TOTAL);
-        assert_eq!(achievement.description, "DESCRIPTION");
+        assert(achievement.id == ID, 'Invalid ID');
+        assert(achievement.total == TOTAL, 'Invalid total');
+        assert(achievement.description == "DESCRIPTION", 'Invalid description');
     }
 
     #[test]

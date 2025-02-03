@@ -3,7 +3,7 @@
 use achievement::types::task::Task;
 
 #[starknet::interface]
-trait IAchiever<TContractState> {
+pub trait IAchiever<TContractState> {
     fn create(
         self: @TContractState,
         id: felt252,
@@ -19,19 +19,14 @@ trait IAchiever<TContractState> {
         tasks: Span<Task>,
         data: ByteArray,
     );
-    fn progress(self: @TContractState, player_id: felt252, task_id: felt252, count: u32,);
+    fn progress(self: @TContractState, player_id: felt252, task_id: felt252, count: u32);
 }
 
 #[dojo::contract]
 pub mod Achiever {
-    // Starknet imports
-
-    use starknet::{ContractAddress, get_block_timestamp, get_contract_address};
-
     // Dojo imports
 
     use dojo::world::WorldStorage;
-    use dojo::contract::{IContractDispatcher, IContractDispatcherTrait};
 
     // Internal imports
 
@@ -45,23 +40,23 @@ pub mod Achiever {
     // Components
 
     component!(path: AchievableComponent, storage: achievable, event: AchievableEvent);
-    impl InternalImpl = AchievableComponent::InternalImpl<ContractState>;
+    pub impl InternalImpl = AchievableComponent::InternalImpl<ContractState>;
 
     #[storage]
     pub struct Storage {
         #[substorage(v0)]
-        pub achievable: AchievableComponent::Storage
+        pub achievable: AchievableComponent::Storage,
     }
 
     #[event]
     #[derive(Drop, starknet::Event)]
     enum Event {
         #[flat]
-        AchievableEvent: AchievableComponent::Event
+        AchievableEvent: AchievableComponent::Event,
     }
 
     #[abi(embed_v0)]
-    impl AchieverImpl of IAchiever<ContractState> {
+    pub impl AchieverImpl of IAchiever<ContractState> {
         fn create(
             self: @ContractState,
             id: felt252,
@@ -92,11 +87,11 @@ pub mod Achiever {
                     title,
                     description,
                     tasks,
-                    data
+                    data,
                 );
         }
 
-        fn progress(self: @ContractState, player_id: felt252, task_id: felt252, count: u32,) {
+        fn progress(self: @ContractState, player_id: felt252, task_id: felt252, count: u32) {
             self.achievable.progress(self.world_storage(), player_id, task_id, count);
         }
     }

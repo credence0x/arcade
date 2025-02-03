@@ -1,9 +1,5 @@
 #[starknet::component]
-mod PinnableComponent {
-    // Core imports
-
-    use core::debug::PrintTrait;
-
+pub mod PinnableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -19,17 +15,17 @@ mod PinnableComponent {
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         fn pin(
             self: @ComponentState<TContractState>,
