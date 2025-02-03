@@ -1,9 +1,5 @@
 //! Store struct and component management methods.
 
-// Starknet imports
-
-use starknet::SyscallResultTrait;
-
 // Dojo imports
 
 use dojo::world::WorldStorage;
@@ -19,14 +15,14 @@ use controller::models::signer::Signer;
 // Structs
 
 #[derive(Copy, Drop)]
-struct Store {
+pub struct Store {
     world: WorldStorage,
 }
 
 // Implementations
 
 #[generate_trait]
-impl StoreImpl of StoreTrait {
+pub impl StoreImpl of StoreTrait {
     #[inline]
     fn new(world: WorldStorage) -> Store {
         Store { world: world }

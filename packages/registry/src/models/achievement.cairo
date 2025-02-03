@@ -1,6 +1,6 @@
 // Internal imports
 
-use registry::models::index::Achievement;
+pub use registry::models::index::Achievement;
 use registry::constants;
 
 // Errors
@@ -18,10 +18,10 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl AchievementImpl of AchievementTrait {
+pub impl AchievementImpl of AchievementTrait {
     #[inline]
     fn new(
-        world_address: felt252, namespace: felt252, identifier: felt252, karma: u16
+        world_address: felt252, namespace: felt252, identifier: felt252, karma: u16,
     ) -> Achievement {
         // [Check] Inputs
         AchievementAssert::assert_valid_world(world_address);
@@ -83,7 +83,7 @@ impl AchievementImpl of AchievementTrait {
 }
 
 #[generate_trait]
-impl AchievementAssert of AssertTrait {
+pub impl AchievementAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: Achievement) {
         assert(self.karma == 0, errors::ACHIEVEMENT_ALREADY_EXISTS);
@@ -125,7 +125,7 @@ impl AchievementAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Achievement, AchievementTrait, AchievementAssert};
+    use super::{AchievementTrait, AchievementAssert};
 
     // Constants
 

@@ -1,7 +1,7 @@
 // Internal imports
 
 use registry::constants;
-use registry::models::index::Game;
+pub use registry::models::index::Game;
 use registry::types::metadata::Metadata;
 use registry::types::socials::Socials;
 use registry::helpers::json::JsonifiableTrait;
@@ -23,7 +23,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl GameImpl of GameTrait {
+pub impl GameImpl of GameTrait {
     #[inline]
     fn new(
         world_address: felt252,
@@ -78,7 +78,7 @@ impl GameImpl of GameTrait {
 
     #[inline]
     fn update(
-        ref self: Game, project: felt252, preset: felt252, metadata: Metadata, socials: Socials
+        ref self: Game, project: felt252, preset: felt252, metadata: Metadata, socials: Socials,
     ) {
         // [Effect] Update Game
         self.project = project;
@@ -126,7 +126,7 @@ impl GameImpl of GameTrait {
 }
 
 #[generate_trait]
-impl GameAssert of AssertTrait {
+pub impl GameAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Game) {
         assert(self.project == @0, errors::GAME_ALREADY_EXISTS);
@@ -175,18 +175,14 @@ impl GameAssert of AssertTrait {
 
 #[cfg(test)]
 mod tests {
-    // Core imports
-
-    use core::byte_array::{ByteArray, ByteArrayTrait};
-
     // Internal imports
 
-    use registry::types::metadata::{Metadata, MetadataTrait, MetadataJsonifiable};
-    use registry::types::socials::{Socials, SocialsTrait, SocialsJsonifiable};
+    use registry::types::metadata::{MetadataTrait, MetadataJsonifiable};
+    use registry::types::socials::{SocialsTrait, SocialsJsonifiable};
 
     // Local imports
 
-    use super::{Game, GameTrait, GameAssert};
+    use super::{GameTrait, GameAssert};
 
     // Constants
 
@@ -197,8 +193,8 @@ mod tests {
     const OWNER: felt252 = 'OWNER';
     #[test]
     fn test_game_new() {
-        let metadata = core::Default::default();
-        let socials = core::Default::default();
+        let metadata = core::traits::Default::default();
+        let socials = core::traits::Default::default();
         let game = GameTrait::new(
             world_address: WORLD_ADDRESS,
             namespace: NAMESPACE,
@@ -229,8 +225,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.add(100);
@@ -244,8 +240,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.add(100);
@@ -261,17 +257,17 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         let project = 'TCEJORP';
         let preset = 'TESERP';
         let metadata = MetadataTrait::new(
-            Option::Some('123456'), Option::None, Option::None, Option::None, Option::None
+            Option::Some('123456'), Option::None, Option::None, Option::None, Option::None,
         );
         let socials = SocialsTrait::new(
-            Option::Some("discord"), Option::None, Option::None, Option::None, Option::None
+            Option::Some("discord"), Option::None, Option::None, Option::None, Option::None,
         );
         game.update(project, preset, metadata.clone(), socials.clone());
         assert_eq!(game.project, project);
@@ -287,8 +283,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.publish();
@@ -302,8 +298,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.publish();
@@ -318,8 +314,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.publish();
@@ -334,8 +330,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.publish();
@@ -351,8 +347,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.nullify();
@@ -369,8 +365,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.assert_does_not_exist();
@@ -384,8 +380,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.project = 0;
@@ -430,8 +426,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.publish();
@@ -447,8 +443,8 @@ mod tests {
             namespace: NAMESPACE,
             project: PROJECT,
             preset: PRESET,
-            metadata: core::Default::default(),
-            socials: core::Default::default(),
+            metadata: core::traits::Default::default(),
+            socials: core::traits::Default::default(),
             owner: OWNER,
         );
         game.assert_is_owner('CALLER');

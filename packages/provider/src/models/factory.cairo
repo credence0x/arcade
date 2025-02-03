@@ -1,6 +1,6 @@
 // Internal imports
 
-use provider::models::index::Factory;
+pub use provider::models::index::Factory;
 use provider::types::service::Service;
 
 // Errors
@@ -13,21 +13,21 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl FactoryImpl of FactoryTrait {
+pub impl FactoryImpl of FactoryTrait {
     #[inline]
-    fn new(service: Service, version: felt252, default_version: felt252,) -> Factory {
+    fn new(service: Service, version: felt252, default_version: felt252) -> Factory {
         // [Check] Inputs
         let factory_id: u8 = service.into();
         FactoryAssert::assert_valid_identifier(factory_id);
         FactoryAssert::assert_valid_version(version);
         FactoryAssert::assert_valid_version(default_version);
         // [Return] Factory
-        Factory { id: factory_id, version: version, default_version: default_version, }
+        Factory { id: factory_id, version: version, default_version: default_version }
     }
 }
 
 #[generate_trait]
-impl FactoryAssert of AssertTrait {
+pub impl FactoryAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Factory) {
         assert(self.version == @0, errors::SERVICE_ALREADY_EXISTS);
@@ -53,7 +53,7 @@ impl FactoryAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Factory, FactoryTrait, FactoryAssert, Service};
+    use super::{FactoryTrait, FactoryAssert, Service};
 
     // Constants
 
@@ -64,9 +64,9 @@ mod tests {
     #[test]
     fn test_service_new() {
         let service = FactoryTrait::new(SERVICE, VERSION, DEFAULT_VERSION);
-        assert_eq!(service.id, SERVICE.into());
-        assert_eq!(service.version, VERSION);
-        assert_eq!(service.default_version, DEFAULT_VERSION);
+        assert(service.id == SERVICE.into(), 'Invalid identifier');
+        assert(service.version == VERSION, 'Invalid version');
+        assert(service.default_version == DEFAULT_VERSION, 'Invalid default version');
     }
 
     #[test]

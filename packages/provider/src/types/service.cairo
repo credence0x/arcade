@@ -17,7 +17,7 @@ pub enum Service {
 // Implementations
 
 #[generate_trait]
-impl ServiceImpl of ServiceTrait {
+pub impl ServiceImpl of ServiceTrait {
     fn version(self: Service) -> felt252 {
         match self {
             Service::None => 0,
@@ -28,7 +28,7 @@ impl ServiceImpl of ServiceTrait {
     }
 }
 
-impl IntoServiceU8 of core::Into<Service, u8> {
+pub impl IntoServiceU8 of core::traits::Into<Service, u8> {
     #[inline]
     fn into(self: Service) -> u8 {
         match self {
@@ -40,7 +40,7 @@ impl IntoServiceU8 of core::Into<Service, u8> {
     }
 }
 
-impl IntoU8Service of core::Into<u8, Service> {
+pub impl IntoU8Service of core::traits::Into<u8, Service> {
     #[inline]
     fn into(self: u8) -> Service {
         match self {

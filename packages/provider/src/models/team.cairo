@@ -1,7 +1,6 @@
 // Internal imports
 
-use provider::models::index::Team;
-use provider::types::role::Role;
+pub use provider::models::index::Team;
 
 // Errors
 
@@ -14,7 +13,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl TeamImpl of TeamTrait {
+pub impl TeamImpl of TeamTrait {
     #[inline]
     fn new(id: felt252, time: u64, name: felt252, description: ByteArray) -> Team {
         // [Check] Inputs
@@ -48,7 +47,7 @@ impl TeamImpl of TeamTrait {
 }
 
 #[generate_trait]
-impl TeamAssert of AssertTrait {
+pub impl TeamAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Team) {
         assert(!self.exists(), errors::TEAM_ALREADY_EXISTS);
@@ -79,7 +78,7 @@ impl TeamAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Team, TeamTrait, TeamAssert};
+    use super::{TeamTrait, TeamAssert};
 
     // Constants
 
@@ -90,10 +89,10 @@ mod tests {
     #[test]
     fn test_team_new() {
         let team = TeamTrait::new(IDENTIFIER, TIME, NAME, "");
-        assert_eq!(team.id, IDENTIFIER);
-        assert_eq!(team.time, TIME);
-        assert_eq!(team.name, NAME);
-        assert_eq!(team.description, "");
+        assert(team.id == IDENTIFIER, 'Invalid identifier');
+        assert(team.time == TIME, 'Invalid time');
+        assert(team.name == NAME, 'Invalid name');
+        assert(team.description == "", 'Invalid description');
     }
 
     #[test]

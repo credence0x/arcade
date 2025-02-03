@@ -12,7 +12,7 @@ pub enum Tier {
 
 // Implementations
 
-impl IntoTierU8 of core::Into<Tier, u8> {
+pub impl IntoTierU8 of core::traits::Into<Tier, u8> {
     #[inline]
     fn into(self: Tier) -> u8 {
         match self {
@@ -28,7 +28,7 @@ impl IntoTierU8 of core::Into<Tier, u8> {
     }
 }
 
-impl IntoU8Tier of core::Into<u8, Tier> {
+pub impl IntoU8Tier of core::traits::Into<u8, Tier> {
     #[inline]
     fn into(self: u8) -> Tier {
         match self {

@@ -1,18 +1,18 @@
-mod store;
+pub mod store;
 
-mod types {
+pub mod types {
     pub mod index;
     pub mod task;
 }
 
-mod events {
+pub mod events {
     pub mod index;
     pub mod creation;
     pub mod progress;
     pub mod pinning;
 }
 
-mod components {
+pub mod components {
     pub mod achievable;
     pub mod pinnable;
 }

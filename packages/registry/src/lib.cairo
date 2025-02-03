@@ -1,27 +1,27 @@
-mod constants;
-mod store;
+pub mod constants;
+pub mod store;
 
-mod helpers {
-    mod json;
+pub mod helpers {
+    pub mod json;
 }
 
-mod types {
-    mod role;
-    mod metadata;
-    mod socials;
+pub mod types {
+    pub mod role;
+    pub mod metadata;
+    pub mod socials;
 }
 
-mod models {
-    mod index;
-    mod access;
-    mod achievement;
-    mod game;
+pub mod models {
+    pub mod index;
+    pub mod access;
+    pub mod achievement;
+    pub mod game;
 }
 
-mod components {
-    mod initializable;
-    mod registerable;
-    mod trackable;
+pub mod components {
+    pub mod initializable;
+    pub mod registerable;
+    pub mod trackable;
 }
 
 #[cfg(test)]
@@ -31,7 +31,7 @@ mod tests {
     mod test_trackable;
 
     mod mocks {
-        mod register;
-        mod tracker;
+        pub mod register;
+        pub mod tracker;
     }
 }

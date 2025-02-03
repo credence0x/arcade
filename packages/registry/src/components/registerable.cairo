@@ -1,5 +1,5 @@
 #[starknet::component]
-mod RegisterableComponent {
+pub mod RegisterableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -7,26 +7,26 @@ mod RegisterableComponent {
     // Internal imports
 
     use registry::store::{Store, StoreTrait};
-    use registry::models::access::{Access, AccessTrait, AccessAssert};
-    use registry::models::game::{Game, GameTrait, GameAssert};
-    use registry::types::metadata::{Metadata, MetadataTrait};
-    use registry::types::socials::{Socials, SocialsTrait};
+    use registry::models::access::{AccessAssert};
+    use registry::models::game::{GameTrait, GameAssert};
+    use registry::types::metadata::{MetadataTrait};
+    use registry::types::socials::{SocialsTrait};
     use registry::types::role::Role;
 
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         fn register(
             self: @ComponentState<TContractState>,
@@ -58,7 +58,7 @@ mod RegisterableComponent {
             let metadata = MetadataTrait::new(color, name, description, image, banner);
             let socials = SocialsTrait::new(discord, telegram, twitter, youtube, website);
             let game = GameTrait::new(
-                world_address, namespace, project, preset, metadata, socials, caller_id
+                world_address, namespace, project, preset, metadata, socials, caller_id,
             );
 
             // [Effect] Store game

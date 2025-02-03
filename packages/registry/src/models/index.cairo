@@ -4,39 +4,39 @@
 #[dojo::model]
 pub struct Access {
     #[key]
-    address: felt252,
-    role: u8,
+    pub address: felt252,
+    pub role: u8,
 }
 
 #[derive(Clone, Drop, Serde)]
 #[dojo::model]
 pub struct Game {
     #[key]
-    world_address: felt252,
+    pub world_address: felt252,
     #[key]
-    namespace: felt252,
-    project: felt252,
-    active: bool,
-    published: bool,
-    whitelisted: bool,
-    priority: u8,
-    karma: u16,
-    preset: felt252,
-    metadata: ByteArray,
-    socials: ByteArray,
-    owner: felt252,
+    pub namespace: felt252,
+    pub project: felt252,
+    pub active: bool,
+    pub published: bool,
+    pub whitelisted: bool,
+    pub priority: u8,
+    pub karma: u16,
+    pub preset: felt252,
+    pub metadata: ByteArray,
+    pub socials: ByteArray,
+    pub owner: felt252,
 }
 
 #[derive(Copy, Drop, Serde)]
 #[dojo::model]
 pub struct Achievement {
     #[key]
-    world_address: felt252,
+    pub world_address: felt252,
     #[key]
-    namespace: felt252,
+    pub namespace: felt252,
     #[key]
-    id: felt252,
-    published: bool,
-    whitelisted: bool,
-    karma: u16,
+    pub id: felt252,
+    pub published: bool,
+    pub whitelisted: bool,
+    pub karma: u16,
 }

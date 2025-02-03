@@ -8,11 +8,11 @@ const COLOR_LENGTH: usize = 7;
 
 #[derive(Clone, Drop)]
 pub struct Metadata {
-    color: felt252,
-    name: ByteArray,
-    description: ByteArray,
-    image: ByteArray,
-    banner: ByteArray,
+    pub color: felt252,
+    pub name: ByteArray,
+    pub description: ByteArray,
+    pub image: ByteArray,
+    pub banner: ByteArray,
 }
 
 // Implementations
@@ -24,7 +24,7 @@ pub impl MetadataImpl of MetadataTrait {
         name: Option<ByteArray>,
         description: Option<ByteArray>,
         image: Option<ByteArray>,
-        banner: Option<ByteArray>
+        banner: Option<ByteArray>,
     ) -> Metadata {
         let color = match color {
             Option::Some(color) => color,
@@ -47,7 +47,7 @@ pub impl MetadataImpl of MetadataTrait {
             Option::None => "",
         };
         Metadata {
-            color: color, name: name, description: description, image: image, banner: banner
+            color: color, name: name, description: description, image: image, banner: banner,
         }
     }
 }
@@ -68,7 +68,7 @@ pub impl MetadataJsonifiable of JsonifiableTrait<Metadata> {
     }
 }
 
-pub impl MetadataDefault of core::Default<Metadata> {
+pub impl MetadataDefault of core::traits::Default<Metadata> {
     fn default() -> Metadata {
         MetadataTrait::new(Option::None, Option::None, Option::None, Option::None, Option::None)
     }
@@ -92,7 +92,7 @@ mod tests {
         let json = metadata.jsonify();
         assert_eq!(
             json,
-            "{\"color\":\"#123456\",\"name\":\"name\",\"description\":\"description\",\"image\":\"image\",\"banner\":\"banner\"}"
+            "{\"color\":\"#123456\",\"name\":\"name\",\"description\":\"description\",\"image\":\"image\",\"banner\":\"banner\"}",
         );
     }
 }

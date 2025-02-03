@@ -1,6 +1,6 @@
 // Internal imports
 
-use social::events::index::Follow;
+pub use social::events::index::Follow;
 
 // Errors
 
@@ -12,9 +12,9 @@ pub mod errors {
 // Implementations
 
 #[generate_trait]
-impl FollowImpl of FollowTrait {
+pub impl FollowImpl of FollowTrait {
     #[inline]
-    fn new(follower: felt252, followed: felt252, time: u64,) -> Follow {
+    fn new(follower: felt252, followed: felt252, time: u64) -> Follow {
         // [Check] Inputs
         // [Info] We don't check points here, leave free the game to decide
         FollowAssert::assert_valid_follower(follower);
@@ -25,7 +25,7 @@ impl FollowImpl of FollowTrait {
 }
 
 #[generate_trait]
-impl FollowAssert of AssertTrait {
+pub impl FollowAssert of AssertTrait {
     #[inline]
     fn assert_valid_follower(follower: felt252) {
         assert(follower != 0, errors::FOLLOW_INVALID_FOLLOWER);
@@ -41,7 +41,7 @@ impl FollowAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Follow, FollowTrait};
+    use super::{FollowTrait};
 
     // Constants
 

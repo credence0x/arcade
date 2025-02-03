@@ -1,5 +1,5 @@
 #[starknet::component]
-mod GuildableComponent {
+pub mod GuildableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -12,25 +12,25 @@ mod GuildableComponent {
 
     // Internal imports
 
-    use social::store::{Store, StoreTrait};
-    use social::models::guild::{Guild, GuildTrait, GuildAssert};
-    use social::models::member::{Member, MemberTrait, MemberAssert};
+    use social::store::StoreTrait;
+    use social::models::guild::{GuildTrait, GuildAssert};
+    use social::models::member::{MemberTrait, MemberAssert};
     use social::types::role::Role;
 
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         fn create(
             self: @ComponentState<TContractState>,
@@ -45,7 +45,7 @@ mod GuildableComponent {
             telegram: Option<ByteArray>,
             twitter: Option<ByteArray>,
             youtube: Option<ByteArray>,
-            website: Option<ByteArray>
+            website: Option<ByteArray>,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -76,7 +76,7 @@ mod GuildableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            free: bool
+            free: bool,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -113,7 +113,7 @@ mod GuildableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            member_id: felt252
+            member_id: felt252,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -139,7 +139,7 @@ mod GuildableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            member_id: felt252
+            member_id: felt252,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -163,7 +163,7 @@ mod GuildableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            member_id: felt252
+            member_id: felt252,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -187,7 +187,7 @@ mod GuildableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            member_id: felt252
+            member_id: felt252,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -214,7 +214,7 @@ mod GuildableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            member_id: felt252
+            member_id: felt252,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -246,7 +246,7 @@ mod GuildableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            guild_id: u32
+            guild_id: u32,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);

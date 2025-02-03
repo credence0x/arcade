@@ -1,6 +1,6 @@
 // Internal imports
 
-use controller::models::index::Account;
+pub use controller::models::index::Account;
 
 // Errors
 
@@ -12,7 +12,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl AccountImpl of AccountTrait {
+pub impl AccountImpl of AccountTrait {
     #[inline]
     fn new(
         id: felt252, controllers: u32, name: felt252, username: felt252, socials: ByteArray,
@@ -33,7 +33,7 @@ impl AccountImpl of AccountTrait {
 }
 
 #[generate_trait]
-impl AccountAssert of AssertTrait {
+pub impl AccountAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Account) {
         assert(self.name == @0, errors::ACCOUNT_ALREADY_EXISTS);
@@ -59,7 +59,7 @@ impl AccountAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Account, AccountTrait, AccountAssert};
+    use super::{AccountTrait, AccountAssert};
 
     // Constants
 

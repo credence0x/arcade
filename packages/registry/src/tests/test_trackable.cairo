@@ -1,21 +1,13 @@
-// Core imports
-
-use core::num::traits::Zero;
-
 // Starknet imports
 
-use starknet::ContractAddress;
-use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
 use starknet::testing;
 
 // Internal imports
 
-use registry::store::{Store, StoreTrait};
-use registry::models::game::{Game, GameTrait};
-use registry::models::achievement::{Achievement, AchievementTrait};
-use registry::tests::mocks::register::{Register, IRegisterDispatcher, IRegisterDispatcherTrait};
-use registry::tests::mocks::tracker::{Tracker, ITrackerDispatcher, ITrackerDispatcherTrait};
-use registry::tests::setup::setup::{spawn, Systems, Context, PLAYER, OWNER};
+use registry::store::StoreTrait;
+use registry::tests::mocks::register::IRegisterDispatcherTrait;
+use registry::tests::mocks::tracker::ITrackerDispatcherTrait;
+use registry::tests::setup::setup::{spawn, Systems, PLAYER, OWNER};
 
 // Constants
 

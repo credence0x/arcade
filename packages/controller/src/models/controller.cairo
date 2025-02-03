@@ -1,6 +1,6 @@
 // Internal imports
 
-use controller::models::index::Controller;
+pub use controller::models::index::Controller;
 
 // Errors
 
@@ -15,7 +15,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl ControllerImpl of ControllerTrait {
+pub impl ControllerImpl of ControllerTrait {
     #[inline]
     fn new(
         account_id: felt252,
@@ -38,13 +38,13 @@ impl ControllerImpl of ControllerTrait {
             signers: signers,
             address: address,
             network: network,
-            constructor_calldata: constructor_calldata
+            constructor_calldata: constructor_calldata,
         }
     }
 }
 
 #[generate_trait]
-impl ControllerAssert of AssertTrait {
+pub impl ControllerAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Controller) {
         assert(self.account_id == @0, errors::CONTROLLER_ALREADY_EXISTS);
@@ -85,7 +85,7 @@ impl ControllerAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Controller, ControllerTrait, ControllerAssert};
+    use super::{ControllerTrait, ControllerAssert};
 
     // Constants
 
@@ -98,7 +98,7 @@ mod tests {
     #[test]
     fn test_controller_new() {
         let controller = ControllerTrait::new(
-            ACCOUNT_ID, IDENTIFIER, SIGNERS, ADDRESS, NETWORK, ""
+            ACCOUNT_ID, IDENTIFIER, SIGNERS, ADDRESS, NETWORK, "",
         );
         assert_eq!(controller.id, IDENTIFIER);
         assert_eq!(controller.account_id, ACCOUNT_ID);
@@ -111,7 +111,7 @@ mod tests {
     #[test]
     fn test_controller_assert_does_exist() {
         let controller = ControllerTrait::new(
-            ACCOUNT_ID, IDENTIFIER, SIGNERS, ADDRESS, NETWORK, ""
+            ACCOUNT_ID, IDENTIFIER, SIGNERS, ADDRESS, NETWORK, "",
         );
         controller.assert_does_exist();
     }
@@ -120,7 +120,7 @@ mod tests {
     #[should_panic(expected: 'Controller: already exists')]
     fn test_controller_revert_already_exists() {
         let controller = ControllerTrait::new(
-            ACCOUNT_ID, IDENTIFIER, SIGNERS, ADDRESS, NETWORK, ""
+            ACCOUNT_ID, IDENTIFIER, SIGNERS, ADDRESS, NETWORK, "",
         );
         controller.assert_does_not_exist();
     }

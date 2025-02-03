@@ -7,7 +7,7 @@ pub enum Status {
 
 // Implementations
 
-impl IntoStatusU8 of core::Into<Status, u8> {
+pub impl IntoStatusU8 of core::traits::Into<Status, u8> {
     #[inline]
     fn into(self: Status) -> u8 {
         match self {
@@ -18,7 +18,7 @@ impl IntoStatusU8 of core::Into<Status, u8> {
     }
 }
 
-impl IntoU8Status of core::Into<u8, Status> {
+pub impl IntoU8Status of core::traits::Into<u8, Status> {
     #[inline]
     fn into(self: u8) -> Status {
         match self {

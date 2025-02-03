@@ -1,7 +1,6 @@
 // Internal imports
 
-use registry::constants;
-use registry::models::index::Access;
+pub use registry::models::index::Access;
 use registry::types::role::Role;
 
 // Errors
@@ -15,7 +14,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl AccessImpl of AccessTrait {
+pub impl AccessImpl of AccessTrait {
     #[inline]
     fn new(address: felt252, role: Role) -> Access {
         // [Check] Inputs
@@ -50,7 +49,7 @@ impl AccessImpl of AccessTrait {
 }
 
 #[generate_trait]
-impl AccessAssert of AssertTrait {
+pub impl AccessAssert of AssertTrait {
     #[inline]
     fn assert_valid_address(address: felt252) {
         assert(address != 0, errors::ACCESS_INVALID_ADDRESS);

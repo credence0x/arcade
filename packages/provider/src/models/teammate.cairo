@@ -1,6 +1,6 @@
 // Internal imports
 
-use provider::models::index::Teammate;
+pub use provider::models::index::Teammate;
 use provider::types::role::Role;
 
 // Errors
@@ -17,7 +17,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl TeammateImpl of TeammateTrait {
+pub impl TeammateImpl of TeammateTrait {
     #[inline]
     fn new(team_id: felt252, time: u64, account_id: felt252, role: Role) -> Teammate {
         // [Check] Inputs
@@ -36,7 +36,7 @@ impl TeammateImpl of TeammateTrait {
 }
 
 #[generate_trait]
-impl TeammateAssert of AssertTrait {
+pub impl TeammateAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Teammate) {
         assert(self.role == @Role::None.into(), errors::TEAMMATE_ALREADY_EXISTS);
@@ -82,7 +82,7 @@ impl TeammateAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Teammate, TeammateTrait, TeammateAssert, Role};
+    use super::{TeammateTrait, TeammateAssert, Role};
 
     // Constants
 
@@ -94,9 +94,9 @@ mod tests {
     #[test]
     fn test_teammate_new() {
         let member = TeammateTrait::new(TEAM_ID, TIME, ACCOUNT_ID, ROLE);
-        assert_eq!(member.account_id, ACCOUNT_ID);
-        assert_eq!(member.team_id, TEAM_ID);
-        assert_eq!(member.role, ROLE.into());
+        assert(member.account_id == ACCOUNT_ID, 'Invalid account id');
+        assert(member.team_id == TEAM_ID, 'Invalid team id');
+        assert(member.role == ROLE.into(), 'Invalid role');
     }
 
     #[test]

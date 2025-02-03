@@ -1,20 +1,13 @@
-// Core imports
-
-use core::num::traits::Zero;
-
 // Starknet imports
 
-use starknet::ContractAddress;
-use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
 use starknet::testing;
 
 // Internal imports
 
-use registry::store::{Store, StoreTrait};
-use registry::models::game::{Game, GameTrait};
-use registry::models::achievement::{Achievement, AchievementTrait};
-use registry::tests::mocks::register::{Register, IRegisterDispatcher, IRegisterDispatcherTrait};
-use registry::tests::setup::setup::{spawn, Systems, Context, PLAYER, OWNER};
+use registry::store::StoreTrait;
+use registry::models::game::Game;
+use registry::tests::mocks::register::IRegisterDispatcherTrait;
+use registry::tests::setup::setup::{spawn, Systems, PLAYER, OWNER};
 
 // Constants
 
@@ -65,11 +58,11 @@ fn test_registrable_register() {
     assert_eq!(game.karma, 0);
     assert_eq!(
         game.metadata,
-        "{\"color\":\"\",\"name\":\"\",\"description\":\"\",\"image\":\"\",\"banner\":\"\"}"
+        "{\"color\":\"\",\"name\":\"\",\"description\":\"\",\"image\":\"\",\"banner\":\"\"}",
     );
     assert_eq!(
         game.socials,
-        "{\"discord\":\"\",\"telegram\":\"\",\"twitter\":\"\",\"youtube\":\"\",\"website\":\"\"}"
+        "{\"discord\":\"\",\"telegram\":\"\",\"twitter\":\"\",\"youtube\":\"\",\"website\":\"\"}",
     );
     assert_eq!(game.owner, PLAYER().into());
 }
@@ -104,7 +97,7 @@ fn test_registrable_update() {
     let game = store.get_game(WORLD_ADDRESS, NAMEPSACE);
     assert_eq!(
         game.metadata,
-        "{\"color\":\"#123456\",\"name\":\"\",\"description\":\"\",\"image\":\"\",\"banner\":\"\"}"
+        "{\"color\":\"#123456\",\"name\":\"\",\"description\":\"\",\"image\":\"\",\"banner\":\"\"}",
     );
 }
 

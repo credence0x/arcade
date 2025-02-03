@@ -1,5 +1,5 @@
 #[starknet::component]
-mod GroupableComponent {
+pub mod GroupableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -7,24 +7,24 @@ mod GroupableComponent {
     // Internal imports
 
     use provider::store::{Store, StoreTrait};
-    use provider::models::team::{Team, TeamTrait, TeamAssert};
-    use provider::models::teammate::{Teammate, TeammateTrait, TeammateAssert};
+    use provider::models::team::TeamAssert;
+    use provider::models::teammate::{TeammateTrait, TeammateAssert};
     use provider::types::role::Role;
 
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         fn add(
             self: @ComponentState<TContractState>,

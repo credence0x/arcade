@@ -1,15 +1,10 @@
 #[starknet::component]
 mod ControllableComponent {
-    // Dojo imports
-
-    use dojo::world::WorldStorage;
-
     // Internal imports
 
-    use controller::store::{Store, StoreTrait};
-    use controller::models::account::{Account, AccountTrait, AccountAssert};
-    use controller::models::controller::{Controller, ControllerTrait, ControllerAssert};
-    use controller::models::signer::{Signer, SignerTrait, SignerAssert};
+    use controller::models::account::AccountAssert;
+    use controller::models::controller::ControllerAssert;
+    use controller::models::signer::SignerAssert;
 
     // Storage
 
@@ -24,6 +19,6 @@ mod ControllableComponent {
 
     #[generate_trait]
     impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {}
 }

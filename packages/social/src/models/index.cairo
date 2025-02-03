@@ -4,35 +4,35 @@
 #[dojo::model]
 pub struct Member {
     #[key]
-    id: felt252,
-    role: u8,
-    guild_id: u32,
-    pending_guild_id: u32,
+    pub id: felt252,
+    pub role: u8,
+    pub guild_id: u32,
+    pub pending_guild_id: u32,
 }
 
 #[derive(Clone, Drop, Serde)]
 #[dojo::model]
 pub struct Guild {
     #[key]
-    id: u32,
-    open: bool,
-    free: bool,
-    role: u8,
-    member_count: u8,
-    alliance_id: u32,
-    pending_alliance_id: u32,
-    metadata: ByteArray,
-    socials: ByteArray,
+    pub id: u32,
+    pub open: bool,
+    pub free: bool,
+    pub role: u8,
+    pub member_count: u8,
+    pub alliance_id: u32,
+    pub pending_alliance_id: u32,
+    pub metadata: ByteArray,
+    pub socials: ByteArray,
 }
 
 #[derive(Clone, Drop, Serde)]
 #[dojo::model]
 pub struct Alliance {
     #[key]
-    id: u32,
-    open: bool,
-    free: bool,
-    guild_count: u8,
-    metadata: ByteArray,
-    socials: ByteArray,
+    pub id: u32,
+    pub open: bool,
+    pub free: bool,
+    pub guild_count: u8,
+    pub metadata: ByteArray,
+    pub socials: ByteArray,
 }

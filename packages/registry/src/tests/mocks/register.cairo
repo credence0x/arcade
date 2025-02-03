@@ -1,5 +1,5 @@
 #[starknet::interface]
-trait IRegister<TContractState> {
+pub trait IRegister<TContractState> {
     fn register(
         self: @TContractState,
         world_address: felt252,
@@ -42,14 +42,9 @@ trait IRegister<TContractState> {
 
 #[dojo::contract]
 pub mod Register {
-    // Starknet imports
-
-    use starknet::{ContractAddress, get_block_timestamp, get_contract_address};
-
     // Dojo imports
 
     use dojo::world::WorldStorage;
-    use dojo::contract::{IContractDispatcher, IContractDispatcherTrait};
 
     // Internal imports
 
@@ -72,7 +67,7 @@ pub mod Register {
         #[substorage(v0)]
         pub initializable: InitializableComponent::Storage,
         #[substorage(v0)]
-        pub registerable: RegisterableComponent::Storage
+        pub registerable: RegisterableComponent::Storage,
     }
 
     #[event]
@@ -81,7 +76,7 @@ pub mod Register {
         #[flat]
         InitializableEvent: InitializableComponent::Event,
         #[flat]
-        RegisterableEvent: RegisterableComponent::Event
+        RegisterableEvent: RegisterableComponent::Event,
     }
 
     fn dojo_init(self: @ContractState, owner: felt252) {
@@ -127,7 +122,7 @@ pub mod Register {
                     telegram,
                     twitter,
                     youtube,
-                    website
+                    website,
                 );
         }
 

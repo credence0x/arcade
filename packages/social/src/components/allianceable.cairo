@@ -1,5 +1,5 @@
 #[starknet::component]
-mod AllianceableComponent {
+pub mod AllianceableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -12,26 +12,26 @@ mod AllianceableComponent {
 
     // Internal imports
 
-    use social::store::{Store, StoreTrait};
-    use social::models::alliance::{Alliance, AllianceTrait, AllianceAssert};
-    use social::models::guild::{Guild, GuildTrait, GuildAssert};
-    use social::models::member::{Member, MemberTrait, MemberAssert};
+    use social::store::StoreTrait;
+    use social::models::alliance::{AllianceTrait, AllianceAssert};
+    use social::models::guild::{GuildTrait, GuildAssert};
+    use social::models::member::MemberAssert;
     use social::types::role::Role;
 
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         fn create(
             self: @ComponentState<TContractState>,
@@ -46,7 +46,7 @@ mod AllianceableComponent {
             telegram: Option<ByteArray>,
             twitter: Option<ByteArray>,
             youtube: Option<ByteArray>,
-            website: Option<ByteArray>
+            website: Option<ByteArray>,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -81,7 +81,7 @@ mod AllianceableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            free: bool
+            free: bool,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -126,7 +126,7 @@ mod AllianceableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            guild_id: u32
+            guild_id: u32,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -156,7 +156,7 @@ mod AllianceableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            guild_id: u32
+            guild_id: u32,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -187,7 +187,7 @@ mod AllianceableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            guild_id: u32
+            guild_id: u32,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -223,7 +223,7 @@ mod AllianceableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            alliance_id: u32
+            alliance_id: u32,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);

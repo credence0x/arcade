@@ -1,47 +1,42 @@
-mod setup {
-    // Core imports
-
-    use core::debug::PrintTrait;
-
+pub mod setup {
     // Starknet imports
 
     use starknet::ContractAddress;
-    use starknet::testing;
-    use starknet::testing::{set_caller_address, set_contract_address, set_block_timestamp};
+    use starknet::testing::set_contract_address;
 
     // Dojo imports
 
     use dojo::world::{WorldStorage, WorldStorageTrait};
     use dojo_cairo_test::{
         spawn_test_world, NamespaceDef, ContractDef, TestResource, ContractDefTrait,
-        WorldStorageTestTrait
+        WorldStorageTestTrait,
     };
 
     // Internal imports
 
     use registry::models::{index as models};
-    use registry::tests::mocks::register::{Register, IRegister, IRegisterDispatcher};
-    use registry::tests::mocks::tracker::{Tracker, ITracker, ITrackerDispatcher};
+    use registry::tests::mocks::register::{Register, IRegisterDispatcher};
+    use registry::tests::mocks::tracker::{Tracker, ITrackerDispatcher};
 
     // Constant
 
-    fn OWNER() -> ContractAddress {
+    pub fn OWNER() -> ContractAddress {
         starknet::contract_address_const::<'OWNER'>()
     }
 
-    fn PLAYER() -> ContractAddress {
+    pub fn PLAYER() -> ContractAddress {
         starknet::contract_address_const::<'PLAYER'>()
     }
 
     #[derive(Copy, Drop)]
-    struct Systems {
-        register: IRegisterDispatcher,
-        tracker: ITrackerDispatcher,
+    pub struct Systems {
+        pub register: IRegisterDispatcher,
+        pub tracker: ITrackerDispatcher,
     }
 
     #[derive(Copy, Drop)]
-    struct Context {
-        player_id: felt252,
+    pub struct Context {
+        pub player_id: felt252,
     }
 
     /// Drop all events from the given contract address
@@ -57,13 +52,15 @@ mod setup {
     #[inline]
     fn setup_namespace() -> NamespaceDef {
         NamespaceDef {
-            namespace: "namespace", resources: [
+            namespace: "namespace",
+            resources: [
                 TestResource::Model(models::m_Access::TEST_CLASS_HASH),
                 TestResource::Model(models::m_Achievement::TEST_CLASS_HASH),
                 TestResource::Model(models::m_Game::TEST_CLASS_HASH),
                 TestResource::Contract(Register::TEST_CLASS_HASH),
                 TestResource::Contract(Tracker::TEST_CLASS_HASH),
-            ].span()
+            ]
+                .span(),
         }
     }
 
@@ -75,11 +72,12 @@ mod setup {
             ContractDefTrait::new(@"namespace", @"Tracker")
                 .with_writer_of([dojo::utils::bytearray_hash(@"namespace")].span())
                 .with_init_calldata(array![OWNER().into()].span()),
-        ].span()
+        ]
+            .span()
     }
 
     #[inline]
-    fn spawn() -> (WorldStorage, Systems, Context) {
+    pub fn spawn() -> (WorldStorage, Systems, Context) {
         // [Setup] World
         set_contract_address(OWNER());
         let namespace_def = setup_namespace();

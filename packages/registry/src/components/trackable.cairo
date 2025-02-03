@@ -1,5 +1,5 @@
 #[starknet::component]
-mod TrackableComponent {
+pub mod TrackableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -7,25 +7,25 @@ mod TrackableComponent {
     // Internal imports
 
     use registry::store::{Store, StoreTrait};
-    use registry::models::access::{Access, AccessTrait, AccessAssert};
-    use registry::models::achievement::{Achievement, AchievementTrait, AchievementAssert};
-    use registry::models::game::{Game, GameTrait, GameAssert};
+    use registry::models::access::{AccessAssert};
+    use registry::models::achievement::{AchievementTrait, AchievementAssert};
+    use registry::models::game::{GameTrait, GameAssert};
     use registry::types::role::Role;
 
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         fn register(
             self: @ComponentState<TContractState>,

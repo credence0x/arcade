@@ -1,3 +1,3 @@
-trait ServiceTrait {
+pub trait ServiceTrait {
     fn version() -> felt252;
 }

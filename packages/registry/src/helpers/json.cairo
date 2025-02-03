@@ -45,7 +45,7 @@ mod tests {
     // Local imports
 
     use super::{
-        Jsonifiable, JsonifiableSimple, JsonifiableString, JsonifiableArray, JsonifiableTrait
+        Jsonifiable, JsonifiableSimple, JsonifiableString, JsonifiableArray, JsonifiableTrait,
     };
 
     #[derive(Drop)]
@@ -168,7 +168,7 @@ mod tests {
         let json = complex.jsonify();
         assert_eq!(
             json,
-            "{\"boolean\":true,\"integer\":1,\"felt\":49,\"byte_array\":\"test\",\"array\":[1,2,3],\"object_array\":[{\"value\":1},{\"value\":2}],\"object\":{\"value\":1}}"
+            "{\"boolean\":true,\"integer\":1,\"felt\":49,\"byte_array\":\"test\",\"array\":[1,2,3],\"object_array\":[{\"value\":1},{\"value\":2}],\"object\":{\"value\":1}}",
         );
     }
 }

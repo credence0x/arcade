@@ -1,29 +1,29 @@
 #[starknet::component]
-mod InitializableComponent {
+pub mod InitializableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
 
     // Internal imports
 
-    use registry::store::{Store, StoreTrait};
+    use registry::store::{StoreTrait};
     use registry::models::access::AccessTrait;
     use registry::types::role::Role;
 
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         fn initialize(self: @ComponentState<TContractState>, world: WorldStorage, owner: felt252) {
             // [Effect] Initialize component

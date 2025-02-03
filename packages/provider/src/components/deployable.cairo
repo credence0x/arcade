@@ -1,5 +1,5 @@
 #[starknet::component]
-mod DeployableComponent {
+pub mod DeployableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -7,31 +7,30 @@ mod DeployableComponent {
     // Internal imports
 
     use provider::store::{Store, StoreTrait};
-    use provider::models::deployment::{Deployment, DeploymentTrait, DeploymentAssert};
-    use provider::models::factory::{Factory, FactoryTrait, FactoryAssert};
+    use provider::models::deployment::{DeploymentTrait, DeploymentAssert};
+    use provider::models::factory::{FactoryTrait, FactoryAssert};
     use provider::types::service::{Service, ServiceTrait, SERVICE_COUNT};
-    use provider::models::team::{Team, TeamTrait, TeamAssert};
-    use provider::models::teammate::{Teammate, TeammateTrait, TeammateAssert};
-    use provider::types::status::Status;
+    use provider::models::team::{TeamTrait, TeamAssert};
+    use provider::models::teammate::{TeammateTrait, TeammateAssert};
     use provider::types::tier::Tier;
     use provider::types::role::Role;
 
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
-        fn initialize(self: @ComponentState<TContractState>, world: WorldStorage,) {
+        fn initialize(self: @ComponentState<TContractState>, world: WorldStorage) {
             // [Setup] Datastore
             let mut store: Store = StoreTrait::new(world);
             // [Effect] Create every service factories

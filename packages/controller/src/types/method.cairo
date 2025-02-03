@@ -7,7 +7,7 @@ pub enum Method {
 
 // Implementations
 
-impl IntoMethodU8 of core::Into<Method, u8> {
+pub impl IntoMethodU8 of core::traits::Into<Method, u8> {
     #[inline]
     fn into(self: Method) -> u8 {
         match self {
@@ -18,7 +18,7 @@ impl IntoMethodU8 of core::Into<Method, u8> {
     }
 }
 
-impl IntoU8Method of core::Into<u8, Method> {
+pub impl IntoU8Method of core::traits::Into<u8, Method> {
     #[inline]
     fn into(self: u8) -> Method {
         match self {

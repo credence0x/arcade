@@ -4,11 +4,11 @@ use registry::helpers::json::{JsonifiableString, JsonifiableTrait};
 
 #[derive(Clone, Drop)]
 pub struct Socials {
-    discord: ByteArray,
-    telegram: ByteArray,
-    twitter: ByteArray,
-    youtube: ByteArray,
-    website: ByteArray,
+    pub discord: ByteArray,
+    pub telegram: ByteArray,
+    pub twitter: ByteArray,
+    pub youtube: ByteArray,
+    pub website: ByteArray,
 }
 
 // Implementations
@@ -20,7 +20,7 @@ pub impl SocialsImpl of SocialsTrait {
         telegram: Option<ByteArray>,
         twitter: Option<ByteArray>,
         youtube: Option<ByteArray>,
-        website: Option<ByteArray>
+        website: Option<ByteArray>,
     ) -> Socials {
         let discord = match discord {
             Option::Some(discord) => discord,
@@ -47,7 +47,7 @@ pub impl SocialsImpl of SocialsTrait {
             telegram: telegram,
             twitter: twitter,
             youtube: youtube,
-            website: website
+            website: website,
         }
     }
 }
@@ -64,7 +64,7 @@ pub impl SocialsJsonifiable of JsonifiableTrait<Socials> {
     }
 }
 
-pub impl SocialsDefault of core::Default<Socials> {
+pub impl SocialsDefault of core::traits::Default<Socials> {
     fn default() -> Socials {
         SocialsTrait::new(Option::None, Option::None, Option::None, Option::None, Option::None)
     }
@@ -88,7 +88,7 @@ mod tests {
         let json = socials.jsonify();
         assert_eq!(
             json,
-            "{\"discord\":\"discord\",\"telegram\":\"telegram\",\"twitter\":\"twitter\",\"youtube\":\"youtube\",\"website\":\"website\"}"
+            "{\"discord\":\"discord\",\"telegram\":\"telegram\",\"twitter\":\"twitter\",\"youtube\":\"youtube\",\"website\":\"website\"}",
         );
     }
 }

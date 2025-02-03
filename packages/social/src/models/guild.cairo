@@ -7,7 +7,7 @@ use registry::helpers::json::JsonifiableTrait;
 // Internal imports
 
 use social::constants::MAX_MEMBER_COUNT;
-use social::models::index::Guild;
+pub use social::models::index::Guild;
 use social::types::role::Role;
 
 // Errors
@@ -32,7 +32,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl GuildImpl of GuildTrait {
+pub impl GuildImpl of GuildTrait {
     #[inline]
     fn new(id: u32, metadata: Metadata, socials: Socials) -> Guild {
         Guild {
@@ -136,7 +136,7 @@ impl GuildImpl of GuildTrait {
 }
 
 #[generate_trait]
-impl GuildAssert of AssertTrait {
+pub impl GuildAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Guild) {
         assert(*self.member_count == 0, errors::GUILD_ALREADY_EXISTS);
@@ -222,7 +222,7 @@ impl GuildAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Guild, GuildTrait, GuildAssert, Role, Metadata, Socials};
+    use super::{GuildTrait, GuildAssert, Role};
 
     // Constants
 
@@ -230,8 +230,8 @@ mod tests {
 
     #[test]
     fn test_guild_new() {
-        let metadata = core::Default::default();
-        let socials = core::Default::default();
+        let metadata = core::traits::Default::default();
+        let socials = core::traits::Default::default();
         let guild = GuildTrait::new(GUILD_ID, metadata, socials);
         assert_eq!(guild.id, GUILD_ID);
         assert_eq!(guild.open, false);

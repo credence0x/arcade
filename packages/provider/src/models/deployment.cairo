@@ -1,6 +1,6 @@
 // Internal imports
 
-use provider::models::index::Deployment;
+pub use provider::models::index::Deployment;
 use provider::types::service::Service;
 use provider::types::status::Status;
 use provider::types::tier::Tier;
@@ -17,9 +17,9 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl DeploymentImpl of DeploymentTrait {
+pub impl DeploymentImpl of DeploymentTrait {
     #[inline]
-    fn new(service: Service, project: felt252, tier: Tier, config: ByteArray,) -> Deployment {
+    fn new(service: Service, project: felt252, tier: Tier, config: ByteArray) -> Deployment {
         // [Check] Inputs
         DeploymentAssert::assert_valid_service(service);
         DeploymentAssert::assert_valid_project(project);
@@ -41,7 +41,7 @@ impl DeploymentImpl of DeploymentTrait {
 }
 
 #[generate_trait]
-impl DeploymentAssert of AssertTrait {
+pub impl DeploymentAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Deployment) {
         assert(self.project == @0, errors::DEPLOYMENT_ALREADY_EXISTS);
@@ -77,7 +77,7 @@ impl DeploymentAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Deployment, DeploymentTrait, DeploymentAssert, Service, Status, Tier};
+    use super::{DeploymentTrait, DeploymentAssert, Service, Tier};
 
     // Constants
 
@@ -88,10 +88,10 @@ mod tests {
     #[test]
     fn test_deployment_new() {
         let deployment = DeploymentTrait::new(SERVICE, PROJECT, TIER, "");
-        assert_eq!(deployment.service, SERVICE.into());
-        assert_eq!(deployment.project, PROJECT);
-        assert_eq!(deployment.tier, TIER.into());
-        assert_eq!(deployment.config, "");
+        assert(deployment.service == SERVICE.into(), 'Invalid service');
+        assert(deployment.project == PROJECT, 'Invalid project');
+        assert(deployment.tier == TIER.into(), 'Invalid tier');
+        assert(deployment.config == "", 'Invalid config');
     }
 
     #[test]

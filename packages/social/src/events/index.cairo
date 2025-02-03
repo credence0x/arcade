@@ -4,7 +4,7 @@
 #[dojo::event]
 pub struct Follow {
     #[key]
-    follower: felt252,
-    followed: felt252,
-    time: u64,
+    pub follower: felt252,
+    pub followed: felt252,
+    pub time: u64,
 }

@@ -1,6 +1,6 @@
 // Internal imports
 
-use social::models::index::Member;
+pub use social::models::index::Member;
 use social::types::role::Role;
 
 // Errors
@@ -23,7 +23,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl MemberImpl of MemberTrait {
+pub impl MemberImpl of MemberTrait {
     #[inline]
     fn new(id: felt252) -> Member {
         // [Return] Member
@@ -101,7 +101,7 @@ impl MemberImpl of MemberTrait {
 }
 
 #[generate_trait]
-impl MemberAssert of AssertTrait {
+pub impl MemberAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Member) {
         assert(*self.guild_id + *self.pending_guild_id == 0, errors::MEMBER_ALREADY_EXISTS);
@@ -120,7 +120,7 @@ impl MemberAssert of AssertTrait {
     #[inline]
     fn assert_can_leave(self: @Member) {
         assert(
-            *self.guild_id != 0 && *self.role != Role::Master.into(), errors::MEMBER_CANNOT_LEAVE
+            *self.guild_id != 0 && *self.role != Role::Master.into(), errors::MEMBER_CANNOT_LEAVE,
         );
     }
 
@@ -138,7 +138,7 @@ impl MemberAssert of AssertTrait {
     fn assert_is_crownable(self: @Member) {
         assert(
             self.role == @Role::Member.into() || self.role == @Role::Officer.into(),
-            errors::MEMBER_CANNOT_CROWN
+            errors::MEMBER_CANNOT_CROWN,
         );
     }
 
@@ -182,7 +182,7 @@ impl MemberAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Member, MemberTrait, MemberAssert, Role};
+    use super::{MemberTrait, MemberAssert, Role};
 
     // Constants
 

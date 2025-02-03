@@ -1,33 +1,33 @@
 #[starknet::component]
-mod FollowableComponent {
+pub mod FollowableComponent {
     // Dojo imports
 
     use dojo::world::WorldStorage;
 
     // Internal imports
 
-    use social::store::{Store, StoreTrait};
+    use social::store::StoreTrait;
 
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
-        TContractState, +HasComponent<TContractState>
+    pub impl InternalImpl<
+        TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {
         fn follow(
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            followed: felt252
+            followed: felt252,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);
@@ -41,7 +41,7 @@ mod FollowableComponent {
             self: @ComponentState<TContractState>,
             world: WorldStorage,
             player_id: felt252,
-            followed: felt252
+            followed: felt252,
         ) {
             // [Setup] Datastore
             let mut store = StoreTrait::new(world);

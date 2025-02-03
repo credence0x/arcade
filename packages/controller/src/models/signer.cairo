@@ -1,6 +1,6 @@
 // Internal imports
 
-use controller::models::index::Signer;
+pub use controller::models::index::Signer;
 use controller::types::method::Method;
 
 // Errors
@@ -16,7 +16,7 @@ pub mod errors {
 }
 
 #[generate_trait]
-impl SignerImpl of SignerTrait {
+pub impl SignerImpl of SignerTrait {
     #[inline]
     fn new(
         account_id: felt252, controller_id: felt252, method: Method, metadata: ByteArray,
@@ -37,7 +37,7 @@ impl SignerImpl of SignerTrait {
 }
 
 #[generate_trait]
-impl SignerAssert of AssertTrait {
+pub impl SignerAssert of AssertTrait {
     #[inline]
     fn assert_does_not_exist(self: @Signer) {
         assert(self.account_id == @0, errors::SIGNER_ALREADY_EXISTS);
@@ -68,7 +68,7 @@ impl SignerAssert of AssertTrait {
 mod tests {
     // Local imports
 
-    use super::{Signer, SignerTrait, SignerAssert, Method};
+    use super::{SignerTrait, SignerAssert, Method};
 
     // Constants
 
@@ -79,10 +79,10 @@ mod tests {
     #[test]
     fn test_signer_new() {
         let signer = SignerTrait::new(ACCOUNT_ID, CONTROLLER_ID, METHOD, "");
-        assert_eq!(signer.account_id, ACCOUNT_ID);
-        assert_eq!(signer.controller_id, CONTROLLER_ID);
-        assert_eq!(signer.method, METHOD.into());
-        assert_eq!(signer.metadata, "");
+        assert(signer.account_id == ACCOUNT_ID, 'Invalid account id');
+        assert(signer.controller_id == CONTROLLER_ID, 'Invalid controller id');
+        assert(signer.method == METHOD.into(), 'Invalid method');
+        assert(signer.metadata == "", 'Invalid metadata');
     }
 
     #[test]
