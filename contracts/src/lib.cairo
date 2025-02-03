@@ -1,10 +1,10 @@
-mod constants;
+pub mod constants;
 
-mod systems {
-    mod registry;
-    mod slot;
-    mod social;
-    mod wallet;
+pub mod systems {
+    pub mod registry;
+    pub mod slot;
+    pub mod social;
+    pub mod wallet;
 }
 
 #[cfg(test)]

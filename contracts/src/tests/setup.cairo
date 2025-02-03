@@ -1,20 +1,15 @@
-mod setup {
-    // Core imports
-
-    use core::debug::PrintTrait;
-
+pub mod setup {
     // Starknet imports
 
     use starknet::ContractAddress;
-    use starknet::testing;
-    use starknet::testing::{set_caller_address, set_contract_address, set_block_timestamp};
+    use starknet::testing::set_contract_address;
 
     // Dojo imports
 
     use dojo::world::{WorldStorage, WorldStorageTrait};
     use dojo_cairo_test::{
         spawn_test_world, NamespaceDef, ContractDef, TestResource, ContractDefTrait,
-        WorldStorageTestTrait
+        WorldStorageTestTrait,
     };
 
     // External imports
@@ -45,22 +40,23 @@ mod setup {
     }
 
     #[derive(Copy, Drop)]
-    struct Systems {
-        registry: IRegistryDispatcher,
-        slot: ISlotDispatcher,
-        social: ISocialDispatcher,
-        wallet: IWalletDispatcher,
+    pub struct Systems {
+        pub registry: IRegistryDispatcher,
+        pub slot: ISlotDispatcher,
+        pub social: ISocialDispatcher,
+        pub wallet: IWalletDispatcher,
     }
 
     #[derive(Copy, Drop)]
-    struct Context {
-        player_id: felt252,
+    pub struct Context {
+        pub player_id: felt252,
     }
 
     #[inline]
     fn setup_namespace() -> NamespaceDef {
         NamespaceDef {
-            namespace: NAMESPACE(), resources: [
+            namespace: NAMESPACE(),
+            resources: [
                 TestResource::Model(controller_models::m_Account::TEST_CLASS_HASH),
                 TestResource::Model(controller_models::m_Controller::TEST_CLASS_HASH),
                 TestResource::Model(controller_models::m_Signer::TEST_CLASS_HASH),
@@ -80,7 +76,8 @@ mod setup {
                 TestResource::Contract(Slot::TEST_CLASS_HASH),
                 TestResource::Contract(Social::TEST_CLASS_HASH),
                 TestResource::Contract(Wallet::TEST_CLASS_HASH),
-            ].span()
+            ]
+                .span(),
         }
     }
 
@@ -96,11 +93,12 @@ mod setup {
                 .with_writer_of([dojo::utils::bytearray_hash(@NAMESPACE())].span()),
             ContractDefTrait::new(@NAMESPACE(), @"Wallet")
                 .with_writer_of([dojo::utils::bytearray_hash(@NAMESPACE())].span()),
-        ].span()
+        ]
+            .span()
     }
 
     #[inline]
-    fn spawn() -> (WorldStorage, Systems, Context) {
+    pub fn spawn() -> (WorldStorage, Systems, Context) {
         // [Setup] World
         set_contract_address(OWNER());
         let namespace_def = setup_namespace();

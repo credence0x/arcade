@@ -1,7 +1,7 @@
 // Interfaces
 
 #[starknet::interface]
-trait ISlot<TContractState> {
+pub trait ISlot<TContractState> {
     fn deploy(ref self: TContractState, service: u8, project: felt252, tier: u8);
     fn remove(ref self: TContractState, service: u8, project: felt252);
     fn hire(ref self: TContractState, project: felt252, account_id: felt252, role: u8);
@@ -11,7 +11,7 @@ trait ISlot<TContractState> {
 // Contracts
 
 #[dojo::contract]
-mod Slot {
+pub mod Slot {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -20,9 +20,6 @@ mod Slot {
 
     use provider::components::deployable::DeployableComponent;
     use provider::components::groupable::GroupableComponent;
-    use provider::types::service::Service;
-    use provider::types::tier::Tier;
-    use provider::types::role::Role;
 
     // Internal imports
 
@@ -70,13 +67,13 @@ mod Slot {
 
     #[abi(embed_v0)]
     impl SlotImpl of ISlot<ContractState> {
-        fn deploy(ref self: ContractState, service: u8, project: felt252, tier: u8,) {
+        fn deploy(ref self: ContractState, service: u8, project: felt252, tier: u8) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
             self.deployable.deploy(world, caller, service.into(), project, tier.into())
         }
 
-        fn remove(ref self: ContractState, service: u8, project: felt252,) {
+        fn remove(ref self: ContractState, service: u8, project: felt252) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
             self.deployable.remove(world, caller, service.into(), project);

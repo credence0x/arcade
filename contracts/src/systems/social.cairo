@@ -1,11 +1,11 @@
 // Interfaces
 
 #[starknet::interface]
-trait ISocial<TContractState> {
+pub trait ISocial<TContractState> {
     fn pin(ref self: TContractState, achievement_id: felt252);
     fn unpin(ref self: TContractState, achievement_id: felt252);
-    fn follow(ref self: TContractState, target: felt252,);
-    fn unfollow(ref self: TContractState, target: felt252,);
+    fn follow(ref self: TContractState, target: felt252);
+    fn unfollow(ref self: TContractState, target: felt252);
     fn create_alliance(
         ref self: TContractState,
         color: felt252,
@@ -17,7 +17,7 @@ trait ISocial<TContractState> {
         telegram: ByteArray,
         twitter: ByteArray,
         youtube: ByteArray,
-        website: ByteArray
+        website: ByteArray,
     );
     fn open_alliance(ref self: TContractState, free: bool);
     fn close_alliance(ref self: TContractState);
@@ -38,7 +38,7 @@ trait ISocial<TContractState> {
         telegram: ByteArray,
         twitter: ByteArray,
         youtube: ByteArray,
-        website: ByteArray
+        website: ByteArray,
     );
     fn open_guild(ref self: TContractState, free: bool);
     fn close_guild(ref self: TContractState);
@@ -55,7 +55,7 @@ trait ISocial<TContractState> {
 // Contracts
 
 #[dojo::contract]
-mod Social {
+pub mod Social {
     // Dojo imports
 
     use dojo::world::WorldStorage;

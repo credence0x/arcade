@@ -1,12 +1,12 @@
 // Interfaces
 
 #[starknet::interface]
-trait IWallet<TContractState> {}
+pub trait IWallet<TContractState> {}
 
 // Contracts
 
 #[dojo::contract]
-mod Wallet {
+pub mod Wallet {
     // Dojo imports
 
     use dojo::world::WorldStorage;

@@ -1,7 +1,7 @@
 // Interfaces
 
 #[starknet::interface]
-trait IRegistry<TContractState> {
+pub trait IRegistry<TContractState> {
     fn register_game(
         ref self: TContractState,
         world_address: felt252,
@@ -56,26 +56,26 @@ trait IRegistry<TContractState> {
         karma: u16,
     );
     fn publish_achievement(
-        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252
+        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252,
     );
     fn hide_achievement(
-        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252
+        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252,
     );
     fn whitelist_achievement(
-        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252
+        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252,
     );
     fn blacklist_achievement(
-        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252
+        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252,
     );
     fn remove_achievement(
-        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252
+        ref self: TContractState, world_address: felt252, namespace: felt252, identifier: felt252,
     );
 }
 
 // Contracts
 
 #[dojo::contract]
-mod Registry {
+pub mod Registry {
     // Dojo imports
 
     use dojo::world::WorldStorage;
@@ -275,7 +275,10 @@ mod Registry {
         }
 
         fn publish_achievement(
-            ref self: ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            ref self: ContractState,
+            world_address: felt252,
+            namespace: felt252,
+            identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
@@ -283,7 +286,10 @@ mod Registry {
         }
 
         fn hide_achievement(
-            ref self: ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            ref self: ContractState,
+            world_address: felt252,
+            namespace: felt252,
+            identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
@@ -291,7 +297,10 @@ mod Registry {
         }
 
         fn whitelist_achievement(
-            ref self: ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            ref self: ContractState,
+            world_address: felt252,
+            namespace: felt252,
+            identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
@@ -299,7 +308,10 @@ mod Registry {
         }
 
         fn blacklist_achievement(
-            ref self: ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            ref self: ContractState,
+            world_address: felt252,
+            namespace: felt252,
+            identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
@@ -307,7 +319,10 @@ mod Registry {
         }
 
         fn remove_achievement(
-            ref self: ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            ref self: ContractState,
+            world_address: felt252,
+            namespace: felt252,
+            identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();

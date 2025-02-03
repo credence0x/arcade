@@ -1,5 +1,5 @@
 #[starknet::component]
-mod ControllableComponent {
+pub mod ControllableComponent {
     // Internal imports
 
     use controller::models::account::AccountAssert;
@@ -9,16 +9,16 @@ mod ControllableComponent {
     // Storage
 
     #[storage]
-    struct Storage {}
+    pub struct Storage {}
 
     // Events
 
     #[event]
     #[derive(Drop, starknet::Event)]
-    enum Event {}
+    pub enum Event {}
 
     #[generate_trait]
-    impl InternalImpl<
+    pub impl InternalImpl<
         TContractState, +HasComponent<TContractState>,
     > of InternalTrait<TContractState> {}
 }

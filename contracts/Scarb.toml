@@ -18,10 +18,10 @@ provider = { path = ".." }
 registry = { path = ".." }
 social = { path = ".." }
 starknet = "2.9.2"
-cairo_test = "2.9.2"
 
 [dev-dependencies]
 dojo_cairo_test = { git = "https://github.com/dojoengine/dojo", tag = "v1.1.2" }
+cairo_test = "2.9.2"
 
 [[target.starknet-contract]]
 build-external-contracts = [

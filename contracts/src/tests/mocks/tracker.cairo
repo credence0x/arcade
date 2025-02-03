@@ -15,14 +15,14 @@ trait ITracker<TContractState> {
         karma: u16,
     );
     fn publish(
-        self: @TContractState, world_address: felt252, namespace: felt252, identifier: felt252
+        self: @TContractState, world_address: felt252, namespace: felt252, identifier: felt252,
     );
     fn hide(self: @TContractState, world_address: felt252, namespace: felt252, identifier: felt252);
     fn whitelist(
-        self: @TContractState, world_address: felt252, namespace: felt252, identifier: felt252
+        self: @TContractState, world_address: felt252, namespace: felt252, identifier: felt252,
     );
     fn blacklist(
-        self: @TContractState, world_address: felt252, namespace: felt252, identifier: felt252
+        self: @TContractState, world_address: felt252, namespace: felt252, identifier: felt252,
     );
 }
 
@@ -58,7 +58,7 @@ pub mod Tracker {
         #[substorage(v0)]
         pub initializable: InitializableComponent::Storage,
         #[substorage(v0)]
-        pub trackable: TrackableComponent::Storage
+        pub trackable: TrackableComponent::Storage,
     }
 
     #[event]
@@ -67,7 +67,7 @@ pub mod Tracker {
         #[flat]
         InitializableEvent: InitializableComponent::Event,
         #[flat]
-        TrackableEvent: TrackableComponent::Event
+        TrackableEvent: TrackableComponent::Event,
     }
 
     fn dojo_init(self: @ContractState, owner: felt252) {
@@ -101,7 +101,7 @@ pub mod Tracker {
         }
 
         fn publish(
-            self: @ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            self: @ContractState, world_address: felt252, namespace: felt252, identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
@@ -109,7 +109,7 @@ pub mod Tracker {
         }
 
         fn hide(
-            self: @ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            self: @ContractState, world_address: felt252, namespace: felt252, identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
@@ -117,7 +117,7 @@ pub mod Tracker {
         }
 
         fn whitelist(
-            self: @ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            self: @ContractState, world_address: felt252, namespace: felt252, identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
@@ -125,7 +125,7 @@ pub mod Tracker {
         }
 
         fn blacklist(
-            self: @ContractState, world_address: felt252, namespace: felt252, identifier: felt252
+            self: @ContractState, world_address: felt252, namespace: felt252, identifier: felt252,
         ) {
             let world = self.world_storage();
             let caller: felt252 = starknet::get_caller_address().into();
