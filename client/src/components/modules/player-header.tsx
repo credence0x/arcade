@@ -1,6 +1,6 @@
 import { HTMLAttributes, useMemo } from "react";
 import { cva, VariantProps } from "class-variance-authority";
-import { cn, AchievementFollowerTag } from "@cartridge/ui-next";
+import { cn, FollowerTag } from "@cartridge/ui-next";
 import AchievementPlayerLabel from "./player-label";
 
 interface AchievementPlayerHeaderProps
@@ -92,7 +92,7 @@ export const AchievementPlayerHeader = ({
             </strong>
             Points
           </p>
-          {follower && <AchievementFollowerTag variant={variant} />}
+          {follower && <FollowerTag variant={variant} />}
         </div>
         {!compacted && <FollowerDescription followers={followers || []} />}
       </div>

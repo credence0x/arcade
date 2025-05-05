@@ -11,6 +11,7 @@ import { useMemo, HTMLAttributes, useState, useEffect } from "react";
 export interface ArcadeDiscoveryEventProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof arcadeDiscoveryEventVariants> {
+  identifier: string;
   name: string;
   timestamp: number;
   Icon?: React.ReactNode;

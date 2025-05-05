@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@cartridge/ui-next";
 import {
   ArcadeDiscoveryEvent,
@@ -48,16 +49,26 @@ export const ArcadeDiscoveryGroup = ({
       data-rounded={rounded}
       className={cn(arcadeDiscoveryGroupVariants({ variant }), className)}
     >
-      {events.map((event, index) => (
-        <ArcadeDiscoveryEvent
-          key={`${event.name}-${event.timestamp}-${index}`}
-          loading={loading}
-          className={className}
-          variant={variant}
-          onClick={onClick}
-          {...event}
-        />
-      ))}
+      <AnimatePresence initial={false}>
+        {events.map((event) => (
+          <motion.div
+            key={event.identifier}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            layout
+          >
+            <ArcadeDiscoveryEvent
+              loading={loading}
+              className={className}
+              variant={variant}
+              onClick={onClick}
+              {...event}
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };

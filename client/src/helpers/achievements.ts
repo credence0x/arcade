@@ -39,6 +39,7 @@ export interface AchievementEvents {
 }
 
 export interface Event {
+  identifier: string;
   player: string;
   achievement: {
     title: string;
@@ -150,6 +151,7 @@ export const AchievementHelper = {
             timestamp = Math.max(timestamp, completionTimestamp);
             // Add completion event timestamp to events
             const event: Event = {
+              identifier: `${game}-${achievementId}-${playerId}`,
               player: playerId,
               achievement: {
                 title: trophies[game][achievementId].title,

@@ -19,7 +19,7 @@ type AchievementContextType = {
   achievements: { [game: string]: Item[] };
   players: { [game: string]: Player[] };
   events: { [game: string]: Event[] };
-  usernames: { [key: string]: string };
+  usernames: { [key: string]: string | undefined };
   globals: Player[];
   isLoading: boolean;
   isError: boolean;
@@ -106,12 +106,11 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
 
   const { usernames } = useUsernames({ addresses });
   const usernamesData = useMemo(() => {
-    const data: { [key: string]: string } = {};
+    const data: { [key: string]: string | undefined } = {};
     addresses.forEach((address) => {
-      data[addAddressPadding(address)] =
-        usernames.find(
-          (username) => BigInt(username.address || "0x0") === BigInt(address),
-        )?.username || address.slice(0, 9);
+      data[addAddressPadding(address)] = usernames.find(
+        (username) => BigInt(username.address || "0x0") === BigInt(address),
+      )?.username;
     });
     return data;
   }, [usernames, addresses]);

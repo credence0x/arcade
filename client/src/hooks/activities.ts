@@ -48,6 +48,7 @@ export const useActivities = () => {
         if (deltaTime < SESSION_MAX_BREAK) {
           history[activity.callerAddress].time = currentTime;
           aggregatedActivities[last.index].count += activity.count;
+          aggregatedActivities[last.index].identifier = activity.identifier;
         } else {
           history[activity.callerAddress] = {
             time: currentTime,

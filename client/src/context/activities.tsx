@@ -5,9 +5,10 @@ import { useUsernames } from "@/hooks/account";
 import { addAddressPadding } from "starknet";
 import { useAddress } from "@/hooks/address";
 
-const LIMIT = 1000;
+const LIMIT = 10000;
 
 export type Activity = {
+  identifier: string;
   project: string;
   callerAddress: string;
   contractAddress: string;
@@ -20,7 +21,7 @@ export type Activity = {
 export type ActivitiesContextType = {
   activities: { [key: string]: Activity[] };
   playerActivities: { [key: string]: Activity[] };
-  usernames: { [key: string]: string };
+  usernames: { [key: string]: string | undefined };
   status: "success" | "error" | "idle" | "loading";
 };
 
@@ -47,12 +48,11 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
 
   const { usernames } = useUsernames({ addresses });
   const usernamesData = useMemo(() => {
-    const data: { [key: string]: string } = {};
+    const data: { [key: string]: string | undefined } = {};
     addresses.forEach((address) => {
-      data[addAddressPadding(address)] =
-        usernames.find(
-          (username) => BigInt(username.address || "0x0") === BigInt(address),
-        )?.username || address.slice(0, 9);
+      data[addAddressPadding(address)] = usernames.find(
+        (username) => BigInt(username.address || "0x0") === BigInt(address),
+      )?.username;
     });
     return data;
   }, [usernames, addresses]);
@@ -84,12 +84,14 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
     {
       queryKey: ["activities", projects],
       enabled: projects.length > 0,
+      refetchInterval: 30 * 1000, // 30 seconds
       onSuccess: ({ activities }) => {
         const newActivities: { [key: string]: Activity[] } = {};
         activities?.items.forEach((item) => {
           const project = item.meta.project;
           newActivities[project] = item.activities.map((activity) => {
             return {
+              identifier: activity.transactionHash,
               project: project,
               callerAddress: activity.callerAddress,
               contractAddress: activity.contractAddress,
@@ -118,6 +120,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
           const project = item.meta.project;
           newActivities[project] = item.activities.map((activity) => {
             return {
+              identifier: activity.transactionHash,
               project: project,
               callerAddress: activity.callerAddress,
               contractAddress: activity.contractAddress,

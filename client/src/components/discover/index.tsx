@@ -1,14 +1,13 @@
-import { LayoutContent, TabsContent } from "@cartridge/ui-next";
-import { useCallback, useMemo } from "react";
+import {
+  Empty,
+  LayoutContent,
+  Skeleton,
+  TabsContent,
+} from "@cartridge/ui-next";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useArcade } from "@/hooks/arcade";
 import { EditionModel } from "@bal7hazar/arcade-sdk";
-import { useAchievements } from "@/hooks/achievements";
-import {
-  Connect,
-  DiscoverEmpty,
-  DiscoverError,
-  DiscoverLoading,
-} from "../errors";
+import { Connect } from "../errors";
 import { addAddressPadding, getChecksumAddress } from "starknet";
 import { ArcadeDiscoveryGroup } from "../modules/discovery-group";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -17,7 +16,46 @@ import { useAccount } from "@starknet-react/core";
 import { useActivities } from "@/hooks/activities";
 import { UserAvatar } from "../user/avatar";
 
+type Events = {
+  all: {
+    identifier: string;
+    name: string;
+    address: string;
+    Icon: React.ReactNode;
+    data: {
+      title: string;
+      label: string;
+      icon: string;
+      count: number;
+    };
+    timestamp: number;
+    logo: string | undefined;
+    color: string;
+    onClick: () => void;
+  }[];
+  following: {
+    identifier: string;
+    name: string;
+    address: string;
+    Icon: React.ReactNode;
+    data: {
+      title: string;
+      label: string;
+      icon: string;
+      count: number;
+    };
+    timestamp: number;
+    logo: string | undefined;
+    color: string;
+    onClick: () => void;
+  }[];
+};
+
 export function Discover({ edition }: { edition?: EditionModel }) {
+  const [events, setEvents] = useState<Events>({
+    all: [],
+    following: [],
+  });
   const [searchParams] = useSearchParams();
   const { isConnected, address } = useAccount();
   const {
@@ -25,12 +63,6 @@ export function Discover({ edition }: { edition?: EditionModel }) {
     usernames: activitiesUsernames,
     status: activitiesStatus,
   } = useActivities();
-  const {
-    events,
-    usernames: achievementsUsernames,
-    isLoading,
-    isError,
-  } = useAchievements();
   const { editions, follows } = useArcade();
 
   const following = useMemo(() => {
@@ -80,40 +112,20 @@ export function Discover({ edition }: { edition?: EditionModel }) {
     [navigate],
   );
 
-  const editionEvents = useMemo(() => {
+  useEffect(() => {
+    if (!filteredEditions) return;
+    if (!Object.entries(aggregatedActivities)) return;
+    if (!Object.entries(activitiesUsernames)) return;
     const data = filteredEditions
       .flatMap((edition) => {
-        const achievements =
-          events[edition?.config.project]?.map((event) => {
-            const username =
-              achievementsUsernames[addAddressPadding(event.player)];
-            return {
-              name: username,
-              address: getChecksumAddress(event.player),
-              Icon: <UserAvatar username={username} size="sm" />,
-              data: {
-                title: event.achievement.title,
-                label: "earned",
-                icon: event.achievement.icon,
-              },
-              timestamp: event.timestamp,
-              logo: edition.properties.icon,
-              color: edition.color,
-              points: event.achievement.points,
-              onClick: () =>
-                handleClick(
-                  edition.gameId,
-                  edition.id,
-                  getChecksumAddress(event.player),
-                ),
-            };
-          }) || [];
         const activities =
           aggregatedActivities[edition?.config.project]?.map((activity) => {
             const username =
               activitiesUsernames[addAddressPadding(activity.callerAddress)];
+            if (!username) return null;
             const count = activity.count;
             return {
+              identifier: activity.identifier,
               name: username,
               address: getChecksumAddress(activity.callerAddress),
               Icon: <UserAvatar username={username} size="sm" />,
@@ -134,29 +146,25 @@ export function Discover({ edition }: { edition?: EditionModel }) {
                 ),
             };
           }) || [];
-        return [...achievements, ...activities];
+        return [...activities].filter((item) => item !== null);
       })
       .sort((a, b) => b.timestamp - a.timestamp);
-    if (!data) return { all: [], following: [] };
-    return {
+    if (!data) return;
+    const newEvents: Events = {
       all: data.slice(0, 100),
       following: data
         .filter((event) => following.includes(event.address))
         .slice(0, 100),
     };
+    if (newEvents.all.length === 0) return;
+    setEvents(newEvents);
   }, [
-    events,
     aggregatedActivities,
     filteredEditions,
-    achievementsUsernames,
     activitiesUsernames,
     following,
     handleClick,
   ]);
-
-  if (isError || activitiesStatus === "error") return <DiscoverError />;
-
-  if (isLoading && activitiesStatus === "loading") return <DiscoverLoading />;
 
   return (
     <LayoutContent className="select-none h-full overflow-clip p-0">
@@ -175,26 +183,29 @@ export function Discover({ edition }: { edition?: EditionModel }) {
             style={{ scrollbarWidth: "none" }}
           >
             <TabsContent className="p-0 mt-0 grow w-full" value="all">
-              {editionEvents.all.length === 0 ? (
-                <DiscoverEmpty />
+              {activitiesStatus === "error" ? (
+                <EmptyState />
+              ) : activitiesStatus === "loading" && events.all.length === 0 ? (
+                <LoadingState />
               ) : (
                 <div className="pb-6">
-                  <ArcadeDiscoveryGroup events={editionEvents.all} rounded />
+                  <ArcadeDiscoveryGroup events={events.all} rounded />
                 </div>
               )}
             </TabsContent>
             <TabsContent className="pb-0 mt-0 grow w-full" value="following">
               {!isConnected ? (
                 <Connect />
-              ) : following.length === 0 ||
-                editionEvents.following.length === 0 ? (
-                <DiscoverEmpty />
+              ) : activitiesStatus === "error" ||
+                following.length === 0 ||
+                events.following.length === 0 ? (
+                <EmptyState />
+              ) : activitiesStatus === "loading" &&
+                events.following.length === 0 ? (
+                <LoadingState />
               ) : (
                 <div className="pb-6">
-                  <ArcadeDiscoveryGroup
-                    events={editionEvents.following}
-                    rounded
-                  />
+                  <ArcadeDiscoveryGroup events={events.following} rounded />
                 </div>
               )}
             </TabsContent>
@@ -204,3 +215,23 @@ export function Discover({ edition }: { edition?: EditionModel }) {
     </LayoutContent>
   );
 }
+
+const LoadingState = () => {
+  return (
+    <div className="flex flex-col gap-y-px overflow-hidden h-full">
+      {Array.from({ length: 20 }).map((_, index) => (
+        <Skeleton key={index} className="min-h-11 w-full" />
+      ))}
+    </div>
+  );
+};
+
+const EmptyState = () => {
+  return (
+    <Empty
+      title="It's feel lonely here"
+      icon="discover"
+      className="h-full pb-6"
+    />
+  );
+};

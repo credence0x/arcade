@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   LayoutContent,
-  AchievementLeaderboard,
+  LeaderboardTable,
   TabsContent,
 } from "@cartridge/ui-next";
 import { useCallback, useMemo } from "react";
@@ -209,7 +209,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
               className="p-0 pb-3 lg:pb-6 mt-0 grow w-full"
               value="all"
             >
-              <AchievementLeaderboard className="h-full rounded">
+              <LeaderboardTable className="h-full rounded">
                 {!edition
                   ? gamesData.all.map((item, index) => (
                       <AchievementLeaderboardRow
@@ -235,7 +235,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
                         onClick={() => handleClick(item.address)}
                       />
                     ))}
-              </AchievementLeaderboard>
+              </LeaderboardTable>
             </TabsContent>
             <TabsContent className="p-0 mt-0 grow w-full" value="following">
               {!isConnected ? (
@@ -243,7 +243,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
               ) : following.length === 0 ? (
                 <LeaderboardEmpty />
               ) : (
-                <AchievementLeaderboard className="h-full rounded">
+                <LeaderboardTable className="h-full rounded">
                   {!edition
                     ? gamesData.following.map((item, index) => (
                         <AchievementLeaderboardRow
@@ -267,7 +267,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
                           onClick={() => handleClick(item.address)}
                         />
                       ))}
-                </AchievementLeaderboard>
+                </LeaderboardTable>
               )}
             </TabsContent>
           </div>
