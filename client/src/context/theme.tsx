@@ -71,7 +71,6 @@ export function ThemeProvider({
   });
 
   useEffect(() => {
-    console.log({ game });
     if (!game) {
       resetTheme();
       resetCover();

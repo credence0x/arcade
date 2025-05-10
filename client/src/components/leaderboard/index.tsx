@@ -49,16 +49,10 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
     (nameOrAddress: string) => {
       // On click, we update the url param address to the address of the player
       let pathname = location.pathname;
+      pathname = pathname.replace(/\/player\/[^/]+/, "");
       pathname = pathname.replace(/\/tab\/[^/]+/, "");
       const player = nameOrAddress.toLowerCase();
-      if (!pathname.includes("player/")) {
-        pathname = joinPaths(pathname, `/player/${player}/tab/achievements`);
-      } else {
-        pathname = pathname.replace(
-          /\/player\/[^/]+/,
-          `/player/${player}/tab/achievements`,
-        );
-      }
+      pathname = joinPaths(pathname, `/player/${player}/tab/achievements`);
       navigate(pathname || "/");
     },
     [location, navigate],

@@ -47,11 +47,8 @@ export function PlayerPage({ edition }: { edition?: EditionModel }) {
   const handleClick = useCallback(
     (value: string) => {
       let pathname = location.pathname;
-      if (!pathname.includes("tab/")) {
-        pathname = joinPaths(pathname, `/tab/${value}`);
-      } else {
-        pathname = pathname.replace(/\/tab\/[^/]+/, `/tab/${value}`);
-      }
+      pathname = pathname.replace(/\/tab\/[^/]+/, "");
+      pathname = joinPaths(pathname, `/tab/${value}`);
       navigate(pathname || "/");
     },
     [location, navigate],

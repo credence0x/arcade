@@ -52,19 +52,16 @@ export const Editions = () => {
   const navigate = useNavigate();
   const onClick = useCallback(
     (edition: EditionModel) => {
+      if (!game) return;
       let pathname = location.pathname;
+      const gameName = `${game?.name.toLowerCase().replace(/ /g, "-") || game.id}`;
       const editionName = `${edition?.name.toLowerCase().replace(/ /g, "-") || edition.id}`;
-      if (!pathname.includes("edition/")) {
-        pathname = joinPaths(pathname, `/edition/${editionName}`);
-      } else {
-        pathname = pathname.replace(
-          /\/edition\/[^/]+/,
-          `/edition/${editionName}`,
-        );
-      }
+      pathname = pathname.replace(/\/game\/[^/]+/, "");
+      pathname = pathname.replace(/\/edition\/[^/]+/, "");
+      pathname = joinPaths(`game/${gameName}/edition/${editionName}`, pathname);
       navigate(pathname || "/");
     },
-    [location, navigate],
+    [location, navigate, game],
   );
 
   if (!game) return null;

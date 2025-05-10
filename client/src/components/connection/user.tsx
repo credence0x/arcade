@@ -20,13 +20,10 @@ export function User() {
     if (!name && !address) return;
     // Update the url params
     let pathname = location.pathname;
-    const arg = `${!name ? address?.toLowerCase() : name.toLowerCase()}`;
-    if (!pathname.includes("player/")) {
-      pathname = joinPaths(pathname, `/player/${arg}`);
-    } else {
-      pathname = pathname.replace(/\/player\/[^/]+/, `/player/${arg}`);
-    }
+    const playerName = `${!name ? address?.toLowerCase() : name.toLowerCase()}`;
+    pathname = pathname.replace(/\/player\/[^/]+/, "");
     pathname = pathname.replace(/\/tab\/[^/]+/, "");
+    pathname = joinPaths(pathname, `/player/${playerName}/tab/inventory`);
     navigate(pathname);
     // Close sidebar on mobile when a game is selected
     close();

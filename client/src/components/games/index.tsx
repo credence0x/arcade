@@ -165,15 +165,10 @@ export const Game = ({
   const handleClick = useCallback(() => {
     // Update the url params
     let pathname = location.pathname;
-    const arg = `${game?.name.toLowerCase().replace(/ /g, "-") || id}`;
-    if (!pathname.includes("game/")) {
-      pathname = joinPaths(`/game/${arg}`, pathname);
-    } else if (id === 0) {
-      pathname = pathname.replace(/\/game\/[^/]+/, "");
-    } else {
-      pathname = pathname.replace(/\/game\/[^/]+/, `/game/${arg}`);
-    }
+    const gameName = `${game?.name.toLowerCase().replace(/ /g, "-") || id}`;
+    pathname = pathname.replace(/\/game\/[^/]+/, "");
     pathname = pathname.replace(/\/edition\/[^/]+/, "");
+    if (id !== 0) pathname = joinPaths(`/game/${gameName}`, pathname);
     navigate(pathname || "/");
     // Close sidebar on mobile when a game is selected
     close();

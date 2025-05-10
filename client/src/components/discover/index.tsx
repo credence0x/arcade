@@ -78,37 +78,24 @@ export function Discover({ edition }: { edition?: EditionModel }) {
       // If there are several games displayed, then clicking a card link to the game
       let pathname = location.pathname;
       if (filteredEditions.length > 1) {
+        pathname = pathname.replace(/\/game\/[^/]+/, "");
+        pathname = pathname.replace(/\/edition\/[^/]+/, "");
         const gameName = `${game?.name.toLowerCase().replace(/ /g, "-") || game.id}`;
         const editionName = `${edition?.name.toLowerCase().replace(/ /g, "-") || edition.id}`;
-        if (!pathname.includes("game/")) {
+        if (game.id !== 0) {
           pathname = joinPaths(
             `/game/${gameName}/edition/${editionName}`,
             pathname,
-          );
-        } else if (game.id === 0) {
-          pathname = pathname.replace(/\/game\/[^/]+/, "");
-          pathname = pathname.replace(/\/edition\/[^/]+/, "");
-        } else {
-          pathname = pathname.replace(/\/game\/[^/]+/, `/game/${gameName}`);
-          pathname = pathname.replace(
-            /\/edition\/[^/]+/,
-            `/edition/${editionName}`,
           );
         }
         navigate(pathname || "/");
         return;
       }
       // Otherwise it links to the player
+      pathname = pathname.replace(/\/player\/[^/]+/, "");
       pathname = pathname.replace(/\/tab\/[^/]+/, "");
       const player = nameOrAddress.toLowerCase();
-      if (!pathname.includes("player/")) {
-        pathname = joinPaths(pathname, `/player/${player}/tab/activity`);
-      } else {
-        pathname = pathname.replace(
-          /\/player\/[^/]+/,
-          `/player/${player}/tab/activity`,
-        );
-      }
+      pathname = joinPaths(pathname, `/player/${player}/tab/activity`);
       navigate(pathname || "/");
     },
     [navigate, filteredEditions],

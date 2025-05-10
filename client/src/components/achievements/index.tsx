@@ -186,19 +186,12 @@ export function Row({
         let pathname = location.pathname;
         const gameName = `${game?.name.toLowerCase().replace(/ /g, "-") || game.id}`;
         const editionName = `${edition?.name.toLowerCase().replace(/ /g, "-") || edition.id}`;
-        if (!pathname.includes("game/")) {
+        pathname = pathname.replace(/\/game\/[^/]+/, "");
+        pathname = pathname.replace(/\/edition\/[^/]+/, "");
+        if (game.id !== 0) {
           pathname = joinPaths(
             `/game/${gameName}/edition/${editionName}`,
             pathname,
-          );
-        } else if (game.id === 0) {
-          pathname = pathname.replace(/\/game\/[^/]+/, "");
-          pathname = pathname.replace(/\/edition\/[^/]+/, "");
-        } else {
-          pathname = pathname.replace(/\/game\/[^/]+/, `/game/${gameName}`);
-          pathname = pathname.replace(
-            /\/edition\/[^/]+/,
-            `/edition/${editionName}`,
           );
         }
         navigate(pathname || "/");

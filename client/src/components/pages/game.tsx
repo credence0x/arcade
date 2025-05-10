@@ -24,11 +24,8 @@ export function GamePage() {
   const handleClick = useCallback(
     (value: string) => {
       let pathname = location.pathname;
-      if (!pathname.includes("tab/")) {
-        pathname = joinPaths(pathname, `/tab/${value}`);
-      } else {
-        pathname = pathname.replace(/\/tab\/[^/]+/, `/tab/${value}`);
-      }
+      pathname = pathname.replace(/\/tab\/[^/]+/, "");
+      pathname = joinPaths(pathname, `/tab/${value}`);
       navigate(pathname || "/");
     },
     [location, navigate],
@@ -47,10 +44,11 @@ export function GamePage() {
   useEffect(() => {
     if (!order.includes(tab as TabValue)) {
       let pathname = location.pathname;
-      pathname = pathname.replace(/\/tab\/[^/]+/, `/tab/activity`);
+      pathname = pathname.replace(/\/tab\/[^/]+/, "");
+      pathname = joinPaths(pathname, "/tab/activity");
       navigate(pathname || "/");
     }
-  }, [tab, order, navigate]);
+  }, [tab, order, location, navigate]);
 
   const socials = useMemo(() => {
     return Socials.merge(edition?.socials, game?.socials);
