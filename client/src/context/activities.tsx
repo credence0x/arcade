@@ -224,7 +224,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
             project: item.meta.project,
             contractAddress: getChecksumAddress(contractAddress),
             transactionHash: getChecksumAddress(transactionHash),
-            title: entrypoint,
+            title: entrypoint.replace(/_/g, " "),
             image: game?.properties.icon || "",
             website: edition?.socials.website || "",
             certified: !!game,
