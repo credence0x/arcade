@@ -12,7 +12,7 @@ export function useAddress() {
   }, [player, self]);
 
   const isSelf = useMemo(() => {
-    return isConnected && address === self;
+    return isConnected && address === getChecksumAddress(self || "0x1");
   }, [address, self, isConnected]);
 
   const isZero = useMemo(() => {
