@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useEffect, useMemo } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 import { useArcade } from "@/hooks/arcade";
 import { EditionModel, GameModel } from "@bal7hazar/arcade-sdk";
 import { useParams } from "react-router-dom";
@@ -6,33 +6,15 @@ import { useAddressByUsernameQuery } from "@cartridge/utils/api/cartridge";
 import { getChecksumAddress } from "starknet";
 
 type ProjectContextType = {
-  gameId: number;
-  project: string;
-  namespace: string;
-  tab?: string;
   game?: GameModel;
   edition?: EditionModel;
   player?: string;
-  setGameId: (gameId: number) => void;
-  setProject: (project: string) => void;
-  setNamespace: (namespace: string) => void;
+  tab?: string;
 };
 
-const initialState: ProjectContextType = {
-  gameId: 0,
-  project: "",
-  namespace: "",
-  setGameId: () => {},
-  setProject: () => {},
-  setNamespace: () => {},
-};
-
-export const ProjectContext = createContext<ProjectContextType>(initialState);
+export const ProjectContext = createContext<ProjectContextType>({});
 
 export function ProjectProvider({ children }: { children: ReactNode }) {
-  const [gameId, setGameId] = useState<number>(initialState.gameId);
-  const [project, setProject] = useState<string>(initialState.project);
-  const [namespace, setNamespace] = useState<string>(initialState.namespace);
   const { games, editions } = useArcade();
 
   const {
@@ -92,38 +74,13 @@ export function ProjectProvider({ children }: { children: ReactNode }) {
     return getChecksumAddress(playerParam);
   }, [playerParam, data]);
 
-  useEffect(() => {
-    if (game && edition) {
-      setGameId(game.id);
-      setProject(edition.config.project);
-      setNamespace(edition.namespace);
-      return;
-    }
-    if (game && !edition) {
-      setGameId(game.id);
-      setProject(initialState.project);
-      setNamespace(initialState.namespace);
-      return;
-    }
-    setGameId(initialState.gameId);
-    setProject(initialState.project);
-    setNamespace(initialState.namespace);
-    return;
-  }, [game, edition, setGameId, setProject, setNamespace]);
-
   return (
     <ProjectContext.Provider
       value={{
-        gameId,
-        project,
-        namespace,
         tab,
         game,
         edition,
         player,
-        setGameId,
-        setProject,
-        setNamespace,
       }}
     >
       {children}

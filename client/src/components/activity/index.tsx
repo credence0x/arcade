@@ -21,7 +21,7 @@ import { useProject } from "@/hooks/project";
 const OFFSET = 20;
 
 export function Activity() {
-  const { project } = useProject();
+  const { edition } = useProject();
   const [cap, setCap] = useState(OFFSET);
   const { activities, status } = useActivities();
 
@@ -43,7 +43,7 @@ export function Activity() {
   useEffect(() => {
     // Reset cap when the game changes
     setCap(OFFSET);
-  }, [project]);
+  }, [edition]);
 
   if (status === "loading" && !events.length) return <LoadingState />;
   if (status === "error" || !events.length) return <EmptyState />;

@@ -55,7 +55,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
     return slots.map((slot) => {
       return {
         project: slot.project,
-        address,
+        address: `0x${BigInt(address).toString(16)}`,
         limit: 0,
       };
     });
@@ -118,13 +118,13 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
             variant: "token",
             key: `${transfer.transactionHash}-${transfer.eventId}`,
             project: item.meta.project,
-            contractAddress: transfer.contractAddress,
-            transactionHash: transfer.transactionHash,
+            contractAddress: getChecksumAddress(transfer.contractAddress),
+            transactionHash: getChecksumAddress(transfer.transactionHash),
             amount: value,
             address:
               BigInt(transfer.fromAddress) === BigInt(address)
-                ? transfer.toAddress
-                : transfer.fromAddress,
+                ? getChecksumAddress(transfer.toAddress)
+                : getChecksumAddress(transfer.fromAddress),
             value: "$-",
             image: image || "",
             action:
@@ -175,15 +175,15 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
             variant: "collectible",
             key: `${transfer.transactionHash}-${transfer.eventId}`,
             project: item.meta.project,
-            contractAddress: transfer.contractAddress,
-            transactionHash: transfer.transactionHash,
+            contractAddress: getChecksumAddress(transfer.contractAddress),
+            transactionHash: getChecksumAddress(transfer.transactionHash),
             name: name || "",
             collection: transfer.name,
             amount: "",
             address:
               BigInt(transfer.fromAddress) === BigInt(address)
-                ? transfer.toAddress
-                : transfer.fromAddress,
+                ? getChecksumAddress(transfer.toAddress)
+                : getChecksumAddress(transfer.fromAddress),
             value: "",
             image: metadata.image || "",
             action:
@@ -222,8 +222,8 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
             variant: "game",
             key: `${transactionHash}-${entrypoint}`,
             project: item.meta.project,
-            contractAddress: contractAddress,
-            transactionHash: transactionHash,
+            contractAddress: getChecksumAddress(contractAddress),
+            transactionHash: getChecksumAddress(transactionHash),
             title: entrypoint,
             image: game?.properties.icon || "",
             website: edition?.socials.website || "",

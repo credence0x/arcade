@@ -23,29 +23,12 @@ export const useProject = () => {
     );
   }
 
-  const {
-    project,
-    namespace,
-    gameId,
-    game,
-    edition,
-    player,
-    tab,
-    setProject,
-    setNamespace,
-    setGameId,
-  } = context;
+  const { game, edition, player, tab } = context;
 
   return {
-    project,
-    namespace,
-    gameId,
     game,
     edition,
     player,
     tab,
-    setProject,
-    setNamespace,
-    setGameId,
   };
 };
