@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { TabsContent, Thumbnail, TabValue, cn } from "@cartridge/ui-next";
 import { DiscoverScene } from "../scenes/discover";
 import { LeaderboardScene } from "../scenes/leaderboard";
@@ -40,15 +40,6 @@ export function GamePage() {
     if (!order.includes(tab as TabValue)) return "activity";
     return tab;
   }, [tab, order]);
-
-  useEffect(() => {
-    if (!order.includes(tab as TabValue)) {
-      let pathname = location.pathname;
-      pathname = pathname.replace(/\/tab\/[^/]+/, "");
-      pathname = joinPaths(pathname, "/tab/activity");
-      navigate(pathname || "/");
-    }
-  }, [tab, order, location, navigate]);
 
   const socials = useMemo(() => {
     return Socials.merge(edition?.socials, game?.socials);

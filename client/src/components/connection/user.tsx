@@ -23,7 +23,7 @@ export function User() {
     const playerName = `${!name ? address?.toLowerCase() : name.toLowerCase()}`;
     pathname = pathname.replace(/\/player\/[^/]+/, "");
     pathname = pathname.replace(/\/tab\/[^/]+/, "");
-    pathname = joinPaths(pathname, `/player/${playerName}/tab/inventory`);
+    pathname = joinPaths(pathname, `/player/${playerName}`);
     navigate(pathname);
     // Close sidebar on mobile when a game is selected
     close();
