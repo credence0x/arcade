@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "react";
 import { AchievementContext } from "@/context";
-import { addAddressPadding } from "starknet";
+import { getChecksumAddress } from "starknet";
 import { useArcade } from "./arcade";
 import { useAddress } from "./address";
 
@@ -115,7 +115,7 @@ export function usePlayerGameStats(projects: string[]) {
   );
 
   const { pinneds, completed, total } = useMemo(() => {
-    const ids = pins[addAddressPadding(address)] || [];
+    const ids = pins[getChecksumAddress(address)] || [];
     const pinneds = gameAchievements
       .filter((item) =>
         ids.length > 0

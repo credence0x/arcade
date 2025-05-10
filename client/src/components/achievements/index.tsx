@@ -14,7 +14,8 @@ import { Item } from "@/helpers/achievements";
 import banner from "@/assets/banner.png";
 import AchievementSummary from "../modules/summary";
 import { useAddress } from "@/hooks/address";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { joinPaths } from "@/helpers";
 
 export function Achievements({
   game,
@@ -151,6 +152,7 @@ export function Row({
     return { pinneds };
   }, [gameAchievements, pins, address, self]);
 
+  const location = useLocation();
   const navigate = useNavigate();
   const summaryProps = useMemo(() => {
     return {
@@ -180,13 +182,37 @@ export function Row({
       },
       socials: { ...edition?.socials },
       onClick: () => {
-        const url = new URL(window.location.href);
-        url.searchParams.set("game", game?.id.toString() || "");
-        url.searchParams.set("edition", edition.id.toString());
-        navigate(url.toString().replace(window.location.origin, ""));
+        if (!game || !edition) return;
+        let pathname = location.pathname;
+        const gameName = `${game?.name.toLowerCase().replace(/ /g, "-") || game.id}`;
+        const editionName = `${edition?.name.toLowerCase().replace(/ /g, "-") || edition.id}`;
+        if (!pathname.includes("game/")) {
+          pathname = joinPaths(
+            `/game/${gameName}/edition/${editionName}`,
+            pathname,
+          );
+        } else if (game.id === 0) {
+          pathname = pathname.replace(/\/game\/[^/]+/, "");
+          pathname = pathname.replace(/\/edition\/[^/]+/, "");
+        } else {
+          pathname = pathname.replace(/\/game\/[^/]+/, `/game/${gameName}`);
+          pathname = pathname.replace(
+            /\/edition\/[^/]+/,
+            `/edition/${editionName}`,
+          );
+        }
+        navigate(pathname || "/");
       },
     };
-  }, [gameAchievements, game, edition, pinneds, background, navigate]);
+  }, [
+    gameAchievements,
+    game,
+    edition,
+    pinneds,
+    background,
+    location,
+    navigate,
+  ]);
 
   return (
     <div className="rounded-lg overflow-hidden">

@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo } from "react";
 import { TabsContent, Thumbnail, TabValue, cn } from "@cartridge/ui-next";
 import { DiscoverScene } from "../scenes/discover";
 import { LeaderboardScene } from "../scenes/leaderboard";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { EditionModel, GameModel, Socials } from "@bal7hazar/arcade-sdk";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Socials } from "@bal7hazar/arcade-sdk";
 import { ArcadeTabs } from "../modules";
 import { MarketplaceScene } from "../scenes/marketplace";
 import { GuildsScene } from "../scenes/guild";
@@ -12,26 +12,26 @@ import GameSocials from "../modules/game-socials";
 import { Editions } from "../editions";
 import arcade from "@/assets/arcade-logo.png";
 import { GameSocialWebsite } from "../modules/game-social";
+import { useProject } from "@/hooks/project";
+import { joinPaths } from "@/helpers";
 
-export function GamePage({
-  game,
-  edition,
-}: {
-  game?: GameModel;
-  edition?: EditionModel;
-}) {
-  const [searchParams] = useSearchParams();
+export function GamePage() {
+  const { game, edition } = useProject();
+  const { tab } = useProject();
+
+  const location = useLocation();
   const navigate = useNavigate();
-
   const handleClick = useCallback(
     (value: string) => {
-      // Clicking on a tab updates the url param tab to the value of the tab
-      // So the tab is persisted in the url and the user can update and share the url
-      const url = new URL(window.location.href);
-      url.searchParams.set("gameTab", value);
-      navigate(url.toString().replace(window.location.origin, ""));
+      let pathname = location.pathname;
+      if (!pathname.includes("tab/")) {
+        pathname = joinPaths(pathname, `/tab/${value}`);
+      } else {
+        pathname = pathname.replace(/\/tab\/[^/]+/, `/tab/${value}`);
+      }
+      navigate(pathname || "/");
     },
-    [navigate],
+    [location, navigate],
   );
 
   const order: TabValue[] = useMemo(() => {
@@ -40,21 +40,17 @@ export function GamePage({
   }, [game]);
 
   const defaultValue = useMemo(() => {
-    // Default tab is ignored if there is no address,
-    // meanning the user is not connected and doesnt inspect another user
-    const value = searchParams.get("gameTab") || "activity";
-    if (!order.includes(value as TabValue)) return "activity";
-    return value as TabValue;
-  }, [searchParams, order]);
+    if (!order.includes(tab as TabValue)) return "activity";
+    return tab;
+  }, [tab, order]);
 
   useEffect(() => {
-    const value = searchParams.get("gameTab") || "activity";
-    if (!order.includes(value as TabValue)) {
-      const url = new URL(window.location.href);
-      url.searchParams.set("gameTab", "activity");
-      navigate(url.toString().replace(window.location.origin, ""));
+    if (!order.includes(tab as TabValue)) {
+      let pathname = location.pathname;
+      pathname = pathname.replace(/\/tab\/[^/]+/, `/tab/activity`);
+      navigate(pathname || "/");
     }
-  }, [searchParams, order, navigate]);
+  }, [tab, order, navigate]);
 
   const socials = useMemo(() => {
     return Socials.merge(edition?.socials, game?.socials);

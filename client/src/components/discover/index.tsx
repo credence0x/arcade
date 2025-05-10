@@ -6,15 +6,16 @@ import {
 } from "@cartridge/ui-next";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useArcade } from "@/hooks/arcade";
-import { EditionModel } from "@bal7hazar/arcade-sdk";
+import { EditionModel, GameModel } from "@bal7hazar/arcade-sdk";
 import { Connect } from "../errors";
-import { addAddressPadding, getChecksumAddress } from "starknet";
+import { getChecksumAddress } from "starknet";
 import { ArcadeDiscoveryGroup } from "../modules/discovery-group";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import ArcadeSubTabs, { SubTabValue } from "../modules/sub-tabs";
+import { useNavigate, useLocation } from "react-router-dom";
+import ArcadeSubTabs from "../modules/sub-tabs";
 import { useAccount } from "@starknet-react/core";
 import { UserAvatar } from "../user/avatar";
 import { useDiscovers } from "@/hooks/discovers";
+import { joinPaths } from "@/helpers";
 
 const DEFAULT_CAP = 30;
 const ROW_HEIGHT = 44;
@@ -51,14 +52,13 @@ export function Discover({ edition }: { edition?: EditionModel }) {
   const [cap, setCap] = useState(DEFAULT_CAP);
   const parentRef = useRef<HTMLDivElement>(null);
 
-  const [searchParams] = useSearchParams();
   const { isConnected, address } = useAccount();
   const {
     aggregates,
     usernames: activitiesUsernames,
     status: activitiesStatus,
   } = useDiscovers();
-  const { editions, follows } = useArcade();
+  const { games, editions, follows } = useArcade();
 
   const following = useMemo(() => {
     if (!address) return [];
@@ -71,40 +71,47 @@ export function Discover({ edition }: { edition?: EditionModel }) {
     return !edition ? editions : [edition];
   }, [editions, edition]);
 
+  const location = useLocation();
   const navigate = useNavigate();
   const handleClick = useCallback(
-    (gameId: number, editionId: number, address: string) => {
+    (game: GameModel, edition: EditionModel, nameOrAddress: string) => {
       // If there are several games displayed, then clicking a card link to the game
-      const url = new URL(window.location.href);
+      let pathname = location.pathname;
       if (filteredEditions.length > 1) {
-        url.searchParams.set("game", gameId.toString());
-        url.searchParams.set("edition", editionId.toString());
-        navigate(url.toString().replace(window.location.origin, ""));
+        const gameName = `${game?.name.toLowerCase().replace(/ /g, "-") || game.id}`;
+        const editionName = `${edition?.name.toLowerCase().replace(/ /g, "-") || edition.id}`;
+        if (!pathname.includes("game/")) {
+          pathname = joinPaths(
+            `/game/${gameName}/edition/${editionName}`,
+            pathname,
+          );
+        } else if (game.id === 0) {
+          pathname = pathname.replace(/\/game\/[^/]+/, "");
+          pathname = pathname.replace(/\/edition\/[^/]+/, "");
+        } else {
+          pathname = pathname.replace(/\/game\/[^/]+/, `/game/${gameName}`);
+          pathname = pathname.replace(
+            /\/edition\/[^/]+/,
+            `/edition/${editionName}`,
+          );
+        }
+        navigate(pathname || "/");
         return;
       }
       // Otherwise it links to the player
-      url.searchParams.set("address", address);
-      url.searchParams.set("playerTab", "activity");
-      navigate(url.toString().replace(window.location.origin, ""));
+      pathname = pathname.replace(/\/tab\/[^/]+/, "");
+      const player = nameOrAddress.toLowerCase();
+      if (!pathname.includes("player/")) {
+        pathname = joinPaths(pathname, `/player/${player}/tab/activity`);
+      } else {
+        pathname = pathname.replace(
+          /\/player\/[^/]+/,
+          `/player/${player}/tab/activity`,
+        );
+      }
+      navigate(pathname || "/");
     },
     [navigate, filteredEditions],
-  );
-
-  const defaultValue = useMemo(() => {
-    // Default tab is ignored if there is no address,
-    // meanning the user is not connected and doesnt inspect another user
-    return searchParams.get("subTab") || "all";
-  }, [searchParams]);
-
-  const handleTabClick = useCallback(
-    (value: string) => {
-      // Clicking on a tab updates the url param tab to the value of the tab
-      // So the tab is persisted in the url and the user can update and share the url
-      const url = new URL(window.location.href);
-      url.searchParams.set("subTab", value);
-      navigate(url.toString().replace(window.location.origin, ""));
-    },
-    [navigate],
   );
 
   useEffect(() => {
@@ -125,8 +132,10 @@ export function Discover({ edition }: { edition?: EditionModel }) {
           aggregates[edition?.config.project]
             ?.map((activity) => {
               const username =
-                activitiesUsernames[addAddressPadding(activity.callerAddress)];
+                activitiesUsernames[getChecksumAddress(activity.callerAddress)];
               if (!username) return null;
+              const game = games.find((game) => game.id === edition.gameId);
+              if (!game) return null;
               return {
                 identifier: activity.identifier,
                 name: username,
@@ -140,9 +149,9 @@ export function Discover({ edition }: { edition?: EditionModel }) {
                 color: edition.color,
                 onClick: () =>
                   handleClick(
-                    edition.gameId,
-                    edition.id,
-                    getChecksumAddress(activity.callerAddress),
+                    game,
+                    edition,
+                    username || getChecksumAddress(activity.callerAddress),
                   ),
               };
             })
@@ -184,7 +193,7 @@ export function Discover({ edition }: { edition?: EditionModel }) {
         parent.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [cap, defaultValue, parentRef, handleScroll]);
+  }, [cap, parentRef, handleScroll]);
 
   useEffect(() => {
     // Reset scroll and cap on filter change
@@ -194,7 +203,7 @@ export function Discover({ edition }: { edition?: EditionModel }) {
     const height = parent.clientHeight;
     const cap = Math.ceil(height / ROW_HEIGHT);
     setCap(cap);
-  }, [parentRef, edition, setCap, defaultValue]);
+  }, [parentRef, edition, setCap]);
 
   return (
     <LayoutContent className="select-none h-full overflow-clip p-0">
@@ -202,12 +211,7 @@ export function Discover({ edition }: { edition?: EditionModel }) {
         className="p-0 pt-3 lg:pt-6 mt-0 h-full overflow-y-scroll"
         style={{ scrollbarWidth: "none" }}
       >
-        <ArcadeSubTabs
-          tabs={["all", "following"]}
-          defaultValue={defaultValue as SubTabValue}
-          onTabClick={(tab: SubTabValue) => handleTabClick(tab)}
-          className="mb-3 lg:mb-4"
-        >
+        <ArcadeSubTabs tabs={["all", "following"]} className="mb-3 lg:mb-4">
           <div
             ref={parentRef}
             className="flex justify-center gap-8 w-full h-full overflow-y-scroll"

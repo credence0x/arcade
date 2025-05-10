@@ -11,7 +11,7 @@ import {
   Event,
 } from "@/helpers/achievements";
 import { useUsernames } from "@/hooks/account";
-import { addAddressPadding } from "starknet";
+import { getChecksumAddress } from "starknet";
 import { useAddress } from "@/hooks/address";
 import { useArcade } from "@/hooks/arcade";
 
@@ -108,7 +108,7 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
   const usernamesData = useMemo(() => {
     const data: { [key: string]: string | undefined } = {};
     addresses.forEach((address) => {
-      data[addAddressPadding(address)] = usernames.find(
+      data[getChecksumAddress(address)] = usernames.find(
         (username) => BigInt(username.address || "0x0") === BigInt(address),
       )?.username;
     });

@@ -2,7 +2,7 @@ import { createContext, useState, ReactNode, useMemo } from "react";
 import { useActivitiesQuery } from "@cartridge/utils/api/cartridge";
 import { useArcade } from "@/hooks/arcade";
 import { useUsernames } from "@/hooks/account";
-import { addAddressPadding } from "starknet";
+import { getChecksumAddress } from "starknet";
 import { useAchievements } from "@/hooks/achievements";
 
 const SESSION_MAX_BREAK = 3600 * 1000; // 1 hour
@@ -55,7 +55,7 @@ export function DiscoversProvider({ children }: { children: ReactNode }) {
   const usernamesData = useMemo(() => {
     const data: { [key: string]: string | undefined } = {};
     addresses.forEach((address) => {
-      data[addAddressPadding(address)] = usernames.find(
+      data[getChecksumAddress(address)] = usernames.find(
         (username) => BigInt(username.address || "0x0") === BigInt(address),
       )?.username;
     });
