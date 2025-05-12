@@ -1,9 +1,10 @@
 import { createContext, useState, ReactNode, useMemo } from "react";
-import { useActivitiesQuery } from "@cartridge/utils/api/cartridge";
 import { useArcade } from "@/hooks/arcade";
 import { useUsernames } from "@/hooks/account";
 import { getChecksumAddress } from "starknet";
 import { useAchievements } from "@/hooks/achievements";
+
+const { useActivitiesQuery } = await import("@cartridge/utils/api/cartridge");
 
 const SESSION_MAX_BREAK = 3600 * 1000; // 1 hour
 const LIMIT = 10000;
@@ -33,19 +34,19 @@ export type DiscoversContextType = {
 };
 
 export const DiscoversContext = createContext<DiscoversContextType | null>(
-  null,
+  null
 );
 
 export function DiscoversProvider({ children }: { children: ReactNode }) {
   const { editions } = useArcade();
   const { events: achievements } = useAchievements();
   const [activities, setDiscovers] = useState<{ [key: string]: Discover[] }>(
-    {},
+    {}
   );
 
   const addresses = useMemo(() => {
     const addresses = Object.values(activities).flatMap((activity) =>
-      activity.map((activity) => activity.callerAddress),
+      activity.map((activity) => activity.callerAddress)
     );
     const uniqueAddresses = [...new Set(addresses)];
     return uniqueAddresses;
@@ -56,7 +57,7 @@ export function DiscoversProvider({ children }: { children: ReactNode }) {
     const data: { [key: string]: string | undefined } = {};
     addresses.forEach((address) => {
       data[getChecksumAddress(address)] = usernames.find(
-        (username) => BigInt(username.address || "0x0") === BigInt(address),
+        (username) => BigInt(username.address || "0x0") === BigInt(address)
       )?.username;
     });
     return data;
@@ -102,7 +103,7 @@ export function DiscoversProvider({ children }: { children: ReactNode }) {
         });
         setDiscovers(newDiscovers);
       },
-    },
+    }
   );
 
   const aggregates: { [key: string]: Discover[] } = useMemo(() => {

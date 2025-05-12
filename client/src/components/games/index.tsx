@@ -1,10 +1,6 @@
-import {
-  CardListContent,
-  Input,
-  SearchIcon,
-  useMediaQuery,
-} from "@cartridge/ui-next";
-import { useCallback, useMemo, useState } from "react";
+"use client";
+
+import React, { useCallback, useMemo, useState } from "react";
 import { useArcade } from "@/hooks/arcade";
 import { usePlayerGameStats, usePlayerStats } from "@/hooks/achievements";
 import { Register } from "./register";
@@ -14,7 +10,7 @@ import arcade from "@/assets/arcade-logo.png";
 import banner from "@/assets/banner.png";
 import ArcadeGameSelect from "../modules/game-select";
 import { useSidebar } from "@/hooks/sidebar";
-import { cn } from "@cartridge/ui-next";
+import { cn, useMediaQuery } from "@cartridge/ui-next";
 import { Update } from "./update";
 import { useOwnerships } from "@/hooks/ownerships";
 import { useAccount } from "@starknet-react/core";
@@ -37,7 +33,7 @@ export const Games = () => {
 
   const filteredGames = useMemo(() => {
     return games.filter((game) =>
-      game.name.toLowerCase().includes(search.toLowerCase()),
+      game.name.toLowerCase().includes(search.toLowerCase())
     );
   }, [games, search]);
 
@@ -48,7 +44,7 @@ export const Games = () => {
         "h-full w-[calc(100vw-64px)] max-w-[360px] lg:flex lg:min-w-[360px]",
         isMobile && "fixed z-50 top-0 left-0", // Fixed position for mobile
         isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0", // Slide in/out animation
-        "transition-transform duration-300 ease-in-out", // Smooth transition
+        "transition-transform duration-300 ease-in-out" // Smooth transition
       )}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -82,8 +78,8 @@ export const Games = () => {
                 owner={
                   BigInt(
                     ownerships.find(
-                      (ownership) => ownership.tokenId === BigInt(game.id),
-                    )?.accountAddress || "0x0",
+                      (ownership) => ownership.tokenId === BigInt(game.id)
+                    )?.accountAddress || "0x0"
                   ) === BigInt(address || "0x1")
                 }
                 game={game}
@@ -95,7 +91,7 @@ export const Games = () => {
       <div
         className={cn(
           "flex items-center justify-center p-3 lg:pb-3 gap-2.5 bg-background-100",
-          isPWA ? "pb-6" : "pb-3",
+          isPWA ? "pb-6" : "pb-3"
         )}
       >
         <Register />

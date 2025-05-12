@@ -1,14 +1,28 @@
+"use client";
+
 import { createContext, ReactNode, useMemo } from "react";
-import {
-  useActivitiesQuery,
-  useTransfersQuery,
-} from "@cartridge/utils/api/cartridge";
 import { useArcade } from "@/hooks/arcade";
 import { constants, getChecksumAddress } from "starknet";
 import { useAchievements } from "@/hooks/achievements";
 import { erc20Metadata } from "@cartridge/presets";
-import { getDate } from "@cartridge/utils";
 import { getChainId } from "@/helpers";
+
+let useTransfersQuery: any = null;
+let useActivitiesQuery: any = null;
+let getDate: any = null;
+
+if (typeof window !== "undefined") {
+  const { getDate: _getDate } = await import("@cartridge/utils");
+  getDate = _getDate;
+  (async () => {
+    const {
+      useTransfersQuery: _useTransfersQuery,
+      useActivitiesQuery: _useActivitiesQuery,
+    } = await import("@cartridge/utils/api/cartridge");
+    useTransfersQuery = _useTransfersQuery;
+    useActivitiesQuery = _useActivitiesQuery;
+  })();
+}
 
 export interface CardProps {
   variant: "token" | "collectible" | "game" | "achievement";
@@ -42,7 +56,7 @@ export type ActivitiesContextType = {
 };
 
 export const ActivitiesContext = createContext<ActivitiesContextType | null>(
-  null,
+  null
 );
 
 export function ActivitiesProvider({ children }: { children: ReactNode }) {
@@ -71,7 +85,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
       queryKey: ["transfers", address, projects],
       enabled: !!address && projects.length > 0,
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
   const { data: transactions, status: transactionsStatus } = useActivitiesQuery(
@@ -82,7 +96,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
       queryKey: ["activities", address, projects],
       enabled: !!address && projects.length > 0,
       refetchOnWindowFocus: false,
-    },
+    }
   );
 
   const status = useMemo(() => {
@@ -105,10 +119,10 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
           const image = erc20Metadata.find(
             (m) =>
               getChecksumAddress(m.l2_token_address) ===
-              getChecksumAddress(transfer.contractAddress),
+              getChecksumAddress(transfer.contractAddress)
           )?.logo_url;
           const edition = editions.find(
-            (edition) => edition.config.project === item.meta.project,
+            (edition) => edition.config.project === item.meta.project
           );
           const chainId = getChainId(edition?.config.rpc);
           const card: CardProps = {
@@ -154,7 +168,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
           let metadata;
           try {
             metadata = JSON.parse(
-              !transfer.metadata ? "{}" : transfer.metadata,
+              !transfer.metadata ? "{}" : transfer.metadata
             );
           } catch (error) {
             console.warn(error);
@@ -162,10 +176,10 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
           const name =
             metadata.attributes?.find(
               (attribute: { trait: string; value: string }) =>
-                attribute?.trait?.toLowerCase() === "name",
+                attribute?.trait?.toLowerCase() === "name"
             )?.value || metadata.name;
           const edition = editions.find(
-            (edition) => edition.config.project === item.meta.project,
+            (edition) => edition.config.project === item.meta.project
           );
           const chainId = getChainId(edition?.config.rpc);
           const card: CardProps = {
@@ -211,7 +225,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
           const date = getDate(timestamp);
           const project = item.meta.project;
           const edition = editions.find(
-            (edition) => edition.config.project === project,
+            (edition) => edition.config.project === project
           );
           const game = games.find((game) => game.id === edition?.gameId);
           const chainId = getChainId(edition?.config.rpc);
@@ -233,7 +247,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
             results[project] = [];
           }
           results[project].push(card);
-        },
+        }
       );
     });
     return results;
@@ -243,7 +257,7 @@ export function ActivitiesProvider({ children }: { children: ReactNode }) {
     const results: { [project: string]: CardProps[] } = {};
     Object.entries(achievements).forEach(([project, gameAchievements]) => {
       const edition = editions.find(
-        (edition) => edition.config.project === project,
+        (edition) => edition.config.project === project
       );
       const game = games.find((game) => game.id === edition?.gameId);
       gameAchievements

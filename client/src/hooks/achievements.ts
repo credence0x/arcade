@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext, useMemo } from "react";
 import { AchievementContext } from "@/context";
 import { getChecksumAddress } from "starknet";
@@ -47,7 +49,7 @@ export const useAchievements = () => {
 
   if (!context) {
     throw new Error(
-      "The `useAchievements` hook must be used within a `AchievementProvider`",
+      "The `useAchievements` hook must be used within a `AchievementProvider`"
     );
   }
 
@@ -89,7 +91,7 @@ export function usePlayerStats() {
   const { rank, earnings } = useMemo(() => {
     const rank =
       globals.findIndex(
-        (player) => BigInt(player.address || 0) === BigInt(address),
+        (player) => BigInt(player.address || 0) === BigInt(address)
       ) + 1;
     const earnings =
       globals.find((player) => BigInt(player.address || 0) === BigInt(address))
@@ -111,7 +113,7 @@ export function usePlayerGameStats(projects: string[]) {
 
   const gamePlayers = useMemo(
     () => projects.map((project) => players[project || ""] || []).flat(),
-    [players, projects],
+    [players, projects]
   );
 
   const { pinneds, completed, total } = useMemo(() => {
@@ -120,7 +122,7 @@ export function usePlayerGameStats(projects: string[]) {
       .filter((item) =>
         ids.length > 0
           ? ids.includes(item.id) && item.completed
-          : item.completed,
+          : item.completed
       )
       .sort((a, b) => a.id.localeCompare(b.id))
       .sort((a, b) => parseFloat(a.percentage) - parseFloat(b.percentage))
@@ -133,7 +135,7 @@ export function usePlayerGameStats(projects: string[]) {
   const { rank, earnings } = useMemo(() => {
     const rank =
       gamePlayers.findIndex(
-        (player) => BigInt(player.address || 0) === BigInt(address),
+        (player) => BigInt(player.address || 0) === BigInt(address)
       ) + 1;
     const earnings =
       gamePlayers

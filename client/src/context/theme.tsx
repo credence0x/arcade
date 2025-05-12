@@ -1,7 +1,17 @@
 import { useProject } from "@/hooks/project";
 import { defaultTheme, ControllerTheme } from "@cartridge/presets";
-import { useThemeEffect } from "@cartridge/ui-next";
 import { createContext, useCallback, useEffect, useState } from "react";
+
+let useThemeEffect: any = null;
+
+if (typeof window !== "undefined") {
+  (async () => {
+    const { useThemeEffect: _useThemeEffect } = await import(
+      "@cartridge/ui-next"
+    );
+    useThemeEffect = _useThemeEffect;
+  })();
+}
 
 type ColorScheme = "dark" | "light" | "system";
 
@@ -45,7 +55,7 @@ export function ThemeProvider({
   const { game } = useProject();
 
   const [colorScheme, setColorSchemeRaw] = useState<ColorScheme>(
-    () => (localStorage.getItem(storageKey) as ColorScheme) || defaultScheme,
+    () => (localStorage.getItem(storageKey) as ColorScheme) || defaultScheme
   );
 
   const setColorScheme = useCallback(
@@ -53,7 +63,7 @@ export function ThemeProvider({
       localStorage.setItem(storageKey, colorScheme);
       setColorSchemeRaw(colorScheme);
     },
-    [storageKey],
+    [storageKey]
   );
   const [theme, setTheme] = useState<ControllerTheme>(initialState.theme);
   const resetTheme = () => setTheme(initialState.theme);

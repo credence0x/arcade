@@ -4,6 +4,12 @@
     <title>Arcade</title>
     <meta charset="UTF-8" />
 
+    <!--helmet-outlet:title-->
+    <!--helmet-outlet:meta-->
+    <!--helmet-outlet:link-->
+    <!--helmet-outlet:style-->
+    <!-- Existing head elements below -->
+
     <link rel="icon" type="image/png" href="/favicon-48x48.png" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -22,7 +28,12 @@
       property="twitter:description"
       content="Arcade is a gaming platform to browse through games and players."
     />
+
+    <!-- Default OG/Twitter tags can remain here as fallbacks -->
+    <!-- They will be overwritten by Helmet during SSR if set -->
     <meta property="twitter:image" content="/cover.png" />
+    <meta property="og:image" content="/cover.png" />
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="cartridge" />
     <meta property="og:title" content="Cartridge Arcade" />
@@ -30,7 +41,6 @@
       property="og:description"
       content="Arcade is a gaming platform to browse through games and players."
     />
-    <meta property="og:image" content="/cover.png" />
     <meta
       property="theme-color"
       content="{CartridgeTheme.semanticTokens.colors.brand}"
@@ -39,9 +49,11 @@
     <script defer src="/fontawesome/js/solid.min.js"></script>
     <script defer src="/fontawesome/js/thin.min.js"></script>
     <script src="/noflash.js"></script>
+
+    <!--helmet-outlet:script-->
   </head>
   <body class="h-screen bg-background text-foreground">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="root"><!--ssr-outlet--></div>
+    <script type="module" src="/client/src/entry-client.tsx"></script>
   </body>
 </html>

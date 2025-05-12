@@ -9,19 +9,39 @@ import {
   ProfileOptions,
   ProviderOptions,
 } from "@cartridge/controller";
-import { getSocialPolicies, getRegistryPolicies } from "@bal7hazar/arcade-sdk";
 import { DEFAULT_PRESET, DEFAULT_PROJECT } from "@/constants";
+
+let getSocialPolicies: any = null;
+let getRegistryPolicies: any = null;
+
+if (typeof window !== "undefined") {
+  (async () => {
+    const {
+      getSocialPolicies: _getSocialPolicies,
+      getRegistryPolicies: _getRegistryPolicies,
+    } = await import("@bal7hazar/arcade-sdk");
+    getSocialPolicies = _getSocialPolicies;
+    getRegistryPolicies = _getRegistryPolicies;
+  })();
+}
 
 const chainId = constants.StarknetChainId.SN_MAIN;
 
-const keychain: KeychainOptions = {
-  policies: {
-    contracts: {
-      ...getSocialPolicies(chainId).contracts,
-      ...getRegistryPolicies(chainId).contracts,
-    },
-  },
-};
+const keychain: KeychainOptions =
+  typeof window !== "undefined"
+    ? {
+        policies: {
+          contracts: {
+            ...getSocialPolicies(chainId).contracts,
+            ...getRegistryPolicies(chainId).contracts,
+          },
+        },
+      }
+    : {
+        policies: {
+          contracts: {},
+        },
+      };
 
 const profile: ProfileOptions = {
   preset: DEFAULT_PRESET,

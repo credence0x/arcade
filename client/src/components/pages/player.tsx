@@ -13,7 +13,7 @@ import {
 } from "@cartridge/ui-next";
 import { ActivityScene } from "../scenes/activity";
 import { ArcadeTabs } from "../modules";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useUsername, useUsernames } from "@/hooks/account";
 import { useAddress } from "@/hooks/address";
 import AchievementPlayerHeader from "../modules/player-header";
@@ -25,6 +25,7 @@ import { constants, getChecksumAddress } from "starknet";
 import { toast } from "sonner";
 import { useProject } from "@/hooks/project";
 import { joinPaths } from "@/helpers";
+import { Helmet } from "react-helmet-async";
 
 const TABS_ORDER = ["inventory", "achievements", "activity"] as TabValue[];
 
@@ -34,7 +35,8 @@ export function PlayerPage() {
   const [loading, setLoading] = useState(false);
   const { account, connector, isConnected } = useAccount();
   const { provider, follows } = useArcade();
-  const { edition, tab } = useProject();
+  const { edition, tab, player } = useProject();
+  const { playerId } = useParams<{ playerId: string }>();
 
   const defaultValue = useMemo(() => {
     if (!TABS_ORDER.includes(tab as TabValue)) return "inventory";
@@ -50,7 +52,7 @@ export function PlayerPage() {
       pathname = joinPaths(pathname, `/tab/${value}`);
       navigate(pathname || "/");
     },
-    [location, navigate],
+    [location, navigate]
   );
 
   const handleClose = useCallback(() => {
@@ -68,7 +70,7 @@ export function PlayerPage() {
           ?.earnings || 0;
       const rank =
         gamePlayers.findIndex(
-          (player) => BigInt(player.address) === BigInt(address),
+          (player) => BigInt(player.address) === BigInt(address)
         ) + 1;
       return { rank, points };
     }
@@ -77,7 +79,7 @@ export function PlayerPage() {
         ?.earnings || 0;
     const rank =
       globals.findIndex(
-        (player) => BigInt(player.address) === BigInt(address),
+        (player) => BigInt(player.address) === BigInt(address)
       ) + 1;
     return { rank, points };
   }, [globals, address, edition]);
@@ -163,7 +165,7 @@ export function PlayerPage() {
           const res = await account.execute(calls);
           if (res) {
             toast.success(
-              `Player ${following ? "unfollowed" : "followed"} successfully`,
+              `Player ${following ? "unfollowed" : "followed"} successfully`
             );
           }
         } catch (error) {
@@ -175,7 +177,7 @@ export function PlayerPage() {
       };
       process();
     },
-    [account, connector, setLoading],
+    [account, connector, setLoading]
   );
 
   useEffect(() => {
@@ -188,8 +190,36 @@ export function PlayerPage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleClose]);
 
+  const effectivePlayerId = playerId || player?.id;
+  const ogImageUrl = effectivePlayerId
+    ? `/api/og/player/${effectivePlayerId}`
+    : "/default-player-og.png";
+
   return (
     <>
+      <Helmet>
+        <title>Player: {player?.name || "Loading..."}</title>
+        <meta
+          name="description"
+          content={player?.description || "Player details"}
+        />
+        <meta property="og:title" content={player?.name || "Player"} />
+        <meta
+          property="og:description"
+          content={player?.description || "View this player profile."}
+        />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={player?.name || "Player"} />
+        <meta
+          name="twitter:description"
+          content={player?.description || "View this player profile."}
+        />
+        <meta name="twitter:image" content={ogImageUrl} />
+      </Helmet>
       <AchievementPlayerHeader
         username={name}
         address={address}
@@ -289,7 +319,7 @@ function FollowButton({
         isLoading={loading}
         className={cn(
           "bg-background-200 hover:opacity-80 disabled:bg-background-125 normal-case font-normal tracking-normal font-sans text-sm transition-opacity",
-          "h-9 px-4 py-2 rounded-full",
+          "h-9 px-4 py-2 rounded-full"
         )}
       >
         <p className="hidden lg:block">Follow</p>
@@ -308,7 +338,7 @@ function FollowButton({
       className={cn(
         "group bg-background-125 border border-background-200 disabled:bg-background-125 normal-case font-normal tracking-normal font-sans text-sm transition-colors",
         "h-9 w-9 p-0 lg:px-4 lg:py-2 rounded-full lg:w-24 flex items-center justify-center",
-        "text-destructive-100 bg-background-200 lg:text-foreground-300 lg:bg-background-125 hover:lg:text-destructive-100 hover:lg:bg-background-200",
+        "text-destructive-100 bg-background-200 lg:text-foreground-300 lg:bg-background-125 hover:lg:text-destructive-100 hover:lg:bg-background-200"
       )}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}

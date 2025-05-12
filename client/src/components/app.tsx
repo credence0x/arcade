@@ -1,7 +1,10 @@
+"use client";
+
+// import { Outlet } from "react-router-dom"; // Removed unused import
 import { Games } from "@/components/games";
 import { SceneLayout } from "@/components/scenes/layout";
 import { GamePage } from "./pages/game";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PlayerPage } from "./pages/player";
 import { cn, useMediaQuery } from "@cartridge/ui-next";
 import { useSidebar } from "@/hooks/sidebar";
@@ -15,7 +18,13 @@ export function App() {
   const { setPlayer } = useArcade();
   const { player } = useProject();
 
-  const isPWA = useMediaQuery("(display-mode: standalone)");
+  const [isClient, setIsClient] = useState(false);
+  const isPWAQuery = useMediaQuery("(display-mode: standalone)");
+  const isPWA = isClient ? isPWAQuery : false;
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     setPlayer(player);
@@ -31,13 +40,13 @@ export function App() {
           <div
             className={cn(
               "lg:w-[1112px] lg:pt-8 lg:pb-6 gap-3 lg:gap-8 flex items-stretch m-auto h-full overflow-clip",
-              "transition-all duration-300 ease-in-out",
+              "transition-all duration-300 ease-in-out"
             )}
           >
             <div
               className={cn(
                 "absolute inset-0 bg-transparent z-10",
-                !isOpen && "hidden",
+                !isOpen && "hidden"
               )}
               onClick={() => toggle()}
               onTouchStart={handleTouchStart}
@@ -51,7 +60,7 @@ export function App() {
                 isPWA ? "pb-[90px]" : "pb-[84px]",
                 isOpen
                   ? "translate-x-[min(calc(100vw-64px),360px)]"
-                  : "translate-x-0",
+                  : "translate-x-0"
               )}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
@@ -63,7 +72,7 @@ export function App() {
                 className={cn(
                   "relative grow h-full flex flex-col rounded-xl lg:gap-2 overflow-hidden border border-background-200 bg-background-100",
                   player &&
-                    "bg-background-125 shadow-[0px_0px_8px_0px_rgba(15,20,16,_0.50)]",
+                    "bg-background-125 shadow-[0px_0px_8px_0px_rgba(15,20,16,_0.50)]"
                 )}
               >
                 {!player ? <GamePage /> : <PlayerPage />}

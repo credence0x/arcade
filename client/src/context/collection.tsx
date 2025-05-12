@@ -1,9 +1,9 @@
 import { createContext, useState, ReactNode, useMemo } from "react";
-import {
-  useCollectiblesQuery,
-  useCollectionsQuery,
-} from "@cartridge/utils/api/cartridge";
 import { useArcade } from "@/hooks/arcade";
+
+const { useCollectiblesQuery, useCollectionsQuery } = await import(
+  "@cartridge/utils/api/cartridge"
+);
 
 const LIMIT = 10000;
 
@@ -27,7 +27,7 @@ export type CollectionContextType = {
 };
 
 export const CollectionContext = createContext<CollectionContextType | null>(
-  null,
+  null
 );
 
 export function CollectionProvider({ children }: { children: ReactNode }) {
@@ -39,7 +39,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
 
   const projects = useMemo(
     () => editions.map((edition) => edition.config.project),
-    [editions],
+    [editions]
   );
 
   const { status: collectionStatus } = useCollectionsQuery(
@@ -80,11 +80,11 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
         }
         setErc721s(
           Object.values(newCollections).sort((a, b) =>
-            a.name.localeCompare(b.name),
-          ),
+            a.name.localeCompare(b.name)
+          )
         );
       },
-    },
+    }
   );
 
   const { status: collectibleStatus } = useCollectiblesQuery(
@@ -125,11 +125,11 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
         }
         setErc1155s(
           Object.values(newCollections).sort((a, b) =>
-            a.name.localeCompare(b.name),
-          ),
+            a.name.localeCompare(b.name)
+          )
         );
       },
-    },
+    }
   );
 
   const status = useMemo(() => {
@@ -147,7 +147,7 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
 
   const collections = useMemo(
     () => [...erc721s, ...erc1155s],
-    [erc721s, erc1155s],
+    [erc721s, erc1155s]
   );
 
   return (

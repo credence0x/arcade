@@ -1,4 +1,5 @@
 import { useActivities } from "@/hooks/activities";
+import { VoyagerUrl } from "@cartridge/utils";
 import {
   ActivityCollectibleCard,
   ActivityGameCard,
@@ -13,7 +14,6 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import ActivityAchievementCard from "../modules/activity-achievement-card";
 import { Link } from "react-router-dom";
-import { VoyagerUrl } from "@cartridge/utils";
 import { constants } from "starknet";
 import { CardProps } from "@/context/activities";
 import { useProject } from "@/hooks/project";
@@ -29,7 +29,7 @@ export function Activity() {
     (transactionHash: string, chainId: constants.StarknetChainId) => {
       return VoyagerUrl(chainId).transaction(transactionHash);
     },
-    [],
+    []
   );
 
   const { events, dates } = useMemo(() => {
@@ -128,7 +128,7 @@ export function Activity() {
         variant="secondary"
         className={cn(
           "text-foreground-300 hover:text-foreground-200 normal-case text-sm font-medium tracking-normal font-sans",
-          (cap >= activities.length || dates.length === 0) && "hidden",
+          (cap >= activities.length || dates.length === 0) && "hidden"
         )}
         onClick={() => setCap((prev) => prev + OFFSET)}
       >

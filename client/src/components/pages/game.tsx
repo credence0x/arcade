@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { TabsContent, Thumbnail, TabValue, cn } from "@cartridge/ui-next";
 import { DiscoverScene } from "../scenes/discover";
 import { LeaderboardScene } from "../scenes/leaderboard";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Socials } from "@bal7hazar/arcade-sdk";
 import { ArcadeTabs } from "../modules";
 import { MarketplaceScene } from "../scenes/marketplace";
@@ -14,10 +14,12 @@ import arcade from "@/assets/arcade-logo.png";
 import { GameSocialWebsite } from "../modules/game-social";
 import { useProject } from "@/hooks/project";
 import { joinPaths } from "@/helpers";
+import { Helmet } from "react-helmet-async";
 
 export function GamePage() {
   const { game, edition } = useProject();
   const { tab } = useProject();
+  const { gameId } = useParams<{ gameId: string }>();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ export function GamePage() {
       pathname = joinPaths(pathname, `/tab/${value}`);
       navigate(pathname || "/");
     },
-    [location, navigate],
+    [location, navigate]
   );
 
   const order: TabValue[] = useMemo(() => {
@@ -45,8 +47,36 @@ export function GamePage() {
     return Socials.merge(edition?.socials, game?.socials);
   }, [edition, game]);
 
+  const effectiveGameId = gameId || game?.id;
+  const ogImageUrl = effectiveGameId
+    ? `/api/og/game/${effectiveGameId}`
+    : "/default-game-og.png";
+
   return (
     <>
+      <Helmet>
+        <title>Game: {game?.name || "Loading..."}</title>
+        <meta
+          name="description"
+          content={game?.description || "Game details"}
+        />
+        <meta property="og:title" content={game?.name || "Game"} />
+        <meta
+          property="og:description"
+          content={game?.description || "Explore this game."}
+        />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={game?.name || "Game"} />
+        <meta
+          name="twitter:description"
+          content={game?.description || "Explore this game."}
+        />
+        <meta name="twitter:image" content={ogImageUrl} />
+      </Helmet>
       <div className="lg:h-[88px] w-full flex flex-col p-4 gap-4 lg:p-6 lg:pb-0 border-b border-background-200 lg:border-none">
         <div className="flex items-start justify-between">
           <div className="flex gap-3 items-center overflow-hidden">

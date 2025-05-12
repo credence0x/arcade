@@ -1,18 +1,41 @@
 import { createContext, useState, ReactNode, useMemo } from "react";
-import { useBalancesQuery } from "@cartridge/utils/api/cartridge";
 import { useArcade } from "@/hooks/arcade";
 import { erc20Metadata } from "@cartridge/presets";
 import { getChecksumAddress, RpcProvider } from "starknet";
-import {
-  ETH_CONTRACT_ADDRESS,
-  STRK_CONTRACT_ADDRESS,
-  USDC_CONTRACT_ADDRESS,
-  USDT_CONTRACT_ADDRESS,
-  useCountervalue,
-  useERC20Balance,
-  UseERC20BalanceResponse,
-} from "@cartridge/utils";
+import { UseERC20BalanceResponse } from "@cartridge/utils";
 import makeBlockie from "ethereum-blockies-base64";
+
+let useCountervalue: any = null;
+let useERC20Balance: any = null;
+let useBalancesQuery: any = null;
+let ETH_CONTRACT_ADDRESS: any = null;
+let STRK_CONTRACT_ADDRESS: any = null;
+let USDC_CONTRACT_ADDRESS: any = null;
+let USDT_CONTRACT_ADDRESS: any = null;
+
+if (typeof window !== "undefined") {
+  (async () => {
+    const {
+      useCountervalue: _useCountervalue,
+      useERC20Balance: _useERC20Balance,
+      ETH_CONTRACT_ADDRESS: _ETH_CONTRACT_ADDRESS,
+      STRK_CONTRACT_ADDRESS: _STRK_CONTRACT_ADDRESS,
+      USDC_CONTRACT_ADDRESS: _USDC_CONTRACT_ADDRESS,
+      USDT_CONTRACT_ADDRESS: _USDT_CONTRACT_ADDRESS,
+    } = await import("@cartridge/utils");
+    useCountervalue = _useCountervalue;
+    useERC20Balance = _useERC20Balance;
+    ETH_CONTRACT_ADDRESS = _ETH_CONTRACT_ADDRESS;
+    STRK_CONTRACT_ADDRESS = _STRK_CONTRACT_ADDRESS;
+    USDC_CONTRACT_ADDRESS = _USDC_CONTRACT_ADDRESS;
+    USDT_CONTRACT_ADDRESS = _USDT_CONTRACT_ADDRESS;
+
+    const { useBalancesQuery: _useBalancesQuery } = await import(
+      "@cartridge/utils/api/cartridge"
+    );
+    useBalancesQuery = _useBalancesQuery;
+  })();
+}
 
 const LIMIT = 1000;
 
@@ -60,11 +83,11 @@ export function TokenProvider({ children }: { children: ReactNode }) {
 
   const provider = useMemo(
     () => new RpcProvider({ nodeUrl: import.meta.env.VITE_RPC_URL }),
-    [],
+    []
   );
   const projects = useMemo(
     () => editions.map((edition) => edition.config.project),
-    [editions],
+    [editions]
   );
 
   // Query ERC20 balances from torii projects
@@ -97,7 +120,7 @@ export function TokenProvider({ children }: { children: ReactNode }) {
           const address = getChecksumAddress(contractAddress);
           const image =
             erc20Metadata.find(
-              (m) => getChecksumAddress(m.l2_token_address) === address,
+              (m) => getChecksumAddress(m.l2_token_address) === address
             )?.logo_url || makeBlockie(address);
           const token: Token = {
             balance: {
@@ -121,7 +144,7 @@ export function TokenProvider({ children }: { children: ReactNode }) {
         }
         setToriiData(newTokens);
       },
-    },
+    }
   );
 
   // Query default ERC20 balances
@@ -142,7 +165,7 @@ export function TokenProvider({ children }: { children: ReactNode }) {
         balance: `${Number(token.balance.value) / Math.pow(10, token.meta.decimals || 0)}`,
         address: token.meta.address,
       })),
-    [rpcData],
+    [rpcData]
   );
 
   // Get prices for filtered tokens
@@ -154,13 +177,13 @@ export function TokenProvider({ children }: { children: ReactNode }) {
     rpcData.forEach((token) => {
       const contractAddress = token.meta.address;
       const value = countervalues.find(
-        (v) => BigInt(v?.address || "0x0") === BigInt(contractAddress),
+        (v) => BigInt(v?.address || "0x0") === BigInt(contractAddress)
       );
       const change = value ? value.current.value - value.period.value : 0;
       const image = erc20Metadata.find(
         (metadata) =>
           getChecksumAddress(metadata.l2_token_address) ===
-          getChecksumAddress(contractAddress),
+          getChecksumAddress(contractAddress)
       )?.logo_url;
       const newToken: Token = {
         balance: {

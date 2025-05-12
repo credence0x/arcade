@@ -1,3 +1,5 @@
+"use client";
+
 import { useArcade } from "@/hooks/arcade";
 import {
   Button,
@@ -47,7 +49,7 @@ const formSchema = z.object({
       },
       {
         message: "Torii instance not found",
-      },
+      }
     ),
   rpc: z
     .string()
@@ -59,7 +61,7 @@ const formSchema = z.object({
       },
       {
         message: "RPC cannot be reached",
-      },
+      }
     ),
   // Properties
   color: z.string().startsWith("#", { message: "Invalid Color" }),
@@ -80,7 +82,7 @@ const formSchema = z.object({
       },
       {
         message: "Asset not found",
-      },
+      }
     ),
   banner: z
     .string()
@@ -94,7 +96,7 @@ const formSchema = z.object({
       },
       {
         message: "Asset not found",
-      },
+      }
     ),
   cover: z
     .string()
@@ -108,7 +110,7 @@ const formSchema = z.object({
       },
       {
         message: "Asset not found",
-      },
+      }
     ),
   // Socials
   discord: z.string().refine((val) => val.startsWith("http") || !val, {
@@ -189,12 +191,12 @@ export function Register() {
         const gameImage = await MetadataHelper.gameImage(
           values.color,
           values.cover,
-          values.image,
+          values.image
         );
         const editionImage = await MetadataHelper.editionImage(
           values.color,
           values.cover,
-          values.image,
+          values.image
         );
         try {
           const gameAttributes = new Attributes({
@@ -257,7 +259,7 @@ export function Register() {
       };
       process(values);
     },
-    [provider, account, connector, setClose],
+    [provider, account, connector, setClose]
   );
 
   return (
