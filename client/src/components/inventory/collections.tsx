@@ -120,7 +120,9 @@ function Item({
         }
         count={collection.totalCount}
         onClick={isSelf ? handleClick : undefined}
-        className={isSelf ? "cursor-pointer" : "cursor-default"}
+        className={
+          isSelf ? "cursor-pointer" : "cursor-default pointer-events-none"
+        }
       />
     </div>
   );
