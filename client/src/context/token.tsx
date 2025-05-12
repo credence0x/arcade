@@ -6,11 +6,12 @@ import { getChecksumAddress, RpcProvider } from "starknet";
 import {
   ETH_CONTRACT_ADDRESS,
   STRK_CONTRACT_ADDRESS,
+  USDC_CONTRACT_ADDRESS,
+  USDT_CONTRACT_ADDRESS,
   useCountervalue,
   useERC20Balance,
   UseERC20BalanceResponse,
 } from "@cartridge/utils";
-import { formatEther } from "viem";
 import makeBlockie from "ethereum-blockies-base64";
 
 const LIMIT = 1000;
@@ -20,6 +21,8 @@ const DEFAULT_ERC20_ADDRESSES: string[] = [];
 const EXTRA_ERC20_ADDRESSES: string[] = [
   STRK_CONTRACT_ADDRESS,
   ETH_CONTRACT_ADDRESS,
+  USDC_CONTRACT_ADDRESS,
+  USDT_CONTRACT_ADDRESS,
 ];
 
 export type Balance = {
@@ -91,12 +94,11 @@ export function TokenProvider({ children }: { children: ReactNode }) {
           } = meta;
           const previous = price !== 0 ? (value * periodPrice) / price : 0;
           const change = value - previous;
+          const address = getChecksumAddress(contractAddress);
           const image =
             erc20Metadata.find(
-              (m) =>
-                getChecksumAddress(m.l2_token_address) ===
-                getChecksumAddress(contractAddress),
-            )?.logo_url || makeBlockie(contractAddress);
+              (m) => getChecksumAddress(m.l2_token_address) === address,
+            )?.logo_url || makeBlockie(address);
           const token: Token = {
             balance: {
               amount: amount,
@@ -108,11 +110,11 @@ export function TokenProvider({ children }: { children: ReactNode }) {
               name,
               symbol,
               decimals,
-              address: contractAddress,
+              address: address,
               image,
             },
           };
-          newTokens[`${contractAddress}`] = token;
+          newTokens[`${address}`] = token;
         });
         if (balances?.edges.length === LIMIT) {
           setOffset(offset + LIMIT);
@@ -128,16 +130,16 @@ export function TokenProvider({ children }: { children: ReactNode }) {
     ...EXTRA_ERC20_ADDRESSES,
   ].filter((address) => !toriiData[address]);
   const { data: rpcData }: UseERC20BalanceResponse = useERC20Balance({
-    address: address,
+    address: address ? getChecksumAddress(address) : address,
     contractAddress: contractAddresses,
     provider,
-    interval: 3000,
+    interval: 30000,
   });
 
   const tokenData = useMemo(
     () =>
       rpcData.map((token) => ({
-        balance: formatEther(token.balance.value || 0n),
+        balance: `${Number(token.balance.value) / Math.pow(10, token.meta.decimals || 0)}`,
         address: token.meta.address,
       })),
     [rpcData],

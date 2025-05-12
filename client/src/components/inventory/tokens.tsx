@@ -15,6 +15,7 @@ import { Token } from "@/context/token";
 import { Chain, mainnet } from "@starknet-react/chains";
 import { EditionModel } from "@bal7hazar/arcade-sdk";
 import { useArcade } from "@/hooks/arcade";
+import { useProject } from "@/hooks/project";
 
 const DEFAULT_TOKENS_COUNT = 3;
 
@@ -26,7 +27,12 @@ interface TokensProps {
 
 export const Tokens = ({ tokens, credits }: TokensProps) => {
   const { editions, chains } = useArcade();
+  const { edition } = useProject();
   const [unfolded, setUnfolded] = useState(false);
+
+  useEffect(() => {
+    setUnfolded(false);
+  }, [edition]);
 
   const filteredTokens = useMemo(() => {
     return tokens
