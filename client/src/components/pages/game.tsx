@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { TabsContent, Thumbnail, TabValue } from "@cartridge/ui";
+import { TabsContent, Thumbnail, TabValue, useMediaQuery } from "@cartridge/ui";
 import { cn } from "@cartridge/ui/utils";
 import { DiscoverScene } from "../scenes/discover";
 import { LeaderboardScene } from "../scenes/leaderboard";
@@ -19,6 +19,7 @@ import { joinPaths } from "@/helpers";
 export function GamePage() {
   const { game, edition } = useProject();
   const { tab } = useProject();
+  const isMobile = useMediaQuery("(max-width: 1024px)");
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,23 +47,48 @@ export function GamePage() {
     return Socials.merge(edition?.socials, game?.socials);
   }, [edition, game]);
 
+  const isDashboard = !(edition && game);
+
   return (
     <>
-      <div className="lg:h-[88px] w-full flex flex-col p-4 gap-4 lg:p-6 lg:pb-0 border-b border-background-200 lg:border-none">
+      <div
+        className={cn(
+          "lg:h-[88px] w-full flex flex-col gap-4 lg:p-6 lg:pb-0 border-b border-background-200 lg:border-none",
+          isDashboard ? "p-0" : "p-4",
+        )}
+      >
         <div className="flex items-start justify-between">
-          <div className="flex gap-3 items-center overflow-hidden">
-            <Thumbnail
-              icon={edition?.properties.icon || game?.properties.icon || arcade}
-              size="xl"
-              className="min-w-16 min-h-16"
-            />
-            <div className="flex flex-col gap-2 overflow-hidden">
-              <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
-                {game?.name ?? "Arcade Dashboard"}
-              </p>
-              <Editions />
+          {isMobile && !isDashboard ? (
+            <div className="flex gap-3 items-center overflow-hidden">
+              <Thumbnail
+                icon={edition?.properties.icon || game?.properties.icon}
+                size="xl"
+                className="min-w-16 min-h-16"
+              />
+              <div className="flex flex-col gap-2 overflow-hidden">
+                <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
+                  {game?.name || "Dashboard"}
+                </p>
+                <Editions />
+              </div>
             </div>
-          </div>
+          ) : !isMobile ? (
+            <div className="flex gap-3 items-center overflow-hidden">
+              <Thumbnail
+                icon={
+                  edition?.properties.icon || game?.properties.icon || arcade
+                }
+                size="xl"
+                className="min-w-16 min-h-16"
+              />
+              <div className="flex flex-col gap-2 overflow-hidden">
+                <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
+                  {game?.name || "Dashboard"}
+                </p>
+                <Editions />
+              </div>
+            </div>
+          ) : null}
           <GameSocials socials={socials} />
         </div>
         <div className={cn("lg:hidden", !socials?.website && "hidden")}>
