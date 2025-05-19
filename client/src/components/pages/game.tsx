@@ -105,31 +105,31 @@ export function GamePage() {
           style={{ scrollbarWidth: "none" }}
         >
           <TabsContent
-            className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+            className="p-0 px-4 lg:px-6 mt-0 grow w-full"
             value="activity"
           >
             <DiscoverScene />
           </TabsContent>
           <TabsContent
-            className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+            className="p-0 px-4 lg:px-6 mt-0 grow w-full"
             value="leaderboard"
           >
             <LeaderboardScene />
           </TabsContent>
           <TabsContent
-            className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+            className="p-0 px-4 lg:px-6 mt-0 grow w-full"
             value="marketplace"
           >
             <MarketplaceScene />
           </TabsContent>
           <TabsContent
-            className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+            className="p-0 px-4 lg:px-6 mt-0 grow w-full"
             value="guilds"
           >
             <GuildsScene />
           </TabsContent>
           <TabsContent
-            className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+            className="p-0 px-4 lg:px-6 mt-0 grow w-full"
             value="about"
           >
             <AboutScene />
