@@ -20,6 +20,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
     useAchievements();
   const { pins, follows } = useArcade();
   const [cap, setCap] = useState(DEFAULT_CAP);
+  const [hasScore, setHasScore] = useState(false);
   const parentRef = useRef<HTMLDivElement>(null);
 
   const following = useMemo(() => {
@@ -38,6 +39,20 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
   const gameAchievements = useMemo(() => {
     return achievements[edition?.config.project || ""] || [];
   }, [achievements, edition]);
+
+  useEffect(() => {
+    if (!address) {
+      setHasScore(false);
+      return;
+    }
+
+    const playerList = edition ? gamePlayers : globals;
+    const hasRank = playerList.some(
+      (player) => BigInt(player.address) === BigInt(address),
+    );
+
+    setHasScore(hasRank);
+  }, [address, edition, gamePlayers, globals]);
 
   const location = useLocation();
   const handleClick = useCallback(
@@ -196,7 +211,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
             <TabsContent
               className={cn(
                 "p-0 mt-0 pb-3 lg:pb-6 grow w-full",
-                isConnected ? "pb-[88px]" : "pb-3",
+                hasScore ? "pb-[88px]" : "pb-3",
               )}
               value="all"
             >
@@ -277,7 +292,7 @@ const EmptyState = () => {
     <Empty
       title="No leaderboard available for this game."
       icon="leaderboard"
-      className="h-full pt-4 pb-[88px] lg:py-6"
+      className="h-full lg:py-6"
     />
   );
 };

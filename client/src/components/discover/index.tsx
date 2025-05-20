@@ -262,7 +262,7 @@ const EmptyState = () => {
     <Empty
       title="It's feel lonely here"
       icon="discover"
-      className="h-full pt-4 pb-[88px] lg:py-6"
+      className="h-full pb-[76px] lg:py-6"
     />
   );
 };
