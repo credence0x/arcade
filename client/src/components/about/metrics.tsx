@@ -1,5 +1,4 @@
 import { useMemo, useState, useRef, useEffect } from "react";
-import { useMediaQuery } from "@cartridge/ui";
 import { cn } from "@cartridge/ui/utils";
 import { useMetrics } from "@/hooks/metrics";
 import { useTheme } from "@/hooks/context";
