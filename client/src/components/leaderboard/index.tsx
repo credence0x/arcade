@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Empty, LayoutContent, Skeleton, TabsContent } from "@cartridge/ui";
+import { cn, Empty, LayoutContent, Skeleton, TabsContent } from "@cartridge/ui";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useArcade } from "@/hooks/arcade";
 import { EditionModel } from "@cartridge/arcade";
@@ -194,7 +194,10 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
             style={{ scrollbarWidth: "none" }}
           >
             <TabsContent
-              className="p-0 mt-0 pb-3 lg:pb-6 grow w-full"
+              className={cn(
+                "p-0 mt-0 pb-3 lg:pb-6 grow w-full",
+                isConnected ? "pb-[88px]" : "pb-3",
+              )}
               value="all"
             >
               {isLoading && filteredData.all.length === 0 ? (
