@@ -10,6 +10,7 @@ import {
 import { AchievementPinIcons } from "./achievement-pin-icons";
 import { cva, VariantProps } from "class-variance-authority";
 import { HTMLAttributes, useMemo, useState } from "react";
+import { useDevice } from "@/hooks/device";
 
 export interface Metadata {
   game: string;
@@ -76,6 +77,7 @@ export const ArcadeGameHeader = ({
 }: ArcadeGameHeaderProps) => {
   const [hover, setHover] = useState(false);
   const clickable = useMemo(() => !!onClick, [onClick]);
+  const { isMobile } = useDevice();
 
   const pins = useMemo(() => {
     if (!achievements) return [];
@@ -112,9 +114,11 @@ export const ArcadeGameHeader = ({
       <div className="flex items-center gap-3 grow overflow-hidden">
         <Thumbnail
           icon={metadata.logo ?? <DojoIcon className="w-full h-full" />}
-          variant={hover && clickable ? "lighter" : "light"}
+          variant={
+            isMobile ? "lighter" : hover && clickable ? "lighter" : "light"
+          }
           size="md"
-          className=""
+          centered={true}
         />
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-0.5 lg:gap-3 overflow-hidden">
           <p className="text-foreground-100 text-sm font-medium whitespace-nowrap truncate">

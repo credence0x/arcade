@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { TabsContent, Thumbnail, TabValue, useMediaQuery } from "@cartridge/ui";
+import { TabsContent, Thumbnail, TabValue } from "@cartridge/ui";
 import { cn } from "@cartridge/ui/utils";
 import { DiscoverScene } from "../scenes/discover";
 import { LeaderboardScene } from "../scenes/leaderboard";
@@ -15,11 +15,12 @@ import arcade from "@/assets/arcade-logo.png";
 import { GameSocialWebsite } from "../modules/game-social";
 import { useProject } from "@/hooks/project";
 import { joinPaths } from "@/helpers";
+import { useDevice } from "@/hooks/device";
 
 export function GamePage() {
   const { game, edition } = useProject();
   const { tab } = useProject();
-  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const { isMobile } = useDevice();
 
   const location = useLocation();
   const navigate = useNavigate();

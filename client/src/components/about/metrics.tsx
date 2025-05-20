@@ -18,6 +18,7 @@ import {
 import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 import { useSidebar } from "@/hooks/sidebar";
+import { useDevice } from "@/hooks/device";
 
 ChartJS.register(
   CategoryScale,
@@ -39,7 +40,7 @@ export function Metrics() {
   const { metrics: allMetrics, status } = useMetrics();
   const chartRef = useRef<ChartJS<"line">>(null);
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const { isMobile } = useDevice();
   const { setDisableSwipe } = useSidebar();
 
   const [activeTab, setActiveTab] = useState<"txs" | "players">("txs");

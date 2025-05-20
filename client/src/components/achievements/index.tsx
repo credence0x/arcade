@@ -1,4 +1,4 @@
-import { Empty, LayoutContent, Skeleton, useMediaQuery } from "@cartridge/ui";
+import { Empty, LayoutContent, Skeleton } from "@cartridge/ui";
 import { useMemo } from "react";
 import { Trophies } from "./trophies";
 import { useArcade } from "@/hooks/arcade";
@@ -12,6 +12,7 @@ import { useAddress } from "@/hooks/address";
 import { useLocation, useNavigate } from "react-router-dom";
 import { joinPaths } from "@/helpers";
 import { useOwnerships } from "@/hooks/ownerships";
+import { useDevice } from "@/hooks/device";
 
 export function Achievements({
   game,
@@ -25,7 +26,7 @@ export function Achievements({
   const { pins, games, editions } = useArcade();
   const { ownerships } = useOwnerships();
 
-  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const { isMobile } = useDevice();
 
   const gamePlayers = useMemo(() => {
     return players[edition?.config.project || ""] || [];

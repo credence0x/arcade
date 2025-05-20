@@ -3,6 +3,7 @@ import { HTMLAttributes, SVGProps } from "react";
 import { SidebarToggle } from "../sidebar-toggle";
 import { useMediaQuery } from "@cartridge/ui";
 import { useTheme } from "@/hooks/context";
+import { useDevice } from "@/hooks/device";
 
 export interface ArcadeHeaderProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -11,7 +12,7 @@ export const ArcadeHeader = ({
   onClick,
   ...props
 }: ArcadeHeaderProps) => {
-  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const { isMobile } = useDevice();
 
   return (
     <div

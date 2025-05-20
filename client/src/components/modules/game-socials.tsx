@@ -10,6 +10,7 @@ import {
   GameSocialWebsite,
 } from "./game-social";
 import ArcadeMenuButton from "./menu-button";
+import { useDevice } from "@/hooks/device";
 
 const gameSocialsVariants = cva("flex gap-2", {
   variants: {
@@ -48,7 +49,7 @@ const GameSocials = ({
   socials,
   ...props
 }: GameSocialsProps) => {
-  const isMobile = useMediaQuery("(max-width: 1024px)");
+  const { isMobile } = useDevice();
 
   const isEmpty = useMemo(() => {
     if (!socials) return true;
