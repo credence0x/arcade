@@ -271,7 +271,7 @@ const EmptyState = () => {
     <Empty
       title="No achievements exist for this game."
       icon="achievement"
-      className="h-full py-3 lg:py-6"
+      className="h-full pt-4 pb-[88px] lg:py-6"
     />
   );
 };

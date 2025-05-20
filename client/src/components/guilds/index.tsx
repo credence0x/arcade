@@ -6,6 +6,10 @@ export function Guilds() {
 
 const EmptyState = () => {
   return (
-    <Empty title="Coming soon" icon="guild" className="h-full py-3 lg:py-6" />
+    <Empty
+      title="Coming soon"
+      icon="guild"
+      className="h-full pt-4 pb-[88px] lg:py-6"
+    />
   );
 };

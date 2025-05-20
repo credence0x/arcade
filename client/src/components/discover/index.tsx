@@ -259,6 +259,10 @@ const LoadingState = () => {
 
 const EmptyState = () => {
   return (
-    <Empty title="It's feel lonely here" icon="discover" className="h-full" />
+    <Empty
+      title="It's feel lonely here"
+      icon="discover"
+      className="h-full pt-4 pb-[88px] lg:py-6"
+    />
   );
 };

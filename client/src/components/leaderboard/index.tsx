@@ -274,7 +274,7 @@ const EmptyState = () => {
     <Empty
       title="No leaderboard available for this game."
       icon="leaderboard"
-      className="h-full"
+      className="h-full pt-4 pb-[88px] lg:py-6"
     />
   );
 };
