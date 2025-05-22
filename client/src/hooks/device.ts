@@ -5,9 +5,11 @@ enum DeviceType {
   DESKTOP,
 }
 
+const LAPTOP_WIDTH = 1160;
+
 // Helper function to detect mobile device immediately
 const isMobileDevice = () => {
-  return typeof window !== "undefined" && window.innerWidth <= 1024;
+  return typeof window !== "undefined" && window.innerWidth <= LAPTOP_WIDTH;
 };
 
 export function useDevice() {
@@ -18,7 +20,9 @@ export function useDevice() {
   useEffect(() => {
     const handleResize = () => {
       setDevice(
-        window.innerWidth <= 1024 ? DeviceType.MOBILE : DeviceType.DESKTOP,
+        window.innerWidth <= LAPTOP_WIDTH
+          ? DeviceType.MOBILE
+          : DeviceType.DESKTOP,
       );
     };
 
