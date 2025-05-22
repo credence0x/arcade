@@ -48,7 +48,7 @@ export function Activity() {
   if (status === "loading" && !events.length) return <LoadingState />;
   if (status === "error" || !events.length) return <EmptyState />;
   return (
-    <LayoutContent className="gap-y-6 select-none h-full overflow-y-scroll p-0 py-3 lg:py-6">
+    <LayoutContent className="gap-y-6 select-none h-full overflow-y-scroll p-0 py-4 pb-[88px] lg:py-6">
       {dates.map((current) => {
         return (
           <div className="flex flex-col gap-2" key={current}>
