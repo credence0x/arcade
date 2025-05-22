@@ -16,11 +16,14 @@ export const ArcadeHeader = ({
   return (
     <div
       className={cn(
-        "w-full flex items-center gap-x-px h-16 lg:h-14 p-3",
+        "w-full flex items-center gap-x-px",
+        // Fix inconsistent padding between mobile and desktop
+        isMobile ? "h-16 px-3 py-3" : "h-14 px-6 py-5",
         "transition-transform duration-300 ease-in-out will-change-transform",
       )}
       {...props}
     >
+      {" "}
       {isMobile ? (
         <div className="lg:hidden">
           <SidebarToggle />
@@ -28,7 +31,7 @@ export const ArcadeHeader = ({
       ) : (
         <div
           className={cn(
-            "flex items-center justify-center text-primary w-auto p-6",
+            "flex items-center justify-center text-primary w-auto",
             onClick && "cursor-pointer",
           )}
           onClick={onClick}
@@ -36,7 +39,7 @@ export const ArcadeHeader = ({
           <ArcadeIcon className="w-28" />
         </div>
       )}
-      <div className="grow flex justify-end items-center gap-3 lg:px-3 select-none">
+      <div className="grow flex justify-end items-center gap-3 select-none">
         {children}
       </div>
     </div>
