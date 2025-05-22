@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { TabsContent, Thumbnail, TabValue } from "@cartridge/ui";
 import { cn } from "@cartridge/ui/utils";
 import { DiscoverScene } from "../scenes/discover";
@@ -50,6 +50,12 @@ export function GamePage() {
 
   const isDashboard = !(edition && game);
 
+  useEffect(() => {
+    console.log("edition: ", edition);
+    console.log("game: ", game);
+    console.log("isMobile: ", isMobile);
+  }, [edition, game, isMobile]);
+
   return (
     <>
       <div
@@ -59,37 +65,39 @@ export function GamePage() {
         )}
       >
         <div className="flex items-start justify-between">
-          {isMobile && !isDashboard ? (
-            <div className="flex gap-3 items-center overflow-hidden">
-              <Thumbnail
-                icon={edition?.properties.icon || game?.properties.icon}
-                size="xl"
-                className="min-w-16 min-h-16"
-              />
-              <div className="flex flex-col gap-2 overflow-hidden">
-                <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
-                  {game?.name || "Dashboard"}
-                </p>
-                <Editions />
+          {
+            isMobile && !isDashboard ? ( // Mobile view + not dashboard
+              <div className="flex gap-3 items-center overflow-hidden">
+                <Thumbnail
+                  icon={edition?.properties.icon || game?.properties.icon}
+                  size="xl"
+                  className="min-w-16 min-h-16"
+                />
+                <div className="flex flex-col gap-2 overflow-hidden">
+                  <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
+                    {game?.name || "Dashboard"}
+                  </p>
+                  <Editions />
+                </div>
               </div>
-            </div>
-          ) : !isMobile ? (
-            <div className="flex gap-3 items-center overflow-hidden">
-              <Thumbnail
-                icon={
-                  edition?.properties.icon || game?.properties.icon || arcade
-                }
-                size="xl"
-                className="min-w-16 min-h-16"
-              />
-              <div className="flex flex-col gap-2 overflow-hidden">
-                <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
-                  {game?.name || "Dashboard"}
-                </p>
-                <Editions />
+            ) : !isMobile ? ( // Desktop View
+              <div className="flex gap-3 items-center overflow-hidden">
+                <Thumbnail
+                  icon={
+                    edition?.properties.icon || game?.properties.icon || arcade
+                  }
+                  size="xl"
+                  className="min-w-16 min-h-16"
+                />
+                <div className="flex flex-col gap-2 overflow-hidden">
+                  <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
+                    {game?.name || "Dashboard"}
+                  </p>
+                  <Editions />
+                </div>
               </div>
-            </div>
-          ) : null}
+            ) : null // Mobile view + is dashboard
+          }
           <GameSocials socials={socials} />
         </div>
         <div className={cn("lg:hidden", !socials?.website && "hidden")}>
