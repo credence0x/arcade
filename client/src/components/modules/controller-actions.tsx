@@ -42,9 +42,7 @@ const ControllerActions = ({
         <div className="grow flex justify-end items-center self-center">
           <ArcadeMenuButton
             active={false}
-            className={cn(
-              "bg-spacer-100 text-foreground-100 hover:text-foreground-100 w-10 h-10",
-            )}
+            className="bg-spacer-100 text-foreground-100 hover:text-foreground-100 w-10 h-10"
           >
             <DotsIcon size="default" />
           </ArcadeMenuButton>
