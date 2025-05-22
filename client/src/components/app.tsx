@@ -53,7 +53,7 @@ export function App() {
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
             >
-              <div className="lg:hidden w-full">
+              <div className="lg:hidden w-full p-3">
                 <Header />
               </div>
               <div

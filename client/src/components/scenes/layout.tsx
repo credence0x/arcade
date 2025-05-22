@@ -2,9 +2,12 @@ import { Header } from "@/components/header";
 import { useEffect, useMemo, useState } from "react";
 import banner from "@/assets/banner.png";
 import { useTheme } from "@/hooks/context";
+import { cn } from "@cartridge/ui";
+import { useDevice } from "@/hooks/device";
 
 export const SceneLayout = ({ children }: { children: React.ReactNode }) => {
   const { cover } = useTheme();
+  const { isMobile } = useDevice();
   const [currentBanner, setCurrentBanner] = useState<string>(banner);
   const [transitioningOut, setTransitioningOut] = useState(false);
   const [transitioningIn, setTransitioningIn] = useState(false);
@@ -58,7 +61,7 @@ export const SceneLayout = ({ children }: { children: React.ReactNode }) => {
           scrollbarWidth: "none",
         }}
       >
-        <div className="w-full hidden lg:block">
+        <div className="w-full hidden lg:block lg:px-6 lg:py-5">
           <Header />
         </div>
         {children}

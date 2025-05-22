@@ -17,13 +17,10 @@ export const ArcadeHeader = ({
     <div
       className={cn(
         "w-full flex items-center gap-x-px",
-        // Fix inconsistent padding between mobile and desktop
-        isMobile ? "h-16 px-3 py-3" : "h-14 px-6 py-5",
         "transition-transform duration-300 ease-in-out will-change-transform",
       )}
       {...props}
     >
-      {" "}
       {isMobile ? (
         <div className="lg:hidden">
           <SidebarToggle />
