@@ -133,7 +133,16 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
       all: finalAll,
       following: newFollowings,
     };
-  }, [gamePlayers, gameAchievements, address, pins, usernames, following, cap]);
+  }, [
+    gamePlayers,
+    gameAchievements,
+    address,
+    pins,
+    usernames,
+    following,
+    cap,
+    username,
+  ]);
 
   const gamesData = useMemo(() => {
     let rank = 0;
@@ -195,7 +204,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
       all: finalAll,
       following: newFollowings,
     };
-  }, [globals, address, usernames, following, cap]);
+  }, [globals, address, usernames, following, cap, username]);
 
   const filteredData = useMemo(() => {
     if (!edition) return gamesData;
