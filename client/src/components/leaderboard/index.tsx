@@ -10,17 +10,18 @@ import LeaderboardRow from "../modules/leaderboard-row";
 import { useAccount } from "@starknet-react/core";
 import ArcadeSubTabs from "../modules/sub-tabs";
 import { joinPaths } from "@/helpers";
+import { useUsername } from "@/hooks/account";
 
 const DEFAULT_CAP = 30;
 const ROW_HEIGHT = 44;
 
 export function Leaderboard({ edition }: { edition?: EditionModel }) {
   const { isConnected, address } = useAccount();
+  const { username } = useUsername({ address: address || "" });
   const { achievements, globals, players, usernames, isLoading, isError } =
     useAchievements();
   const { pins, follows } = useArcade();
   const [cap, setCap] = useState(DEFAULT_CAP);
-  const [hasScore, setHasScore] = useState(false);
   const parentRef = useRef<HTMLDivElement>(null);
 
   const following = useMemo(() => {
@@ -39,20 +40,6 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
   const gameAchievements = useMemo(() => {
     return achievements[edition?.config.project || ""] || [];
   }, [achievements, edition]);
-
-  useEffect(() => {
-    if (!address) {
-      setHasScore(false);
-      return;
-    }
-
-    const playerList = edition ? gamePlayers : globals;
-    const hasRank = playerList.some(
-      (player) => BigInt(player.address) === BigInt(address),
-    );
-
-    setHasScore(hasRank);
-  }, [address, edition, gamePlayers, globals]);
 
   const location = useLocation();
   const handleClick = useCallback(
@@ -100,13 +87,38 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
         following: following.includes(getChecksumAddress(player.address)),
       };
     });
+
+    // Check if the user is in the data list
     const selfData = data.find(
       (player) => BigInt(player.address) === BigInt(address || "0x0"),
     );
+
+    // If the user isn't in the list but has an address, create a placeholder entry for them
+    const userPlaceholder =
+      !selfData && address
+        ? {
+            address: getChecksumAddress(address),
+            name: username || address.slice(0, 9),
+            rank: data.length + 1, // Rank them at the bottom
+            points: 0, // Zero points
+            highlight: true,
+            pins: [],
+            following: false,
+          }
+        : null;
+
+    // Always include user at the bottom if they have an address
     const newAll =
-      rank < cap || !selfData
+      !address || rank < cap || !selfData
         ? data.slice(0, cap)
         : [...data.slice(0, cap - 1), selfData];
+
+    // Add user placeholder if they're not in the list but have an address
+    const finalAll =
+      userPlaceholder && !newAll.some((p) => p.highlight)
+        ? [...newAll.slice(0, cap - 1), userPlaceholder]
+        : newAll;
+
     const filtereds = data.filter((player) =>
       following.includes(getChecksumAddress(player.address)),
     );
@@ -118,7 +130,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
         ? filtereds.slice(0, cap)
         : [...filtereds.slice(0, cap - 1), selfData];
     return {
-      all: newAll,
+      all: finalAll,
       following: newFollowings,
     };
   }, [gamePlayers, gameAchievements, address, pins, usernames, following, cap]);
@@ -138,13 +150,37 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
         following: following.includes(getChecksumAddress(player.address)),
       };
     });
+
+    // Check if the user is in the data list
     const selfData = data.find(
       (player) => BigInt(player.address) === BigInt(address || "0x0"),
     );
+
+    // If the user isn't in the list but has an address, create a placeholder entry
+    const userPlaceholder =
+      !selfData && address
+        ? {
+            address: getChecksumAddress(address),
+            name: username || address.slice(0, 9),
+            rank: data.length + 1, // Rank them at the bottom
+            points: 0, // Zero points
+            highlight: true,
+            following: false,
+          }
+        : null;
+
+    // Always include user at the bottom if they have an address
     const newAll =
-      rank < cap || !selfData
+      !address || rank < cap || !selfData
         ? data.slice(0, cap)
         : [...data.slice(0, cap - 1), selfData];
+
+    // Add user placeholder if they're not in the list but have an address
+    const finalAll =
+      userPlaceholder && !newAll.some((p) => p.highlight)
+        ? [...newAll.slice(0, cap - 1), userPlaceholder]
+        : newAll;
+
     const filtereds = data.filter((player) =>
       following.includes(getChecksumAddress(player.address)),
     );
@@ -156,7 +192,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
         ? filtereds.slice(0, cap)
         : [...filtereds.slice(0, cap - 1), selfData];
     return {
-      all: newAll,
+      all: finalAll,
       following: newFollowings,
     };
   }, [globals, address, usernames, following, cap]);
@@ -211,7 +247,7 @@ export function Leaderboard({ edition }: { edition?: EditionModel }) {
             <TabsContent
               className={cn(
                 "p-0 mt-0 pb-3 lg:pb-6 grow w-full",
-                hasScore ? "pb-[88px]" : "pb-3",
+                isConnected ? "pb-[88px]" : "pb-3",
               )}
               value="all"
             >
