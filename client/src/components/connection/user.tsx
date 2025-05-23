@@ -63,7 +63,7 @@ export function User() {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       <Button
         variant="secondary"
         className="bg-spacer-100 px-3 py-2.5"
