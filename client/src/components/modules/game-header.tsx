@@ -118,7 +118,6 @@ export const ArcadeGameHeader = ({
             isMobile ? "lighter" : hover && clickable ? "lighter" : "light"
           }
           size="md"
-          centered={true}
         />
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-0.5 lg:gap-3 overflow-hidden">
           <p className="text-foreground-100 text-sm font-medium whitespace-nowrap truncate">
