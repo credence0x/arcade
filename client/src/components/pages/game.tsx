@@ -75,7 +75,7 @@ export function GamePage() {
                 </div>
               </div>
             ) : !isMobile ? ( // Desktop view
-              <div className="flex gap-3 items-center overflow-hidden">
+              <div className="flex gap-4 items-center overflow-hidden">
                 <Thumbnail
                   icon={
                     edition?.properties.icon || game?.properties.icon || arcade
