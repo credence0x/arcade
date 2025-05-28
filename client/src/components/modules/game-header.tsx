@@ -44,7 +44,7 @@ export interface ArcadeGameHeaderProps
 }
 
 export const arcadeGameHeaderVariants = cva(
-  "group h-16 lg:h-14 flex justify-between items-center p-3 gap-x-3 data-[clickable=true]:cursor-pointer overflow-hidden",
+  "group h-16 lg:h-14 flex justify-between items-center gap-x-3 data-[clickable=true]:cursor-pointer overflow-hidden",
   {
     variants: {
       variant: {
@@ -52,7 +52,7 @@ export const arcadeGameHeaderVariants = cva(
         darker: "bg-background-100",
         dark: "bg-background-125",
         default:
-          "bg-background-200 hover:bg-background-300 bg-top bg-cover bg-no-repeat select-none",
+          "bg-background-200 p-3 hover:bg-background-300 bg-top bg-cover bg-no-repeat select-none",
         light: "bg-background-200",
         lighter: "bg-background-200",
         lightest: "bg-background-200",
@@ -117,7 +117,7 @@ export const ArcadeGameHeader = ({
           variant={
             isMobile ? "lighter" : hover && clickable ? "lighter" : "light"
           }
-          size="md"
+          size={isMobile ? "lg" : "md"}
         />
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-0.5 lg:gap-3 overflow-hidden">
           <p className="text-foreground-100 text-sm font-medium whitespace-nowrap truncate">
