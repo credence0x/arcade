@@ -59,39 +59,24 @@ export function GamePage() {
         )}
       >
         <div className="flex items-start justify-between">
-          {
-            isMobile && !isDashboard ? ( // Mobile view + not dashboard
-              <div className="flex gap-4 items-center overflow-hidden">
-                <Thumbnail
-                  icon={edition?.properties.icon || game?.properties.icon}
-                  size="xl"
-                  className="min-w-16 min-h-16"
-                />
-                <div className="flex flex-col gap-2 overflow-hidden">
-                  <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
-                    {game?.name || "Dashboard"}
-                  </p>
-                  <Editions />
-                </div>
-              </div>
-            ) : !isMobile ? ( // Desktop view
-              <div className="flex gap-4 items-center overflow-hidden">
-                <Thumbnail
-                  icon={
-                    edition?.properties.icon || game?.properties.icon || arcade
-                  }
-                  size="xl"
-                  className="min-w-16 min-h-16"
-                />
-                <div className="flex flex-col gap-2 overflow-hidden">
-                  <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
-                    {game?.name || "Dashboard"}
-                  </p>
-                  <Editions />
-                </div>
-              </div>
-            ) : null // Mobile view + is dashboard
-          }
+          <div
+            className={cn(
+              "flex gap-4 items-center overflow-hidden",
+              isDashboard && isMobile && "hidden",
+            )}
+          >
+            <Thumbnail
+              icon={edition?.properties.icon || game?.properties.icon}
+              size="xl"
+              className="min-w-16 min-h-16"
+            />
+            <div className="flex flex-col gap-2 overflow-hidden">
+              <p className="font-semibold text-xl/[24px] text-foreground-100 truncate">
+                {game?.name || "Dashboard"}
+              </p>
+              <Editions />
+            </div>
+          </div>
           <GameSocials socials={socials} />
         </div>
         <div className={cn("lg:hidden", !socials?.website && "hidden")}>
