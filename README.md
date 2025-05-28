@@ -22,3 +22,9 @@ pnpm install
 ```bash
 pnpm dev
 ```
+
+## Achievements generation
+Generate cairo from an achievement csv file
+```bash
+npx gen ./scripts/achievements.csv ./scripts/achievements.cairo
+```
