@@ -66,7 +66,7 @@ export function GamePage() {
             )}
           >
             <Thumbnail
-              icon={edition?.properties.icon || game?.properties.icon}
+              icon={edition?.properties.icon || game?.properties.icon || arcade}
               size="xl"
               className="min-w-16 min-h-16"
             />
