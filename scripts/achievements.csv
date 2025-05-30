@@ -1,0 +1,7 @@
+id,group,index,title,points,icon,hidden,tasks,description
+SIMPLE_1,Simple,0,Simple level 1,10,fa-simple-1,0,SIMPLE:10:Do simple 10 times,Description for simple_1
+SIMPLE_2,Simple,1,Simple level 2,20,fa-simple-2,0,SIMPLE:20:Do simple 20 times,Description for simple_2
+SIMPLE_3,Simple,2,Simple level 3,50,fa-simple-3,0,SIMPLE:50:Do simple 50 times,Description for simple_3
+COMPOSITE,Composite,0,Composite,100,fa-composite,0,"COMP_A:1:Do A 1 time
+COMP_B:5:Do B 5 times",Description for composite
+HIDDEN,Hidden,0,Hidden,69,fa-hidden,1,HIDDEN:1:Do hidden,Description for hidden
