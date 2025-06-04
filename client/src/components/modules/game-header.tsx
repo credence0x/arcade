@@ -44,7 +44,7 @@ export interface ArcadeGameHeaderProps
 }
 
 export const arcadeGameHeaderVariants = cva(
-  "group h-16 lg:h-14 flex justify-between items-center gap-x-3 data-[clickable=true]:cursor-pointer overflow-hidden",
+  "group flex justify-between items-center gap-x-3 data-[clickable=true]:cursor-pointer overflow-hidden",
   {
     variants: {
       variant: {

@@ -28,7 +28,7 @@ export interface AchievementSummaryProps
   color?: string;
 }
 
-const achievementSummaryVariants = cva("border border-transparent", {
+const achievementSummaryVariants = cva("border border-transparent gap-3", {
   variants: {
     variant: {
       darkest: "",
@@ -107,7 +107,7 @@ export const AchievementSummary = ({
           variant={variant}
           completed
           className={cn(
-            "grow",
+            "grow p-1",
             variant === "dark" && "bg-background-125",
             className,
           )}
