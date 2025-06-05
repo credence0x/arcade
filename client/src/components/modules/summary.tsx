@@ -28,7 +28,7 @@ export interface AchievementSummaryProps
   color?: string;
 }
 
-const achievementSummaryVariants = cva("border border-transparent gap-3", {
+const achievementSummaryVariants = cva("border border-transparent", {
   variants: {
     variant: {
       darkest: "",
