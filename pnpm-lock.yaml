@@ -51,8 +51,17 @@ importers:
         specifier: github:cartridge-gg/presets#e6a5022
         version: https://codeload.github.com/cartridge-gg/presets/tar.gz/e6a5022
       '@cartridge/ui':
-        specifier: github:cartridge-gg/ui#52aafad
-        version: https://codeload.github.com/cartridge-gg/ui/tar.gz/52aafad(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sonner@1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(starknet@6.23.1)(tailwindcss@3.4.17)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))
+        specifier: github:cartridge-gg/ui#9172a59
+        version: https://codeload.github.com/cartridge-gg/ui/tar.gz/9172a59(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sonner@1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(starknet@6.23.1)(tailwindcss@3.4.17)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))
+      '@dojoengine/sdk':
+        specifier: 1.5.5
+        version: 1.5.5(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(starknet@6.23.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
+      '@dojoengine/torii-client':
+        specifier: 1.5.5
+        version: 1.5.5
+      '@dojoengine/torii-wasm':
+        specifier: 1.5.5
+        version: 1.5.5
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.56.2(react@18.3.1))
@@ -823,8 +832,8 @@ packages:
       starknet: ^6.21.0
       viem: ^2.21.32
 
-  '@cartridge/ui@https://codeload.github.com/cartridge-gg/ui/tar.gz/52aafad':
-    resolution: {tarball: https://codeload.github.com/cartridge-gg/ui/tar.gz/52aafad}
+  '@cartridge/ui@https://codeload.github.com/cartridge-gg/ui/tar.gz/9172a59':
+    resolution: {tarball: https://codeload.github.com/cartridge-gg/ui/tar.gz/9172a59}
     version: 0.7.14-alpha.2
     peerDependencies:
       react: ^18.2.0
@@ -6846,7 +6855,7 @@ snapshots:
       - react-native
       - tailwindcss
 
-  '@cartridge/ui@https://codeload.github.com/cartridge-gg/ui/tar.gz/52aafad(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sonner@1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(starknet@6.23.1)(tailwindcss@3.4.17)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))':
+  '@cartridge/ui@https://codeload.github.com/cartridge-gg/ui/tar.gz/9172a59(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sonner@1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(starknet@6.23.1)(tailwindcss@3.4.17)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))':
     dependencies:
       '@cartridge/presets': https://codeload.github.com/cartridge-gg/presets/tar.gz/e6a5022
       '@radix-ui/react-accordion': 1.2.10(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
