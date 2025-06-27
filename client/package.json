@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@cartridge/arcade": "workspace:*",
-    "@cartridge/marketplace": "0.0.6",
+    "@cartridge/marketplace": "0.0.9",
     "@cartridge/connector": "0.7.14-alpha.3",
     "@cartridge/controller": "0.7.14-alpha.3",
     "@cartridge/penpal": "^6.2.3",

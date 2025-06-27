@@ -1,10 +1,4 @@
-import {
-  Button,
-  CollectibleCard,
-  Empty,
-  Separator,
-  Skeleton,
-} from "@cartridge/ui";
+import { Button, CollectibleCard, Empty, Separator } from "@cartridge/ui";
 import { useProject } from "@/hooks/project";
 import { useCollection } from "@/hooks/market-collections";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -259,16 +253,6 @@ function Item({
     </div>
   );
 }
-
-const LoadingState = () => {
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 place-items-center select-none">
-      <Skeleton className="w-full h-[164px] rounded" />
-      <Skeleton className="w-full h-[164px] rounded" />
-      <Skeleton className="hidden lg:block w-full h-[164px] rounded" />
-    </div>
-  );
-};
 
 const EmptyState = () => {
   return (
