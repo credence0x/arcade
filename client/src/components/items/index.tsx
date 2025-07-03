@@ -1,4 +1,14 @@
-import { Button, CollectibleCard, Empty, Separator } from "@cartridge/ui";
+import {
+  Button,
+  Checkbox,
+  cn,
+  CollectibleCard,
+  Empty,
+  MarketplaceSearch,
+  OlmechIcon,
+  SearchResult,
+  Separator,
+} from "@cartridge/ui";
 import { useProject } from "@/hooks/project";
 import { useCollection } from "@/hooks/market-collections";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -15,6 +25,25 @@ import { useArcade } from "@/hooks/arcade";
 const DEFAULT_ROW_CAP = 6;
 const ROW_HEIGHT = 218;
 
+const DATA: SearchResult[] = [
+  {
+    image: <OlmechIcon variant="one" className="h-full w-full" />,
+    label: "ashe",
+  },
+  {
+    image: <OlmechIcon variant="two" className="h-full w-full" />,
+    label: "ashetest",
+  },
+  {
+    image: <OlmechIcon variant="three" className="h-full w-full" />,
+    label: "bal7hazar",
+  },
+  {
+    image: <OlmechIcon variant="four" className="h-full w-full" />,
+    label: "yourwurstknightmare-yourwurstknightmare",
+  },
+];
+
 type Asset = Token & { orders: number[]; owner: string };
 
 export function Items() {
@@ -28,6 +57,15 @@ export function Items() {
   const parentRef = useRef<HTMLDivElement>(null);
   const { chains } = useArcade();
   const { edition } = useProject();
+  const [search, setSearch] = useState<string>("a");
+  const [selected, setSelected] = useState<SearchResult | undefined>();
+
+  const options = useMemo(() => {
+    if (!search) return [];
+    return DATA.filter((item) =>
+      item.label.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [search]);
 
   const chain: Chain = useMemo(() => {
     return (
@@ -59,6 +97,10 @@ export function Items() {
         .sort((a, b) => b.orders.length - a.orders.length);
     }, [collection, orders]);
 
+  const listedTokens = useMemo(() => {
+    return tokens.filter((token) => token.orders.length > 0);
+  }, [tokens]);
+
   const handleScroll = useCallback(() => {
     const parent = parentRef.current;
     if (!parent) return;
@@ -67,6 +109,10 @@ export function Items() {
     if (newCap < cap) return;
     setCap(newCap + 0);
   }, [parentRef, cap, setCap]);
+
+  const handleReset = useCallback(() => {
+    setSelection([]);
+  }, [setSelection]);
 
   const handlePurchase = useCallback(
     async (tokens: (Token & { orders: number[]; owner: string })[]) => {
@@ -149,10 +195,43 @@ export function Items() {
   if (!collection) return <EmptyState />;
 
   return (
-    <div className="flex flex-col h-full w-full overflow-hidden">
+    <div className="p-6 flex flex-col gap-4 h-full w-full overflow-hidden">
+      <div className="min-h-10 w-full flex justify-between items-center relative">
+        <div
+          className={cn(
+            "h-6 p-0.5 flex items-center gap-1.5 text-foreground-200 text-xs",
+            !selection.length && "text-foreground-400",
+            !!selection.length && "cursor-pointer",
+          )}
+          onClick={handleReset}
+        >
+          {selection.length > 0 && (
+            <Checkbox
+              className="text-foreground-100"
+              variant="minus-line"
+              size="sm"
+              checked
+            />
+          )}
+          {selection.length > 0 ? (
+            <p>{`${selection.length} / ${listedTokens.length} Selected`}</p>
+          ) : (
+            <p>{`${tokens.length} Items`}</p>
+          )}
+        </div>
+        <MarketplaceSearch
+          search={search}
+          setSearch={setSearch}
+          selected={selected}
+          setSelected={setSelected}
+          options={options}
+          variant="darkest"
+          className="w-[200px] lg:w-[240px] absolute top-0 right-0 z-10"
+        />
+      </div>
       <div
         ref={parentRef}
-        className="p-6 grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 place-items-center select-none overflow-y-scroll h-full"
+        className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 place-items-center select-none overflow-y-scroll h-full"
         style={{ scrollbarWidth: "none" }}
       >
         {tokens.slice(0, cap * 3).map((token) => (
