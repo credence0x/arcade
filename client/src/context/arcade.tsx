@@ -298,6 +298,7 @@ export const ArcadeProvider = ({ children }: { children: ReactNode }) => {
           try {
             const response = await fetch(url);
             if (!!response && response.status !== 404) {
+              // @ts-expect-error dojo.js version mismatch causing type issue
               const client: torii.ToriiClient =
                 await provider.getToriiClient(url);
               clients[edition.config.project] = client;
@@ -309,6 +310,7 @@ export const ArcadeProvider = ({ children }: { children: ReactNode }) => {
         }),
       );
       const arcade = "https://api.cartridge.gg/x/arcade-mainnet/torii";
+      // @ts-expect-error dojo.js version mismatch causing type issue
       const client: torii.ToriiClient = await provider.getToriiClient(arcade);
       clients["arcade-mainnet"] = client;
       setClients(clients);

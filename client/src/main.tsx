@@ -5,25 +5,33 @@ import { Provider } from "@/context";
 import { registerSW } from "virtual:pwa-register";
 import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { initSDK, setupWorld, configs } from "@cartridge/marketplace";
+import type { SDK, SchemaType } from "@dojoengine/sdk";
+import { DojoSdkProvider } from "@dojoengine/sdk/react";
+import { constants } from "starknet";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 registerSW();
+const queryClient = new QueryClient()
 
-createRoot(document.getElementById("root")!).render(
-  <Provider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="player/:player" element={<App />}>
-          <Route path="tab/:tab" element={<App />} />
-        </Route>
-        <Route path="game/:game" element={<App />}>
-          <Route path="tab/:tab" element={<App />} />
-          <Route path="collection/:collection" element={<App />}>
-            <Route path="tab/:tab" element={<App />} />
-          </Route>
+type AppWrapperProps = {
+  sdk: SDK<SchemaType>,
+  dojoConfig: any
+};
+
+function AppWrapper({ sdk, dojoConfig }: AppWrapperProps) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <DojoSdkProvider
+        sdk={sdk}
+        dojoConfig={dojoConfig}
+        clientFn={setupWorld}
+      >
+        <Routes>
           <Route path="player/:player" element={<App />}>
             <Route path="tab/:tab" element={<App />} />
           </Route>
-          <Route path="edition/:edition" element={<App />}>
+          <Route path="game/:game" element={<App />}>
             <Route path="tab/:tab" element={<App />} />
             <Route path="collection/:collection" element={<App />}>
               <Route path="tab/:tab" element={<App />} />
@@ -31,16 +39,41 @@ createRoot(document.getElementById("root")!).render(
             <Route path="player/:player" element={<App />}>
               <Route path="tab/:tab" element={<App />} />
             </Route>
+            <Route path="edition/:edition" element={<App />}>
+              <Route path="tab/:tab" element={<App />} />
+              <Route path="collection/:collection" element={<App />}>
+                <Route path="tab/:tab" element={<App />} />
+              </Route>
+              <Route path="player/:player" element={<App />}>
+                <Route path="tab/:tab" element={<App />} />
+              </Route>
+            </Route>
           </Route>
-        </Route>
-        <Route path="tab/:tab" element={<App />} />
-        <Route path="collection/:collection" element={<App />}>
           <Route path="tab/:tab" element={<App />} />
-        </Route>
-        <Route path="*" element={<App />} />
-      </Routes>
-      <SonnerToaster position="top-center" />
-    </BrowserRouter>
-    ,
-  </Provider>,
-);
+          <Route path="collection/:collection" element={<App />}>
+            <Route path="tab/:tab" element={<App />} />
+          </Route>
+          <Route path="*" element={<App />} />
+        </Routes>
+      </DojoSdkProvider>
+    </QueryClientProvider>
+  );
+}
+
+async function main() {
+  const chainId = constants.StarknetChainId.SN_MAIN;
+  const dojoConfig = configs[chainId];
+  const sdk = await initSDK(chainId);
+
+  createRoot(document.getElementById("root")!).render(
+    <Provider>
+      <BrowserRouter>
+        {/* @ts-expect-error dojo.js version mismatch */}
+        <AppWrapper sdk={sdk} dojoConfig={dojoConfig} />
+        <SonnerToaster position="top-center" />
+      </BrowserRouter>
+    </Provider>
+  );
+}
+
+main()

@@ -1,4 +1,5 @@
 import { MetadataAttribute } from "@/context/market-filters";
+import { TokenMetadataUI } from "@cartridge/marketplace";
 import { Token } from "@dojoengine/torii-wasm";
 import { addAddressPadding } from "starknet";
 
@@ -200,6 +201,17 @@ export const MetadataHelper = {
     }
   },
 
+  getMetadataImageURL: (token: Token & { metadata: TokenMetadataUI }): string => {
+    if (token.metadata?.image) {
+      let image = token.metadata?.image;
+      if (image.startsWith("ipfs://")) {
+        image = image.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")
+      }
+      return image;
+    }
+    return ""
+  },
+
   getMetadataImage: async (token: Token): Promise<string | undefined> => {
     if (!token.metadata) return;
     let metadata;
@@ -207,6 +219,7 @@ export const MetadataHelper = {
       try {
         metadata = JSON.parse(token.metadata);
         const response = await fetch(metadata.image);
+
         if (response.ok) {
           return metadata.image;
         }

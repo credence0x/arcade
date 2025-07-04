@@ -1,25 +1,33 @@
 {
-	"name": "arcade",
-	"packageManager": "pnpm@10.5.2",
-	"scripts": {
-		"build:deps": "turbo build:deps",
-		"build": "turbo build",
-		"format": "turbo format",
-		"format:check": "turbo format:check",
-		"lint": "turbo lint",
-		"lint:check": "turbo lint:check",
-		"dev": "turbo watch dev --concurrency 15"
-	},
-	"devDependencies": {
-		"@types/node": "^22.15.23",
-		"change-case": "^5.4.4",
-		"csv-parser": "^3.2.0",
-		"eslint": "^9.12.0",
-		"prettier": "^3.5.3",
-		"tsup": "^8.3.5",
-		"turbo": "^2.4.4"
-	},
-	"bin": {
-		"gen": "./scripts/genAchievements.ts"
-	}
+  "name": "arcade",
+  "packageManager": "pnpm@10.5.2",
+  "scripts": {
+    "build:deps": "turbo build:deps",
+    "build": "turbo build",
+    "format": "turbo format",
+    "format:check": "turbo format:check",
+    "lint": "turbo lint",
+    "lint:check": "turbo lint:check",
+    "dev": "turbo watch dev --concurrency 15"
+  },
+  "devDependencies": {
+    "@types/node": "^22.16.4",
+    "change-case": "^5.4.4",
+    "csv-parser": "^3.2.0",
+    "eslint": "^9.31.0",
+    "prettier": "^3.6.2",
+    "tsup": "^8.5.0",
+    "turbo": "^2.5.4"
+  },
+  "bin": {
+    "gen": "./scripts/genAchievements.ts"
+  },
+  "pnpm": {
+    "overrides": {
+      "@cartridge/marketplace": "link:../marketplace/packages/sdk"
+    }
+  },
+  "dependencies": {
+    "@cartridge/marketplace": "link:../marketplace/packages/sdk"
+  }
 }
