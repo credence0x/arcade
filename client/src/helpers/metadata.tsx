@@ -1,3 +1,4 @@
+import { MetadataAttribute } from "@/context/market-filters";
 import { Token } from "@dojoengine/torii-wasm";
 import { addAddressPadding } from "starknet";
 
@@ -8,6 +9,31 @@ export const MetadataHelper = {
   async check(url: string): Promise<boolean> {
     const response = await fetch(url);
     return response.ok;
+  },
+
+  extract: (tokens: Token[]) => {
+    const newMetadata: { [key: string]: MetadataAttribute } = {};
+    tokens.forEach((token) => {
+      const metadata = token.metadata as unknown as {
+        attributes: { trait_type: string; value: string }[];
+      };
+      if (!metadata.attributes) return;
+      metadata.attributes.forEach((attribute) => {
+        const trait = attribute.trait_type;
+        const value = attribute.value;
+        const key = `${trait}-${value}`;
+        if (!newMetadata[key]) {
+          newMetadata[key] = {
+            trait_type: trait,
+            value: value,
+            tokens: [token.token_id],
+          };
+          return;
+        }
+        newMetadata[key].tokens.push(token.token_id);
+      });
+    });
+    return Object.values(newMetadata);
   },
 
   async encode(url: string): Promise<string | ArrayBuffer | null> {

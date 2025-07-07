@@ -15,6 +15,7 @@ import { PostHogProvider } from "./posthog";
 import { SidebarProvider } from "./sidebar";
 import { MarketplaceProvider } from "./marketplace";
 import { MarketCollectionProvider } from "./market-collection";
+import { MarketFiltersProvider } from "./market-filters";
 
 export function Provider({ children }: PropsWithChildren) {
   const queryClient = new QueryClient();
@@ -29,23 +30,27 @@ export function Provider({ children }: PropsWithChildren) {
             <MarketplaceProvider>
               <ArcadeProvider>
                 <MarketCollectionProvider>
-                  <StarknetProvider>
-                    <OwnershipsProvider>
-                      <CollectionProvider>
-                        <TokenProvider>
-                          <AchievementProvider>
-                            <DiscoversProvider>
-                              <ActivitiesProvider>
-                                <MetricsProvider>
-                                  <SidebarProvider>{children}</SidebarProvider>
-                                </MetricsProvider>
-                              </ActivitiesProvider>
-                            </DiscoversProvider>
-                          </AchievementProvider>
-                        </TokenProvider>
-                      </CollectionProvider>
-                    </OwnershipsProvider>
-                  </StarknetProvider>
+                  <MarketFiltersProvider>
+                    <StarknetProvider>
+                      <OwnershipsProvider>
+                        <CollectionProvider>
+                          <TokenProvider>
+                            <AchievementProvider>
+                              <DiscoversProvider>
+                                <ActivitiesProvider>
+                                  <MetricsProvider>
+                                    <SidebarProvider>
+                                      {children}
+                                    </SidebarProvider>
+                                  </MetricsProvider>
+                                </ActivitiesProvider>
+                              </DiscoversProvider>
+                            </AchievementProvider>
+                          </TokenProvider>
+                        </CollectionProvider>
+                      </OwnershipsProvider>
+                    </StarknetProvider>
+                  </MarketFiltersProvider>
                 </MarketCollectionProvider>
               </ArcadeProvider>
             </MarketplaceProvider>

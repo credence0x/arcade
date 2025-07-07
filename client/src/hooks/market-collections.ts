@@ -135,7 +135,7 @@ export function useCollection(
           setCollection(
             items.map((i: Token) => {
               try {
-                i.metadata = JSON.parse(i.metadata);
+                i.metadata = JSON.parse(i.metadata || "{}");
                 return i;
               } catch (_err) {
                 console.error(i, _err);

@@ -21,6 +21,7 @@ import ControllerConnector from "@cartridge/connector/controller";
 import { useAccount } from "@starknet-react/core";
 import { Chain, mainnet } from "@starknet-react/chains";
 import { useArcade } from "@/hooks/arcade";
+import { useMarketFilters } from "@/hooks/market-filters";
 
 const DEFAULT_ROW_CAP = 6;
 const ROW_HEIGHT = 218;
@@ -47,18 +48,25 @@ const DATA: SearchResult[] = [
 type Asset = Token & { orders: number[]; owner: string };
 
 export function Items() {
+  const {
+    active: filter,
+    setAllMetadata,
+    setFilteredMetadata,
+    isSelected,
+    empty,
+  } = useMarketFilters();
   const { connector } = useAccount();
   const { collection: collectionAddress } = useProject();
   const { orders } = useMarketplace();
   const { collection } = useCollection(collectionAddress || "", 10000);
+  const [search, setSearch] = useState<string>("a");
+  const [selected, setSelected] = useState<SearchResult | undefined>();
   const [cap, setCap] = useState(DEFAULT_ROW_CAP);
   const [selection, setSelection] = useState<Asset[]>([]);
   const [username, setUsername] = useState<string>("");
   const parentRef = useRef<HTMLDivElement>(null);
   const { chains } = useArcade();
   const { edition } = useProject();
-  const [search, setSearch] = useState<string>("a");
-  const [selected, setSelected] = useState<SearchResult | undefined>();
 
   const options = useMemo(() => {
     if (!search) return [];
@@ -95,11 +103,22 @@ export function Items() {
           };
         })
         .sort((a, b) => b.orders.length - a.orders.length);
-    }, [collection, orders]);
+    }, [collection, orders, filter]);
 
-  const listedTokens = useMemo(() => {
-    return tokens.filter((token) => token.orders.length > 0);
-  }, [tokens]);
+  const filteredTokens = useMemo(() => {
+    return tokens.filter((token) => {
+      const attributes =
+        (
+          token.metadata as unknown as {
+            attributes: { trait_type: string; value: string }[];
+          }
+        ).attributes || [];
+      return (
+        (token.orders.length > 0 || filter === 1) &&
+        (attributes.length === 0 || empty || isSelected(attributes))
+      );
+    });
+  }, [tokens, filter, isSelected, empty]);
 
   const handleScroll = useCallback(() => {
     const parent = parentRef.current;
@@ -192,6 +211,16 @@ export function Items() {
     fetch();
   }, [connector]);
 
+  useEffect(() => {
+    if (!tokens) return;
+    setAllMetadata(MetadataHelper.extract(tokens));
+  }, [tokens, setAllMetadata]);
+
+  useEffect(() => {
+    if (!filteredTokens) return;
+    setFilteredMetadata(MetadataHelper.extract(filteredTokens));
+  }, [filteredTokens, setFilteredMetadata]);
+
   if (!collection) return <EmptyState />;
 
   return (
@@ -214,9 +243,9 @@ export function Items() {
             />
           )}
           {selection.length > 0 ? (
-            <p>{`${selection.length} / ${listedTokens.length} Selected`}</p>
+            <p>{`${selection.length} / ${filteredTokens.length} Selected`}</p>
           ) : (
-            <p>{`${tokens.length} Items`}</p>
+            <p>{`${filteredTokens.length} Items`}</p>
           )}
         </div>
         <MarketplaceSearch
@@ -234,7 +263,7 @@ export function Items() {
         className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 place-items-center select-none overflow-y-scroll h-full"
         style={{ scrollbarWidth: "none" }}
       >
-        {tokens.slice(0, cap * 3).map((token) => (
+        {filteredTokens.slice(0, cap * 3).map((token) => (
           <Item
             key={`${token.contract_address}-${token.token_id}`}
             token={token}

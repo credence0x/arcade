@@ -1,3 +1,4 @@
+import { useMarketFilters } from "@/hooks/market-filters";
 import {
   MarketplaceFilters,
   MarketplaceHeader,
@@ -10,33 +11,53 @@ import {
 } from "@cartridge/ui";
 import { useCallback, useMemo, useState } from "react";
 
-const ATTRIBUTES = [
-  "Name",
-  "XP",
-  "Level",
-  "Health",
-  "Gold",
-  "Strength",
-  "Dexterity",
-  "Intelligence",
-  "Vitality",
-  "Wisdom",
-];
-const PROPERTIES = [1, 2, 3, 4, 5];
-
 export const Filters = () => {
-  const [active, setActive] = useState<number>(0);
+  const {
+    active,
+    setActive,
+    allMetadata,
+    filteredMetadata,
+    clearable,
+    addSelected,
+    isActive,
+    resetSelected,
+  } = useMarketFilters();
   const [search, setSearch] = useState<{ [key: string]: string }>({});
-  const [selected, setSelected] = useState<{ [key: string]: boolean }>({});
 
-  const reset = useMemo(() => {
-    return Object.values(selected).filter((value) => !!value).length > 0;
-  }, [selected]);
+  const { attributes, properties } = useMemo(() => {
+    const attributes = Array.from(
+      new Set(allMetadata.map((attribute) => attribute.trait_type)),
+    ).sort();
+    const properties = attributes.reduce(
+      (acc, attribute) => {
+        const values = allMetadata
+          .filter((m) => m.trait_type === attribute)
+          .map((m) => m.value);
+        const props = Array.from(new Set(values))
+          .sort()
+          .filter((value) =>
+            value
+              .toLowerCase()
+              .includes(search[attribute]?.toLowerCase() || ""),
+          );
+        acc[attribute] = props.map((prop) => ({
+          property: prop,
+          count:
+            filteredMetadata.find(
+              (m) => m.trait_type === attribute && m.value === prop,
+            )?.tokens.length || 0,
+        }));
+        return acc;
+      },
+      {} as { [key: string]: { property: string; count: number }[] },
+    );
+    return { attributes, properties };
+  }, [allMetadata, filteredMetadata, search]);
 
   const clear = useCallback(() => {
-    setSelected({});
+    resetSelected();
     setSearch({});
-  }, []);
+  }, [resetSelected, setSearch]);
 
   return (
     <MarketplaceFilters className="h-full w-[calc(100vw-64px)] max-w-[360px] lg:flex lg:min-w-[360px]">
@@ -54,38 +75,34 @@ export const Filters = () => {
         />
       </div>
       <MarketplaceHeader label="Properties">
-        {reset && <MarketplaceHeaderReset onClick={clear} />}
+        {clearable && <MarketplaceHeaderReset onClick={clear} />}
       </MarketplaceHeader>
-      {ATTRIBUTES.map((label, index) => (
-        <MarketplacePropertyHeader key={index} label={label} count={17}>
+      {attributes.map((attribute, index) => (
+        <MarketplacePropertyHeader
+          key={index}
+          label={attribute}
+          count={properties[attribute].length}
+        >
           <MarketplaceSearchEngine
             variant="darkest"
-            search={search[label] || ""}
+            search={search[attribute] || ""}
             setSearch={(value: string) =>
-              setSearch((prev) => ({ ...prev, [label]: value }))
+              setSearch((prev) => ({ ...prev, [attribute]: value }))
             }
           />
           <div className="flex flex-col gap-px">
-            {PROPERTIES.filter((i) =>
-              `Property ${label} ${i}`
-                .toLowerCase()
-                .includes((search[label] || "").toLowerCase()),
-            ).map((i) => (
+            {properties[attribute].map(({ property, count }, index) => (
               <MarketplacePropertyFilter
-                key={i}
-                label={`Property ${label} ${i}`}
-                count={100}
-                value={selected[label + i] || false}
+                key={`${attribute}-${property}-${index}`}
+                label={property}
+                count={count}
+                value={isActive(attribute, property)}
                 setValue={(value: boolean) =>
-                  setSelected((prev) => ({ ...prev, [label + i]: value }))
+                  addSelected(attribute, property, value)
                 }
               />
             ))}
-            {PROPERTIES.filter((i) =>
-              `Property ${label} ${i}`
-                .toLowerCase()
-                .includes((search[label] || "").toLowerCase()),
-            ).length === 0 && <MarketplacePropertyEmpty />}
+            {properties[attribute].length === 0 && <MarketplacePropertyEmpty />}
           </div>
         </MarketplacePropertyHeader>
       ))}
