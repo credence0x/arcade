@@ -16,6 +16,7 @@ import placeholder from "@/assets/placeholder.svg";
 
 export const Marketplace = () => {
   const { collections } = useMarketCollections();
+  console.log({ collections });
   const { editions, games } = useArcade();
   const { edition } = useProject();
 

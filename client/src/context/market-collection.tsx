@@ -90,19 +90,20 @@ export const MarketCollectionProvider = ({
           try {
             const tokens = await client.getTokens([], []);
             const filtereds = tokens.items.filter((token) => !!token.metadata);
+            if (!filtereds.length) return;
 
             const collection: Record<
               string,
               WithCount<Token>
             > = filtereds.reduce(
-              (acc: Record<string, WithCount<Token>>, curr: Token) => {
-                const address = getChecksumAddress(curr.contract_address);
+              (acc: Record<string, WithCount<Token>>, token: Token) => {
+                const address = getChecksumAddress(token.contract_address);
                 if (address in acc) {
                   acc[address].count += 1;
                   return acc;
                 }
                 acc[address] = {
-                  ...curr,
+                  ...token,
                   contract_address: address,
                   count: 1,
                 };
@@ -111,7 +112,6 @@ export const MarketCollectionProvider = ({
               },
               {},
             );
-            if (filtereds.length === 0) return;
 
             collections[project] = collection;
             return;

@@ -42,6 +42,10 @@ export const Filters = () => {
           );
         acc[attribute] = props.map((prop) => ({
           property: prop,
+          order:
+            allMetadata.find(
+              (m) => m.trait_type === attribute && m.value === prop,
+            )?.tokens.length || 0,
           count:
             filteredMetadata.find(
               (m) => m.trait_type === attribute && m.value === prop,
@@ -49,7 +53,9 @@ export const Filters = () => {
         }));
         return acc;
       },
-      {} as { [key: string]: { property: string; count: number }[] },
+      {} as {
+        [key: string]: { property: string; order: number; count: number }[];
+      },
     );
     return { attributes, properties };
   }, [allMetadata, filteredMetadata, search]);
@@ -60,7 +66,7 @@ export const Filters = () => {
   }, [resetSelected, setSearch]);
 
   return (
-    <MarketplaceFilters className="h-full w-[calc(100vw-64px)] max-w-[360px] lg:flex lg:min-w-[360px]">
+    <MarketplaceFilters className="h-full w-[calc(100vw-64px)] max-w-[360px] lg:flex lg:min-w-[360px] overflow-hidden">
       <MarketplaceHeader label="Status" />
       <div className="flex flex-col gap-2 w-fit">
         <MarketplaceRadialItem
@@ -77,35 +83,45 @@ export const Filters = () => {
       <MarketplaceHeader label="Properties">
         {clearable && <MarketplaceHeaderReset onClick={clear} />}
       </MarketplaceHeader>
-      {attributes.map((attribute, index) => (
-        <MarketplacePropertyHeader
-          key={index}
-          label={attribute}
-          count={properties[attribute].length}
-        >
-          <MarketplaceSearchEngine
-            variant="darkest"
-            search={search[attribute] || ""}
-            setSearch={(value: string) =>
-              setSearch((prev) => ({ ...prev, [attribute]: value }))
-            }
-          />
-          <div className="flex flex-col gap-px">
-            {properties[attribute].map(({ property, count }, index) => (
-              <MarketplacePropertyFilter
-                key={`${attribute}-${property}-${index}`}
-                label={property}
-                count={count}
-                value={isActive(attribute, property)}
-                setValue={(value: boolean) =>
-                  addSelected(attribute, property, value)
-                }
-              />
-            ))}
-            {properties[attribute].length === 0 && <MarketplacePropertyEmpty />}
-          </div>
-        </MarketplacePropertyHeader>
-      ))}
+      <div
+        className="h-full flex flex-col gap-2 overflow-y-scroll"
+        style={{ scrollbarWidth: "none" }}
+      >
+        {attributes.map((attribute, index) => (
+          <MarketplacePropertyHeader
+            key={index}
+            label={attribute}
+            count={properties[attribute].length}
+          >
+            <MarketplaceSearchEngine
+              variant="darkest"
+              search={search[attribute] || ""}
+              setSearch={(value: string) =>
+                setSearch((prev) => ({ ...prev, [attribute]: value }))
+              }
+            />
+            <div className="flex flex-col gap-px">
+              {properties[attribute]
+                .sort((a, b) => b.order - a.order)
+                .map(({ property, count }, index) => (
+                  <MarketplacePropertyFilter
+                    key={`${attribute}-${property}-${index}`}
+                    label={property}
+                    count={count}
+                    disabled={count === 0 && !isActive(attribute, property)}
+                    value={isActive(attribute, property)}
+                    setValue={(value: boolean) =>
+                      addSelected(attribute, property, value)
+                    }
+                  />
+                ))}
+              {properties[attribute].length === 0 && (
+                <MarketplacePropertyEmpty />
+              )}
+            </div>
+          </MarketplacePropertyHeader>
+        ))}
+      </div>
     </MarketplaceFilters>
   );
 };

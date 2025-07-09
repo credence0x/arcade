@@ -5,12 +5,11 @@ import {
   CollectibleCard,
   Empty,
   MarketplaceSearch,
-  OlmechIcon,
   SearchResult,
   Separator,
 } from "@cartridge/ui";
 import { useProject } from "@/hooks/project";
-import { useCollection } from "@/hooks/market-collections";
+import { useBalances, useCollection } from "@/hooks/market-collections";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Token } from "@dojoengine/torii-wasm";
 import { MetadataHelper } from "@/helpers/metadata";
@@ -22,28 +21,11 @@ import { useAccount } from "@starknet-react/core";
 import { Chain, mainnet } from "@starknet-react/chains";
 import { useArcade } from "@/hooks/arcade";
 import { useMarketFilters } from "@/hooks/market-filters";
+import { useUsernames } from "@/hooks/account";
+import { UserAvatar } from "../user/avatar";
 
 const DEFAULT_ROW_CAP = 6;
 const ROW_HEIGHT = 218;
-
-const DATA: SearchResult[] = [
-  {
-    image: <OlmechIcon variant="one" className="h-full w-full" />,
-    label: "ashe",
-  },
-  {
-    image: <OlmechIcon variant="two" className="h-full w-full" />,
-    label: "ashetest",
-  },
-  {
-    image: <OlmechIcon variant="three" className="h-full w-full" />,
-    label: "bal7hazar",
-  },
-  {
-    image: <OlmechIcon variant="four" className="h-full w-full" />,
-    label: "yourwurstknightmare-yourwurstknightmare",
-  },
-];
 
 type Asset = Token & { orders: number[]; owner: string };
 
@@ -59,7 +41,8 @@ export function Items() {
   const { collection: collectionAddress } = useProject();
   const { orders } = useMarketplace();
   const { collection } = useCollection(collectionAddress || "", 10000);
-  const [search, setSearch] = useState<string>("a");
+  const { balances } = useBalances(collectionAddress || "", 10000);
+  const [search, setSearch] = useState<string>("");
   const [selected, setSelected] = useState<SearchResult | undefined>();
   const [cap, setCap] = useState(DEFAULT_ROW_CAP);
   const [selection, setSelection] = useState<Asset[]>([]);
@@ -67,13 +50,6 @@ export function Items() {
   const parentRef = useRef<HTMLDivElement>(null);
   const { chains } = useArcade();
   const { edition } = useProject();
-
-  const options = useMemo(() => {
-    if (!search) return [];
-    return DATA.filter((item) =>
-      item.label.toLowerCase().includes(search.toLowerCase()),
-    );
-  }, [search]);
 
   const chain: Chain = useMemo(() => {
     return (
@@ -83,18 +59,64 @@ export function Items() {
     );
   }, [chains, edition]);
 
+  const accounts = useMemo(() => {
+    if (!balances || balances.length === 0) return [];
+    const owners = balances
+      .filter((balance) => parseInt(balance.balance, 16) > 0)
+      .map((balance) => `0x${BigInt(balance.account_address).toString(16)}`);
+    return Array.from(new Set(owners));
+  }, [balances, collectionAddress]);
+
+  const { usernames } = useUsernames({ addresses: accounts });
+
+  const searchResults = useMemo(() => {
+    return usernames
+      .filter((item) => !!item.username)
+      .map((item) => {
+        const image = (
+          <UserAvatar
+            username={item.username || ""}
+            className="h-full w-full"
+          />
+        );
+        return {
+          image,
+          label: item.username,
+          address: getChecksumAddress(item.address || "0x0"),
+        };
+      });
+  }, [usernames]);
+
+  const options = useMemo(() => {
+    if (!search) return [];
+    return searchResults.filter((item) =>
+      item.label?.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [searchResults, search]);
+
   const tokens: (Token & { orders: number[]; owner: string })[] =
     useMemo(() => {
       if (!collection || !collectionAddress) return [];
       const collectionOrders = orders[getChecksumAddress(collectionAddress)];
       return collection
         .map((token) => {
+          const balance = balances.find(
+            (balance) => balance.token_id === token.token_id,
+          );
           if (!collectionOrders || Object.keys(collectionOrders).length === 0)
-            return { ...token, orders: [], owner: "" };
+            return {
+              ...token,
+              orders: [],
+              owner: balance?.account_address || "0x0",
+            };
           const tokenOrders =
             collectionOrders[Number(token.token_id).toString()];
           if (!tokenOrders || Object.keys(tokenOrders).length === 0)
-            return { ...token, orders: [], owner: "" };
+            return {
+              ...token,
+              orders: [],
+              owner: balance?.account_address || "0x0",
+            };
           const order = Object.values(tokenOrders)[0];
           return {
             ...token,
@@ -103,9 +125,19 @@ export function Items() {
           };
         })
         .sort((a, b) => b.orders.length - a.orders.length);
-    }, [collection, orders, filter]);
+    }, [collection, balances, orders, filter]);
 
   const filteredTokens = useMemo(() => {
+    const account = usernames.find(
+      (item) => item.username === selected?.label,
+    )?.address;
+    const tokenIds = balances
+      .filter(
+        (balance) =>
+          getChecksumAddress(balance.account_address) ===
+          getChecksumAddress(account || "0x0"),
+      )
+      .map((balance) => balance.token_id);
     return tokens.filter((token) => {
       const attributes =
         (
@@ -115,10 +147,11 @@ export function Items() {
         ).attributes || [];
       return (
         (token.orders.length > 0 || filter === 1) &&
-        (attributes.length === 0 || empty || isSelected(attributes))
+        (empty || isSelected(attributes)) &&
+        (!account || tokenIds.includes(token.token_id))
       );
     });
-  }, [tokens, filter, isSelected, empty]);
+  }, [tokens, filter, isSelected, empty, selected, balances]);
 
   const handleScroll = useCallback(() => {
     const parent = parentRef.current;
@@ -139,13 +172,7 @@ export function Items() {
       const contractAddresses = new Set(
         tokens.map((token) => token.contract_address),
       );
-      if (
-        !username ||
-        !edition ||
-        orders.length === 0 ||
-        contractAddresses.size !== 1
-      )
-        return;
+      if (!username || !edition || contractAddresses.size !== 1) return;
       const contractAddress = `0x${BigInt(Array.from(contractAddresses)[0]).toString(16)}`;
       const controller = (connector as ControllerConnector)?.controller;
       if (!controller) {
@@ -166,7 +193,7 @@ export function Items() {
         path = `account/${username}/slot/${project}/inventory/collection/${contractAddress}/purchase${options.length > 0 ? `?${options.join("&")}` : ""}`;
       } else {
         const token = tokens[0];
-        options.push(`address=${token.owner}`);
+        options.push(`address=${getChecksumAddress(token.owner)}`);
         options.push(`tokenIds=${[token.token_id].join(",")}`);
         path = `account/${username}/slot/${project}/inventory/collection/${contractAddress}/token/${token.token_id}${options.length > 0 ? `?${options.join("&")}` : ""}`;
       }
@@ -253,14 +280,14 @@ export function Items() {
           setSearch={setSearch}
           selected={selected}
           setSelected={setSelected}
-          options={options}
+          options={options as SearchResult[]}
           variant="darkest"
           className="w-[200px] lg:w-[240px] absolute top-0 right-0 z-10"
         />
       </div>
       <div
         ref={parentRef}
-        className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 place-items-center select-none overflow-y-scroll h-full"
+        className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 select-none overflow-y-scroll h-full"
         style={{ scrollbarWidth: "none" }}
       >
         {filteredTokens.slice(0, cap * 3).map((token) => (
@@ -269,7 +296,7 @@ export function Items() {
             token={token}
             selection={selection}
             setSelection={setSelection}
-            handlePurchase={handlePurchase}
+            handlePurchase={() => handlePurchase([token])}
           />
         ))}
       </div>
@@ -352,9 +379,7 @@ function Item({
         }
         onSelect={handleSelect}
         lastSale="--"
-        className={
-          selectable ? "cursor-pointer" : "cursor-default pointer-events-none"
-        }
+        className="cursor-pointer"
         selectable={selectable}
         selected={selected}
       />
