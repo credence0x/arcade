@@ -5,7 +5,7 @@
  * @param url - Optional RPC URL for the provider
  */
 import { DojoProvider } from "@dojoengine/core";
-import * as torii from "@dojoengine/torii-wasm";
+import * as torii from "@dojoengine/torii-client";
 import EventEmitter from "eventemitter3";
 import { Account, AccountInterface, AllowArray, Call, constants } from "starknet";
 import { NAMESPACE } from "../constants";
