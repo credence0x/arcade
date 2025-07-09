@@ -7,7 +7,7 @@ import {
 } from "react";
 
 import { ArcadeContext } from "./arcade";
-import { Token } from "@dojoengine/torii-client";
+import { Token } from "@dojoengine/torii-wasm";
 import { getChecksumAddress } from "starknet";
 
 export type Collection = Record<string, Token>;

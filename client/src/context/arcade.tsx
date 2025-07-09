@@ -28,7 +28,7 @@ import {
   shortString,
 } from "starknet";
 import { Chain } from "@starknet-react/chains";
-import * as torii from "@dojoengine/torii-client";
+import * as torii from "@dojoengine/torii-wasm";
 
 const CHAIN_ID = constants.StarknetChainId.SN_MAIN;
 const IGNORES = [
