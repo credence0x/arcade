@@ -89,9 +89,11 @@ export function Items() {
 
   const options = useMemo(() => {
     if (!search) return [];
-    return searchResults.filter((item) =>
-      item.label?.toLowerCase().includes(search.toLowerCase()),
-    );
+    return searchResults
+      .filter((item) =>
+        item.label?.toLowerCase().startsWith(search.toLowerCase()),
+      )
+      .slice(0, 3);
   }, [searchResults, search]);
 
   const tokens: (Token & { orders: number[]; owner: string })[] =

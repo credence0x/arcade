@@ -30,24 +30,6 @@ export const useMarketCollections = () => {
   return { collections };
 };
 
-// export function useCollection(
-//   collectionAddress: string,
-// ) {
-//   const { edition } = useProject();
-//   const { collections } = useMarketCollections();
-
-//   const collection = useMemo(() => {
-//     if (!edition || !collectionAddress) return;
-//     const project = edition.config.project;
-//     if (!project) return;
-//     const projectCollections = collections[project];
-//     if (!projectCollections) return;
-//     return projectCollections[collectionAddress];
-//   }, [collections, collectionAddress, edition]);
-
-//   return { collection };
-// }
-
 async function fetchCollectionFromClient(
   clients: { [key: string]: ToriiClient },
   client: string,
@@ -185,13 +167,15 @@ export function useCollection(
         } = await fetchCollection(collectionAddress, pageSize, newCursor);
         if (items.length > 0) {
           setCollection(
-            items.map((i: Token) => {
+            items.map((token: Token) => {
               try {
-                i.metadata = JSON.parse(i.metadata || "{}");
-                return i;
+                token.metadata = JSON.parse(
+                  token.metadata?.replace(/"trait"/g, '"trait_type"') || "{}",
+                );
+                return token;
               } catch (_err) {
-                console.error(i, _err);
-                return i;
+                console.error(token, _err);
+                return token;
               }
             }),
           );
