@@ -23,11 +23,14 @@ import { useArcade } from "@/hooks/arcade";
 import { useMarketFilters } from "@/hooks/market-filters";
 import { useUsernames } from "@/hooks/account";
 import { UserAvatar } from "../user/avatar";
+import { OrderModel, SaleEvent } from "@cartridge/marketplace";
+import { erc20Metadata } from "@cartridge/presets";
+import makeBlockie from "ethereum-blockies-base64";
 
 const DEFAULT_ROW_CAP = 6;
 const ROW_HEIGHT = 218;
 
-type Asset = Token & { orders: number[]; owner: string };
+type Asset = Token & { orders: OrderModel[]; owner: string };
 
 export function Items() {
   const {
@@ -39,7 +42,7 @@ export function Items() {
   } = useMarketFilters();
   const { connector } = useAccount();
   const { collection: collectionAddress } = useProject();
-  const { orders } = useMarketplace();
+  const { orders, sales } = useMarketplace();
   const { collection } = useCollection(collectionAddress || "", 10000);
   const { balances } = useBalances(collectionAddress || "", 10000);
   const [search, setSearch] = useState<string>("");
@@ -96,7 +99,7 @@ export function Items() {
       .slice(0, 3);
   }, [searchResults, search]);
 
-  const tokens: (Token & { orders: number[]; owner: string })[] =
+  const tokens: (Token & { orders: OrderModel[]; owner: string })[] =
     useMemo(() => {
       if (!collection || !collectionAddress) return [];
       const collectionOrders = orders[getChecksumAddress(collectionAddress)];
@@ -122,7 +125,9 @@ export function Items() {
           const order = Object.values(tokenOrders)[0];
           return {
             ...token,
-            orders: Object.values(tokenOrders).map((order) => order.id),
+            orders: Object.values(tokenOrders)
+              .map((order) => order)
+              .slice(0, 1),
             owner: order.owner,
           };
         })
@@ -169,7 +174,7 @@ export function Items() {
   }, [setSelection]);
 
   const handlePurchase = useCallback(
-    async (tokens: (Token & { orders: number[]; owner: string })[]) => {
+    async (tokens: (Token & { orders: OrderModel[]; owner: string })[]) => {
       const orders = tokens.map((token) => token.orders).flat();
       const contractAddresses = new Set(
         tokens.map((token) => token.contract_address),
@@ -191,7 +196,7 @@ export function Items() {
       }
       let path;
       if (orders.length > 1) {
-        options.push(`orders=${orders.join(",")}`);
+        options.push(`orders=${orders.map((order) => order.id).join(",")}`);
         path = `account/${username}/slot/${project}/inventory/collection/${contractAddress}/purchase${options.length > 0 ? `?${options.join("&")}` : ""}`;
       } else {
         const token = tokens[0];
@@ -296,6 +301,7 @@ export function Items() {
           <Item
             key={`${token.contract_address}-${token.token_id}`}
             token={token}
+            sales={sales[getChecksumAddress(token.contract_address)] || {}}
             selection={selection}
             setSelection={setSelection}
             handlePurchase={() => handlePurchase([token])}
@@ -314,11 +320,17 @@ export function Items() {
 
 function Item({
   token,
+  sales,
   selection,
   setSelection,
   handlePurchase,
 }: {
   token: Asset;
+  sales: {
+    [token: string]: {
+      [sale: string]: SaleEvent;
+    };
+  };
   selection: Asset[];
   setSelection: (selection: Asset[]) => void;
   handlePurchase: (tokens: Asset[]) => void;
@@ -333,6 +345,39 @@ function Item({
   const selectable = useMemo(() => {
     return token.orders.length > 0;
   }, [token.orders]);
+
+  const price = useMemo(() => {
+    if (!token.orders.length || token.orders.length > 1) return null;
+    const currency = token.orders[0].currency;
+    const metadata = erc20Metadata.find(
+      (m) =>
+        getChecksumAddress(m.l2_token_address) === getChecksumAddress(currency),
+    );
+    const image =
+      erc20Metadata.find(
+        (m) => getChecksumAddress(m.l2_token_address) === currency,
+      )?.logo_url || makeBlockie(currency);
+    const decimals = metadata?.decimals || 0;
+    const price = token.orders[0].price / 10 ** decimals;
+    return { value: price.toString(), image };
+  }, [token.orders]);
+
+  const lastSale = useMemo(() => {
+    const tokenId = parseInt(token.token_id.toString());
+    const tokenSales = sales[tokenId];
+    if (!tokenSales || Object.keys(tokenSales).length === 0) return null;
+    const sale = Object.values(tokenSales).sort((a, b) => b.time - a.time)[0];
+    const order = sale.order;
+    const metadata = erc20Metadata.find(
+      (m) =>
+        getChecksumAddress(m.l2_token_address) ===
+        getChecksumAddress(order.currency),
+    );
+    const image = metadata?.logo_url || makeBlockie(order.currency);
+    const decimals = metadata?.decimals || 0;
+    const price = order.price / 10 ** decimals;
+    return { value: price.toString(), image };
+  }, [token, sales]);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -373,14 +418,17 @@ function Item({
       }}
     >
       <CollectibleCard
-        title={token.name}
+        title={
+          (token.metadata as unknown as { name: string })?.name || token.name
+        }
         image={image}
         listingCount={token.orders.length}
         onClick={
           selection.length === 0 ? () => handlePurchase([token]) : undefined
         }
         onSelect={handleSelect}
-        lastSale="--"
+        price={price}
+        lastSale={lastSale}
         className="cursor-pointer"
         selectable={selectable}
         selected={selected}
