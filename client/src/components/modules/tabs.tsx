@@ -725,7 +725,7 @@ const HoldersNavButton = React.forwardRef<HTMLButtonElement, NavButtonProps>(
           ref={ref}
           value={value}
           Icon={<UsersIcon variant="solid" size="sm" />}
-          label="Items"
+          label="Holders"
           active={active}
           size={size}
           onClick={onClick}
@@ -738,7 +738,7 @@ const HoldersNavButton = React.forwardRef<HTMLButtonElement, NavButtonProps>(
         ref={ref}
         value={value}
         Icon={<UsersIcon variant="solid" size="sm" />}
-        label="Items"
+        label="Holders"
         active={active}
         size={size}
         onClick={onClick}

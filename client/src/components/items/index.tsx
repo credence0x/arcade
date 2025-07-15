@@ -343,8 +343,12 @@ function Item({
   }, [selection, token]);
 
   const selectable = useMemo(() => {
-    return token.orders.length > 0;
-  }, [token.orders]);
+    if (selection.length === 0 || selection[0].orders.length === 0)
+      return token.orders.length > 0;
+    const tokenCurrency = token.orders[0].currency;
+    const selectionCurrency = selection[0].orders[0].currency;
+    return tokenCurrency === selectionCurrency;
+  }, [token.orders, selection]);
 
   const price = useMemo(() => {
     if (!token.orders.length || token.orders.length > 1) return null;
@@ -424,12 +428,14 @@ function Item({
         image={image}
         listingCount={token.orders.length}
         onClick={
-          selection.length === 0 ? () => handlePurchase([token]) : undefined
+          selectable && selection.length === 0
+            ? () => handlePurchase([token])
+            : undefined
         }
-        onSelect={handleSelect}
+        onSelect={selectable ? handleSelect : undefined}
         price={price}
         lastSale={lastSale}
-        className="cursor-pointer"
+        className={selectable ? "cursor-pointer" : "cursor-default"}
         selectable={selectable}
         selected={selected}
       />
