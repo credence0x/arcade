@@ -132,7 +132,7 @@ export function Items() {
           };
         })
         .sort((a, b) => b.orders.length - a.orders.length);
-    }, [collection, balances, orders, filter]);
+    }, [collection, balances, orders]);
 
   const filteredTokens = useMemo(() => {
     const account = usernames.find(
