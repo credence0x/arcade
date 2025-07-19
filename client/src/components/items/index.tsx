@@ -34,19 +34,19 @@ type Asset = Token & { orders: OrderModel[]; owner: string };
 
 export function Items() {
   const {
-    active: filter,
     setAllMetadata,
     setFilteredMetadata,
-    isSelected,
-    empty,
+    tokens,
+    filteredTokens,
+    selected,
+    setSelected,
   } = useMarketFilters();
   const { connector } = useAccount();
-  const { collection: collectionAddress } = useProject();
-  const { orders, sales } = useMarketplace();
+  const { collection: collectionAddress, filter } = useProject();
+  const { sales } = useMarketplace();
   const { collection } = useCollection(collectionAddress || "", 10000);
   const { balances } = useBalances(collectionAddress || "", 10000);
   const [search, setSearch] = useState<string>("");
-  const [selected, setSelected] = useState<SearchResult | undefined>();
   const [cap, setCap] = useState(DEFAULT_ROW_CAP);
   const [selection, setSelection] = useState<Asset[]>([]);
   const [username, setUsername] = useState<string>("");
@@ -98,67 +98,6 @@ export function Items() {
       )
       .slice(0, 3);
   }, [searchResults, search]);
-
-  const tokens: (Token & { orders: OrderModel[]; owner: string })[] =
-    useMemo(() => {
-      if (!collection || !collectionAddress) return [];
-      const collectionOrders = orders[getChecksumAddress(collectionAddress)];
-      return collection
-        .map((token) => {
-          const balance = balances.find(
-            (balance) => balance.token_id === token.token_id,
-          );
-          if (!collectionOrders || Object.keys(collectionOrders).length === 0)
-            return {
-              ...token,
-              orders: [],
-              owner: balance?.account_address || "0x0",
-            };
-          const tokenOrders =
-            collectionOrders[Number(token.token_id).toString()];
-          if (!tokenOrders || Object.keys(tokenOrders).length === 0)
-            return {
-              ...token,
-              orders: [],
-              owner: balance?.account_address || "0x0",
-            };
-          const order = Object.values(tokenOrders)[0];
-          return {
-            ...token,
-            orders: Object.values(tokenOrders)
-              .map((order) => order)
-              .slice(0, 1),
-            owner: order.owner,
-          };
-        })
-        .sort((a, b) => b.orders.length - a.orders.length);
-    }, [collection, balances, orders]);
-
-  const filteredTokens = useMemo(() => {
-    const account = usernames.find(
-      (item) => item.username === selected?.label,
-    )?.address;
-    const tokenIds = balances
-      .filter(
-        (balance) =>
-          getChecksumAddress(balance.account_address) ===
-          getChecksumAddress(account || "0x0"),
-      )
-      .map((balance) => balance.token_id);
-    return tokens.filter((token) => {
-      const attributes =
-        (
-          token.metadata as unknown as {
-            attributes: { trait_type: string; value: string }[];
-          }
-        ).attributes || [];
-      return (
-        (token.orders.length > 0 || filter === 1) &&
-        (empty || isSelected(attributes)) &&
-        (!account || tokenIds.includes(token.token_id))
-      );
-    });
-  }, [tokens, filter, isSelected, empty, selected, balances]);
 
   const handleScroll = useCallback(() => {
     const parent = parentRef.current;
@@ -255,6 +194,21 @@ export function Items() {
     setFilteredMetadata(MetadataHelper.extract(filteredTokens));
   }, [filteredTokens, setFilteredMetadata]);
 
+  useEffect(() => {
+    const selection = searchResults.find(
+      (option) => option.label?.toLowerCase() === filter?.toLowerCase(),
+    );
+    if (
+      !filter ||
+      !searchResults.length ||
+      selected?.label === selection?.label
+    )
+      return;
+    if (selection) {
+      setSelected(selection as SearchResult);
+    }
+  }, [filter, searchResults, setSelected, selected]);
+
   if (!collection) return <EmptyState />;
 
   return (
@@ -286,7 +240,7 @@ export function Items() {
           search={search}
           setSearch={setSearch}
           selected={selected}
-          setSelected={setSelected}
+          setSelected={(selected) => setSelected(selected as SearchResult)}
           options={options as SearchResult[]}
           variant="darkest"
           className="w-[200px] lg:w-[240px] absolute top-0 right-0 z-10"

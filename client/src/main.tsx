@@ -28,9 +28,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="collection/:collection" element={<App />}>
               <Route path="tab/:tab" element={<App />} />
             </Route>
-            <Route path="player/:player" element={<App />}>
-              <Route path="tab/:tab" element={<App />} />
-            </Route>
+            <Route path="tab/:tab" element={<App />} />
           </Route>
         </Route>
         <Route path="tab/:tab" element={<App />} />

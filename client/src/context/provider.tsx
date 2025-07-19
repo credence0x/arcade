@@ -30,27 +30,27 @@ export function Provider({ children }: PropsWithChildren) {
             <MarketplaceProvider>
               <ArcadeProvider>
                 <MarketCollectionProvider>
-                  <MarketFiltersProvider>
-                    <StarknetProvider>
-                      <OwnershipsProvider>
-                        <CollectionProvider>
-                          <TokenProvider>
-                            <AchievementProvider>
-                              <DiscoversProvider>
-                                <ActivitiesProvider>
-                                  <MetricsProvider>
+                  <StarknetProvider>
+                    <OwnershipsProvider>
+                      <CollectionProvider>
+                        <TokenProvider>
+                          <AchievementProvider>
+                            <DiscoversProvider>
+                              <ActivitiesProvider>
+                                <MetricsProvider>
+                                  <MarketFiltersProvider>
                                     <SidebarProvider>
                                       {children}
                                     </SidebarProvider>
-                                  </MetricsProvider>
-                                </ActivitiesProvider>
-                              </DiscoversProvider>
-                            </AchievementProvider>
-                          </TokenProvider>
-                        </CollectionProvider>
-                      </OwnershipsProvider>
-                    </StarknetProvider>
-                  </MarketFiltersProvider>
+                                  </MarketFiltersProvider>
+                                </MetricsProvider>
+                              </ActivitiesProvider>
+                            </DiscoversProvider>
+                          </AchievementProvider>
+                        </TokenProvider>
+                      </CollectionProvider>
+                    </OwnershipsProvider>
+                  </StarknetProvider>
                 </MarketCollectionProvider>
               </ArcadeProvider>
             </MarketplaceProvider>

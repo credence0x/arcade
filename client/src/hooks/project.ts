@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useArcade } from "./arcade";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useAddressByUsernameQuery } from "@cartridge/ui/utils/api/cartridge";
 import { getChecksumAddress } from "starknet";
 
@@ -34,7 +34,13 @@ export const useProject = () => {
     tab: string;
   }>();
 
-  const { data } = useAddressByUsernameQuery(
+  const [searchParams, _] = useSearchParams();
+
+  const filter = useMemo(() => {
+    return searchParams.get("filter");
+  }, [searchParams]);
+
+  const { data: playerData } = useAddressByUsernameQuery(
     {
       username: playerParam?.toLowerCase() || "",
     },
@@ -81,17 +87,18 @@ export const useProject = () => {
     if (playerParam && playerParam.match(/^0x[0-9a-fA-F]+$/)) {
       return getChecksumAddress(playerParam);
     }
-    const address = data?.account?.controllers?.edges?.[0]?.node?.address;
+    const address = playerData?.account?.controllers?.edges?.[0]?.node?.address;
     if (address) {
       return getChecksumAddress(address);
     }
     return;
-  }, [data, playerParam]);
+  }, [playerData, playerParam]);
 
   return {
     game,
     edition,
     player,
+    filter,
     collection,
     tab,
   };
