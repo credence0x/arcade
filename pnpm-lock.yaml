@@ -42,8 +42,8 @@ importers:
         specifier: 0.7.14-alpha.3
         version: 0.7.14-alpha.3(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sonner@1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(starknet@6.23.1)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@6.23.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(tailwindcss@3.4.17)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(zod@3.24.4)
       '@cartridge/marketplace':
-        specifier: 0.0.9
-        version: 0.0.9(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
+        specifier: 0.0.13
+        version: 0.0.13(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
       '@cartridge/penpal':
         specifier: ^6.2.3
         version: 6.2.4
@@ -788,6 +788,9 @@ packages:
   '@cartridge/account-wasm@0.7.14-alpha.3':
     resolution: {integrity: sha512-Vh2Yrm3ITqagEZVmizDSIF5W1l/ki3NskGvyZ8gzGq5xE9IYBc3iQZdgJgor91+lMQP8Lxyisz0OJW+uLZygqQ==}
 
+  '@cartridge/arcade@0.0.1':
+    resolution: {integrity: sha512-7v/HzrhnZ1lZtMej7ldmRtCQIqM6bWOPQiJSV0H+VsXCFXIekYdIhGlgtHfakZGsN2xTE9uCe6DrSGOl63i/Sg==}
+
   '@cartridge/connector@0.7.14-alpha.3':
     resolution: {integrity: sha512-nO5ab6OQNOHgXFNsWPqgqAW35gEzlovrgK5Lb8IiMixNNxcyGYX9H93MiRqaU6IniNpfca2Bgx00AFSDE2VUuQ==}
     peerDependencies:
@@ -802,16 +805,12 @@ packages:
       starknet: ^6.21.0
       starknetkit: ^2.6.1
 
-  '@cartridge/marketplace@0.0.9':
-    resolution: {integrity: sha512-kKS+jhTKWo6U1v+3OxFWyQr4VHLIiXlgKvDkNvvgnbgJAnReg6NP9yaP/Gq3VoP/1i9elyzpo3HqCVU4Z33bhg==}
+  '@cartridge/marketplace@0.0.13':
+    resolution: {integrity: sha512-NrZc+RvWa2PvBC8oyuVXtzfqC8uFPj9kDT8zSXODvhknWZrz6FilcxJUAhrzZ9/W/VwBTDt9KRzBZ2Ouo9+5YA==}
     peerDependencies:
-      '@tanstack/react-query': ^5.0.0
-      react: ^18.0.0
-    peerDependenciesMeta:
-      '@tanstack/react-query':
-        optional: true
-      react:
-        optional: true
+      '@tanstack/react-query': ^5.79.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
 
   '@cartridge/penpal@6.2.4':
     resolution: {integrity: sha512-tdpOnSJJBFMlgLZ1+z9Ho5e6cG5EgMAb1Cmmh1lGT2tmplogU/XPMjLE6CwvKAPDoe6a38iMnbH+ySTAWWIOKA==}
@@ -6714,6 +6713,26 @@ snapshots:
 
   '@cartridge/account-wasm@0.7.14-alpha.3': {}
 
+  '@cartridge/arcade@0.0.1(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)':
+    dependencies:
+      '@dojoengine/core': 1.5.5(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
+      '@dojoengine/sdk': 1.5.5(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(starknet@6.23.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
+      '@dojoengine/torii-client': 1.5.5
+      eventemitter3: 5.0.1
+      starknet: 6.23.1
+    transitivePeerDependencies:
+      - '@tanstack/react-query'
+      - '@types/react'
+      - '@types/react-dom'
+      - bufferutil
+      - encoding
+      - get-starknet-core
+      - react
+      - react-dom
+      - typescript
+      - utf-8-validate
+      - zod
+
   '@cartridge/connector@0.7.14-alpha.3(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@starknet-react/core@3.7.4(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@6.23.1)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sonner@1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(starknet@6.23.1)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@6.23.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(tailwindcss@3.4.17)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(zod@3.24.4)':
     dependencies:
       '@cartridge/controller': 0.7.14-alpha.3(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sonner@1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(starknet@6.23.1)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@6.23.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(tailwindcss@3.4.17)(typescript@5.8.3)(utf-8-validate@5.0.10)(viem@2.29.0(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(zod@3.24.4)
@@ -6806,23 +6825,25 @@ snapshots:
       - viem
       - zod
 
-  '@cartridge/marketplace@0.0.9(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)':
+  '@cartridge/marketplace@0.0.13(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)':
     dependencies:
+      '@cartridge/arcade': 0.0.1(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
       '@dojoengine/core': 1.5.17(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@dojoengine/sdk': 1.5.18(@tanstack/react-query@5.75.4(react@18.3.1))(@types/react-dom@18.3.7(@types/react@18.3.21))(@types/react@18.3.21)(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(starknet@6.23.1)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
       '@dojoengine/torii-client': 1.5.16
       '@dojoengine/torii-wasm': 1.5.16
-      starknet: 6.23.1
-    optionalDependencies:
+      '@starknet-react/chains': 3.1.3
+      '@starknet-react/core': 3.7.4(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@6.23.1)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@tanstack/react-query': 5.75.4(react@18.3.1)
       react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      starknet: 6.23.1
     transitivePeerDependencies:
       - '@types/react'
       - '@types/react-dom'
       - bufferutil
       - encoding
       - get-starknet-core
-      - react-dom
       - typescript
       - utf-8-validate
       - zod
