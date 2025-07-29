@@ -36,11 +36,11 @@ importers:
         specifier: workspace:*
         version: link:../packages/sdk
       '@cartridge/connector':
-        specifier: 0.9.1
-        version: 0.9.1(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@starknet-react/core@4.0.1-beta.4(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
+        specifier: 0.9.2
+        version: 0.9.2(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@starknet-react/core@4.0.1-beta.4(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
       '@cartridge/controller':
-        specifier: 0.9.1
-        version: 0.9.1(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
+        specifier: 0.9.2
+        version: 0.9.2(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
       '@cartridge/penpal':
         specifier: ^6.2.3
         version: 6.2.4
@@ -779,16 +779,16 @@ packages:
     resolution: {integrity: sha512-+EzkxvLNfiUeKMgy/3luqfsCWFRXLb7U6wNQTk60tovuckwB15B191tJWvpp4HjiQWdJkCxO3Wbvc6jlk3Xb2Q==}
     engines: {node: '>=6.9.0'}
 
-  '@cartridge/connector@0.9.1':
-    resolution: {integrity: sha512-+dQsxgVdZa3twq8zIfmAwEkE/Hme3XClO7WKH24jV1fTubhJaaYxZsa11iDCKPZ+ZIUKv15g4kBO/alpfxaZeA==}
+  '@cartridge/connector@0.9.2':
+    resolution: {integrity: sha512-EL/EjhRTRNDJ+Mx1pnvgZO/9/e/1xeANmo5vWBd34+xN1rPSZv6p7gkyyH8MGPXh7vS9rCfuSEhJxTDx1Uldpg==}
     peerDependencies:
       '@starknet-react/core': 4.0.1-beta.4
 
   '@cartridge/controller-wasm@0.2.3':
     resolution: {integrity: sha512-2yxPMcgwdxtwy6g8VtJU6CNOAYJaSc0G5JXxcHsVeYc0rrDExk0IR1srjxhzLglYlF3jutirt9yV3mKV1NquVQ==}
 
-  '@cartridge/controller@0.9.1':
-    resolution: {integrity: sha512-T1pBOK6BGZba3Zh6xKoux7B5Q69syBJzp14l4wh1vROqM1AESbheyJKjWCKCauwV3afsC6RneuRW9+wA2avrtw==}
+  '@cartridge/controller@0.9.2':
+    resolution: {integrity: sha512-bfU0U3/M3idpEllysZckxhLU/9PdslvNW3JrBcsDFZcfm7lko7LQv1dStGHmA/7hzZdPCrrUYIGRimOBzYBbrQ==}
     peerDependencies:
       '@metamask/sdk': ^0.32.1
       '@solana/web3.js': ^1.98.0
@@ -6682,9 +6682,9 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@cartridge/connector@0.9.1(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@starknet-react/core@4.0.1-beta.4(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)':
+  '@cartridge/connector@0.9.2(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@starknet-react/core@4.0.1-beta.4(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)':
     dependencies:
-      '@cartridge/controller': 0.9.1(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
+      '@cartridge/controller': 0.9.2(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)
       '@starknet-react/core': 4.0.1-beta.4(bufferutil@4.0.9)(get-starknet-core@4.0.0)(react@18.3.1)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -6720,7 +6720,7 @@ snapshots:
 
   '@cartridge/controller-wasm@0.2.3': {}
 
-  '@cartridge/controller@0.9.1(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)':
+  '@cartridge/controller@0.9.2(@metamask/sdk@0.32.1(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@types/react@18.3.21)(bufferutil@4.0.9)(open@10.1.2)(react@18.3.1)(starknet@7.6.4)(starknetkit@2.10.4(bufferutil@4.0.9)(starknet@7.6.4)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4))(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.4)':
     dependencies:
       '@cartridge/controller-wasm': 0.2.3
       '@cartridge/penpal': 6.2.4
