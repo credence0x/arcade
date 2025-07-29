@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@cartridge/arcade": "workspace:*",
-    "@cartridge/connector": "0.9.1",
-    "@cartridge/controller": "0.9.1",
+    "@cartridge/connector": "0.9.2",
+    "@cartridge/controller": "0.9.2",
     "@cartridge/penpal": "^6.2.3",
     "@cartridge/presets": "github:cartridge-gg/presets#049f073",
     "@cartridge/ui": "github:cartridge-gg/ui#b4baaaa",
