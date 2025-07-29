@@ -5,29 +5,19 @@ import { constants } from "starknet";
 import ControllerConnector from "@cartridge/connector/controller";
 import {
   KeychainOptions,
-  ProfileOptions,
   ProviderOptions,
 } from "@cartridge/controller";
-// import { getSocialPolicies, getRegistryPolicies } from "@cartridge/arcade";
-import { DEFAULT_PRESET, DEFAULT_PROJECT } from "@/constants";
+import { getSocialPolicies, getRegistryPolicies } from "@cartridge/arcade";
 import { ArcadeContext } from "./arcade";
 
 const chainId = constants.StarknetChainId.SN_MAIN;
 
 const keychain: KeychainOptions = {
-  // policies: {
-  //   contracts: {
-  //     ...getSocialPolicies(chainId).contracts,
-  //     ...getRegistryPolicies(chainId).contracts,
-  //   },
-  // },
-};
-
-const profile: ProfileOptions = {
-  preset: DEFAULT_PRESET,
-  slot: DEFAULT_PROJECT,
-  tokens: {
-    erc20: ["eth", "strk", "usdc", "usdt"],
+  policies: {
+    contracts: {
+      ...getSocialPolicies(chainId).contracts,
+      ...getRegistryPolicies(chainId).contracts,
+    },
   },
 };
 
@@ -84,7 +74,7 @@ export function StarknetProvider({ children }: PropsWithChildren) {
     controllerRef.current = new ControllerConnector({
       ...provider,
       ...keychain,
-      ...profile,
+      // ...profile,
     });
     return controllerRef.current;
   }, [controllerRef, provider]);
