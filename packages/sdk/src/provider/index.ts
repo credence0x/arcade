@@ -83,7 +83,6 @@ export class ArcadeProvider extends DojoEmitterProvider {
   getToriiClient(toriiUrl: string): torii.ToriiClient {
     const toriiClient = new torii.ToriiClient({
       toriiUrl: toriiUrl,
-      relayUrl: "",
       worldAddress: this.manifest.world.address,
     });
     return toriiClient;
@@ -108,8 +107,8 @@ export class ArcadeProvider extends DojoEmitterProvider {
     }
     // Check if the transaction was reverted and throw an error if it was
     if (receipt.isReverted()) {
-      this.emit("FAILED", `Transaction failed with reason: ${receipt.revert_reason}`);
-      throw new Error(`Transaction failed with reason: ${receipt.revert_reason}`);
+      this.emit("FAILED", `Transaction failed with reason: ${receipt.value.revert_reason}`);
+      throw new Error(`Transaction failed with reason: ${receipt.value.revert_reason}`);
     }
     return receipt;
   }
