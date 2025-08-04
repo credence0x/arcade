@@ -118,6 +118,11 @@ export const ArcadeProvider = ({ children }: { children: ReactNode }) => {
               symbol: "ETH",
               decimals: 18,
             },
+            paymasterRpcUrls: {
+              avnu: {
+                http: ['http://localhost:5050'],
+              }
+            }
           };
         }),
       );
