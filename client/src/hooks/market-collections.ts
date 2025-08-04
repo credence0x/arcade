@@ -42,12 +42,16 @@ async function fetchCollectionFromClient(
   client: string | undefined;
 }> {
   try {
-    const tokens = await clients[client].getTokens(
-      [address],
-      [],
-      count,
-      cursor,
-    );
+    const tokens = await clients[client].getTokens({
+      contract_addresses: [address],
+      token_ids: [],
+      pagination: {
+        cursor: cursor,
+        limit: count,
+        order_by: [],
+        direction: "Forward",
+      },
+    });
     if (tokens.items.length !== 0) {
       return {
         items: tokens.items,
@@ -74,13 +78,17 @@ async function fetchBalancesFromClient(
   client: string | undefined;
 }> {
   try {
-    const balances = await clients[client].getTokenBalances(
-      [address],
-      [],
-      [],
-      count,
-      cursor,
-    );
+    const balances = await clients[client].getTokenBalances({
+      contract_addresses: [address],
+      account_addresses: [],
+      token_ids: [],
+      pagination: {
+        cursor: cursor,
+        limit: count,
+        order_by: [],
+        direction: "Forward",
+      },
+    });
     if (balances.items.length !== 0) {
       return {
         items: balances.items,
