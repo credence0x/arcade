@@ -120,9 +120,9 @@ export const ArcadeProvider = ({ children }: { children: ReactNode }) => {
             },
             paymasterRpcUrls: {
               avnu: {
-                http: ['http://localhost:5050'],
-              }
-            }
+                http: ["http://localhost:5050"],
+              },
+            },
           };
         }),
       );

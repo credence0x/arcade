@@ -97,7 +97,6 @@ function Item({
   const navigate = useNavigate();
   const location = useLocation();
   const handleClick = useCallback(async () => {
-    if (!username) return;
     // If the user is not logged in, or not the current user then we navigate to the marketplace
     if (!isSelf) {
       const player = username.toLowerCase();
@@ -136,12 +135,11 @@ function Item({
     } else {
       options.push("preset=cartridge");
     }
-    const path = `account/${username}/slot/${collection.project}/inventory/${subpath}/${collection.address}${options.length > 0 ? `?${options.join("&")}` : ""}`;
+    const path = `inventory/${subpath}/${collection.address}${options.length > 0 ? `?${options.join("&")}` : ""}`;
     controller.switchStarknetChain(`0x${chain.id.toString(16)}`);
-    controller.openProfileAt(path);
+    controller.openProfileTo(path);
   }, [
     collection.address,
-    username,
     connector,
     collection.type,
     edition,

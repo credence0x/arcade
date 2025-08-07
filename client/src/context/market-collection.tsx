@@ -88,7 +88,7 @@ export const MarketCollectionProvider = ({
         Object.keys(clients).map(async (project) => {
           const client = clients[project];
           try {
-            const tokens = await client.getTokens({
+            let tokens = await client.getTokens({
               contract_addresses: [],
               token_ids: [],
               pagination: {
@@ -98,7 +98,22 @@ export const MarketCollectionProvider = ({
                 direction: "Forward",
               },
             });
-            const filtereds = tokens.items.filter((token) => !!token.metadata);
+            const allTokens = [...tokens.items];
+            while (tokens.next_cursor) {
+              tokens = await client.getTokens({
+                contract_addresses: [],
+                token_ids: [],
+                pagination: {
+                  limit: 5000,
+                  cursor: tokens.next_cursor,
+                  order_by: [],
+                  direction: "Forward",
+                },
+              });
+              allTokens.push(...tokens.items);
+            }
+
+            const filtereds = allTokens.filter((token) => !!token.metadata);
             if (!filtereds.length) return;
 
             const collection: Record<

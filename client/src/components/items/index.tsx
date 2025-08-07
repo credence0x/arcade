@@ -15,7 +15,12 @@ import { Token } from "@dojoengine/torii-wasm";
 import { MetadataHelper } from "@/helpers/metadata";
 import placeholder from "@/assets/placeholder.svg";
 import { useMarketplace } from "@/hooks/marketplace";
-import { getChecksumAddress } from "starknet";
+import {
+  FunctionAbi,
+  getChecksumAddress,
+  InterfaceAbi,
+  RpcProvider,
+} from "starknet";
 import ControllerConnector from "@cartridge/connector/controller";
 import { useAccount } from "@starknet-react/core";
 import { Chain, mainnet } from "@starknet-react/chains";
@@ -29,8 +34,29 @@ import makeBlockie from "ethereum-blockies-base64";
 
 const DEFAULT_ROW_CAP = 6;
 const ROW_HEIGHT = 218;
+const ERC1155_ENTRYPOINT = "balance_of_batch";
 
 type Asset = Token & { orders: OrderModel[]; owner: string };
+
+const getEntrypoints = async (provider: RpcProvider, address: string) => {
+  try {
+    // TODO: Remove dependency on getClassAt since it is super slow
+    const code = await provider.getClassAt(address);
+    if (!code) return;
+    const interfaces = code.abi.filter(
+      (element) => element.type === "interface",
+    );
+    if (interfaces.length > 0) {
+      return interfaces.flatMap((element: InterfaceAbi) =>
+        element.items.map((item: FunctionAbi) => item.name),
+      );
+    }
+    const functions = code.abi.filter((element) => element.type === "function");
+    return functions.map((item: FunctionAbi) => item.name);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export function Items() {
   const {
@@ -49,9 +75,8 @@ export function Items() {
   const [search, setSearch] = useState<string>("");
   const [cap, setCap] = useState(DEFAULT_ROW_CAP);
   const [selection, setSelection] = useState<Asset[]>([]);
-  const [username, setUsername] = useState<string>("");
   const parentRef = useRef<HTMLDivElement>(null);
-  const { chains } = useArcade();
+  const { chains, provider } = useArcade();
   const { edition } = useProject();
 
   const chain: Chain = useMemo(() => {
@@ -118,16 +143,24 @@ export function Items() {
       const contractAddresses = new Set(
         tokens.map((token) => token.contract_address),
       );
-      if (!username || !edition || contractAddresses.size !== 1) return;
+      if (!edition || contractAddresses.size !== 1) return;
       const contractAddress = `0x${BigInt(Array.from(contractAddresses)[0]).toString(16)}`;
       const controller = (connector as ControllerConnector)?.controller;
       if (!controller) {
         console.error("Connector not initialized");
         return;
       }
+
+      const entrypoints = await getEntrypoints(
+        provider.provider,
+        contractAddress,
+      );
+      const isERC1155 = entrypoints?.includes(ERC1155_ENTRYPOINT);
+      const subpath = isERC1155 ? "collectible" : "collection";
+
       const project = edition?.config.project;
       const preset = edition?.properties.preset;
-      let options = [`ps=${project}`, "closable=true"];
+      let options = [`ps=${project}`, "purchaseView=true"];
       if (preset) {
         options.push(`preset=${preset}`);
       } else {
@@ -136,17 +169,17 @@ export function Items() {
       let path;
       if (orders.length > 1) {
         options.push(`orders=${orders.map((order) => order.id).join(",")}`);
-        path = `account/${username}/slot/${project}/inventory/collection/${contractAddress}/purchase${options.length > 0 ? `?${options.join("&")}` : ""}`;
+        path = `inventory/${subpath}/${contractAddress}/purchase${options.length > 0 ? `?${options.join("&")}` : ""}`;
       } else {
         const token = tokens[0];
         options.push(`address=${getChecksumAddress(token.owner)}`);
         options.push(`tokenIds=${[token.token_id].join(",")}`);
-        path = `account/${username}/slot/${project}/inventory/collection/${contractAddress}/token/${token.token_id}${options.length > 0 ? `?${options.join("&")}` : ""}`;
+        path = `inventory/${subpath}/${contractAddress}/token/${token.token_id}${options.length > 0 ? `?${options.join("&")}` : ""}`;
       }
       controller.switchStarknetChain(`0x${chain.id.toString(16)}`);
-      controller.openProfileAt(path);
+      controller.openProfileTo(path);
     },
-    [username, connector, edition, chain],
+    [connector, edition, chain],
   );
 
   useEffect(() => {
@@ -170,19 +203,6 @@ export function Items() {
     const cap = Math.ceil(height / ROW_HEIGHT);
     setCap(cap + 0);
   }, [parentRef, collection, setCap]);
-
-  useEffect(() => {
-    async function fetch() {
-      try {
-        const name = await (connector as ControllerConnector)?.username();
-        if (!name) return;
-        setUsername(name);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetch();
-  }, [connector]);
 
   useEffect(() => {
     if (!tokens) return;
@@ -321,6 +341,7 @@ function Item({
   }, [token.orders]);
 
   const lastSale = useMemo(() => {
+    if (!token.token_id) return null;
     const tokenId = parseInt(token.token_id.toString());
     const tokenSales = sales[tokenId];
     if (!tokenSales || Object.keys(tokenSales).length === 0) return null;
