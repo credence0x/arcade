@@ -26,11 +26,11 @@ export const MetadataHelper = {
           newMetadata[key] = {
             trait_type: trait,
             value: value,
-            tokens: [token.token_id],
+            tokens: [token.token_id || ""],
           };
           return;
         }
-        newMetadata[key].tokens.push(token.token_id);
+        newMetadata[key].tokens.push(token.token_id || "");
       });
     });
     return Object.values(newMetadata);
