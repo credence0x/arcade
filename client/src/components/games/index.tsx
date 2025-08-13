@@ -12,7 +12,7 @@ import { useArcade } from "@/hooks/arcade";
 import { usePlayerGameStats, usePlayerStats } from "@/hooks/achievements";
 import { Register } from "./register";
 import { GameModel, RoleType } from "@cartridge/arcade";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import arcade from "@/assets/arcade-logo.png";
 import banner from "@/assets/banner.png";
 import ArcadeGameSelect from "../modules/game-select";
@@ -193,19 +193,20 @@ export const Game = ({
   const { earnings: gameEarnings } = usePlayerGameStats(projects);
   const { close } = useSidebar();
 
-  const location = useLocation();
+  const routerState = useRouterState();
+  const pathname = routerState.location.pathname;
   const navigate = useNavigate();
   const handleClick = useCallback(() => {
     // Update the url params
-    let pathname = location.pathname;
+    let newPath = pathname;
     const gameName = `${game?.name.toLowerCase().replace(/ /g, "-") || id}`;
-    pathname = pathname.replace(/\/game\/[^/]+/, "");
-    pathname = pathname.replace(/\/edition\/[^/]+/, "");
-    if (id !== 0) pathname = joinPaths(`/game/${gameName}`, pathname);
-    navigate(pathname || "/");
+    newPath = newPath.replace(/\/game\/[^/]+/, "");
+    newPath = newPath.replace(/\/edition\/[^/]+/, "");
+    if (id !== 0) newPath = joinPaths(`/game/${gameName}`, newPath);
+    navigate({ to: newPath || "/" });
     // Close sidebar on mobile when a game is selected
     close();
-  }, [game, location, navigate, close]);
+  }, [game, pathname, navigate, close]);
 
   const setWhitelisted = useCallback(
     (status: boolean) => {

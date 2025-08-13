@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useArcade } from "./arcade";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearch } from "@tanstack/react-router";
 import { useAddressByUsernameQuery } from "@cartridge/ui/utils/api/cartridge";
 import { getChecksumAddress } from "starknet";
 
@@ -20,25 +20,16 @@ import { getChecksumAddress } from "starknet";
 export const useProject = () => {
   const { games, editions } = useArcade();
 
-  const {
-    game: gameParam,
-    edition: editionParam,
-    player: playerParam,
-    collection: collectionParam,
-    tab,
-  } = useParams<{
-    game: string;
-    edition: string;
-    player: string;
-    collection: string;
-    tab: string;
-  }>();
+  const params = useParams({ strict: false });
+  const search = useSearch({ strict: false });
 
-  const [searchParams, _] = useSearchParams();
+  const gameParam = params.game as string | undefined;
+  const editionParam = params.edition as string | undefined;
+  const playerParam = params.player as string | undefined;
+  const collectionParam = params.collection as string | undefined;
 
-  const filter = useMemo(() => {
-    return searchParams.get("filter");
-  }, [searchParams]);
+  const tab = search.tab as string | undefined;
+  const filter = search.filter as string | undefined;
 
   const { data: playerData } = useAddressByUsernameQuery(
     {

@@ -13,7 +13,7 @@ import {
 } from "@cartridge/ui";
 import { ActivityScene } from "../scenes/activity";
 import { ArcadeTabs } from "../modules";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useUsername, useUsernames } from "@/hooks/account";
 import { useAddress } from "@/hooks/address";
 import AchievementPlayerHeader from "../modules/player-header";
@@ -24,7 +24,6 @@ import ControllerConnector from "@cartridge/connector/controller";
 import { constants, getChecksumAddress } from "starknet";
 import { toast } from "sonner";
 import { useProject } from "@/hooks/project";
-import { joinPaths } from "@/helpers";
 
 const TABS_ORDER = ["inventory", "achievements", "activity"] as TabValue[];
 
@@ -41,24 +40,26 @@ export function PlayerPage() {
     return tab;
   }, [tab]);
 
-  const location = useLocation();
+  const routerState = useRouterState();
+  const pathname = routerState.location.pathname;
   const navigate = useNavigate();
   const handleClick = useCallback(
     (value: string) => {
-      let pathname = location.pathname;
-      pathname = pathname.replace(/\/tab\/[^/]+/, "");
-      pathname = joinPaths(pathname, `/tab/${value}`);
-      navigate(pathname || "/");
+      (navigate as any)({
+        search: { tab: value as string | undefined, filter: undefined },
+      });
     },
-    [location, navigate],
+    [navigate],
   );
 
   const handleClose = useCallback(() => {
-    let pathname = location.pathname;
-    pathname = pathname.replace(/\/player\/[^/]+/, "");
-    pathname = pathname.replace(/\/tab\/[^/]+/, "");
-    navigate(pathname || "/");
-  }, [location, navigate]);
+    let newPath = pathname;
+    newPath = newPath.replace(/\/player\/[^/]+/, "");
+    navigate({
+      to: newPath || "/",
+      search: { tab: undefined, filter: undefined },
+    });
+  }, [pathname, navigate]);
 
   const { rank, points } = useMemo(() => {
     if (edition) {

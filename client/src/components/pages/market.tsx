@@ -12,9 +12,8 @@ import {
   VerifiedIcon,
 } from "@cartridge/ui";
 import { ArcadeTabs } from "../modules";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useProject } from "@/hooks/project";
-import { joinPaths } from "@/helpers";
 import arcade from "@/assets/arcade-logo.png";
 import { useCollection } from "@/hooks/market-collections";
 
@@ -35,24 +34,27 @@ export function MarketPage() {
     return tab;
   }, [tab]);
 
-  const location = useLocation();
+  const routerState = useRouterState();
+  const pathname = routerState.location.pathname;
   const navigate = useNavigate();
+
   const handleClick = useCallback(
     (value: string) => {
-      let pathname = location.pathname;
-      pathname = pathname.replace(/\/tab\/[^/]+/, "");
-      pathname = joinPaths(pathname, `/tab/${value}`);
-      navigate(pathname || "/");
+      (navigate as any)({
+        search: { tab: value as string | undefined, filter: undefined },
+      });
     },
-    [location, navigate],
+    [navigate],
   );
 
   const handleClose = useCallback(() => {
-    let pathname = location.pathname;
-    pathname = pathname.replace(/\/collection\/[^/]+/, "");
-    pathname = pathname.replace(/\/tab\/[^/]+/, "");
-    navigate(pathname || "/");
-  }, [location, navigate]);
+    let newPath = pathname;
+    newPath = newPath.replace(/\/collection\/[^/]+/, "");
+    navigate({
+      to: newPath || "/",
+      search: { tab: undefined, filter: undefined },
+    });
+  }, [pathname, navigate]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

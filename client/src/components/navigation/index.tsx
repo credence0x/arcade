@@ -6,7 +6,7 @@ import {
   TrophyIcon,
 } from "@cartridge/ui";
 import { useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useRouterState } from "@tanstack/react-router";
 
 export function Navigation() {
   return (
@@ -29,21 +29,47 @@ function Item({
   variant: string;
   disabled?: boolean;
 }) {
-  const { pathname } = useLocation();
+  const routerState = useRouterState();
+  const pathname = routerState.location.pathname;
+  const search = routerState.location.search;
 
   const isActive = useMemo(() => {
-    if (pathname.split("/").includes(variant)) return true;
-    return variant === "inventory" && pathname === "/";
-  }, [pathname, variant]);
+    // Check if the tab search param equals the variant
+    const searchParams = new URLSearchParams(search);
+    const tab = searchParams.get("tab");
+
+    if (tab === variant) return true;
+
+    // Default to inventory if we're on root without a tab param
+    return variant === "inventory" && pathname === "/" && !tab;
+  }, [pathname, search, variant]);
+
+  if (disabled) {
+    return (
+      <div
+        className={cn(
+          "flex gap-2 px-4 py-3 h-11 justify-center items-center rounded border border-secondary",
+          "bg-background opacity-50 cursor-not-allowed",
+        )}
+      >
+        <Icon size="sm" variant="line" />
+        <span>{title}</span>
+      </div>
+    );
+  }
 
   return (
     <Link
       className={cn(
         "flex gap-2 px-4 py-3 h-11 justify-center items-center cursor-pointer hover:opacity-[0.8] rounded border border-secondary",
         isActive ? "bg-secondary" : "bg-background",
-        disabled && "opacity-50 cursor-not-allowed",
       )}
-      to={disabled ? "#" : `/${variant}`}
+      to="/"
+      search={(prev) => ({
+        ...prev,
+        tab: variant === "inventory" ? undefined : variant,
+        filter: prev?.filter || undefined,
+      })}
     >
       <Icon size="sm" variant={isActive ? "solid" : "line"} />
       <span>{title}</span>

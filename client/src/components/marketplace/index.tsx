@@ -7,7 +7,7 @@ import { useMarketplace } from "@/hooks/marketplace";
 import { useMarketCollections } from "@/hooks/market-collections";
 import { Token } from "@dojoengine/torii-wasm";
 import { useProject } from "@/hooks/project";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { joinPaths } from "@/helpers";
 import { MetadataHelper } from "@/helpers/metadata";
 import { useArcade } from "@/hooks/arcade";
@@ -80,7 +80,8 @@ function Item({
   const { orders } = useMarketplace();
   const [image, setImage] = useState<string>(placeholder);
 
-  const location = useLocation();
+  const routerState = useRouterState();
+  const location = { pathname: routerState.location.pathname };
   const navigate = useNavigate();
 
   const listingCount = useMemo(() => {
@@ -152,7 +153,7 @@ function Item({
     } else {
       pathname = joinPaths(pathname, `/collection/${collectionAddress}`);
     }
-    navigate(pathname || "/");
+    navigate({ to: pathname || "/" });
   }, [collection, location, navigate, game, edition]);
 
   return (
