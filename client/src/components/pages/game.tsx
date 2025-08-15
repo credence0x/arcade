@@ -25,11 +25,18 @@ export function GamePage() {
   const navigate = useNavigate();
   const handleClick = useCallback(
     (value: string) => {
-      (navigate as any)({
-        search: { tab: value as string | undefined, filter: undefined },
-      });
+      if (edition) {
+        const gameName = game?.name.toLowerCase().replace(/ /g, "-") || game?.id.toString();
+        const editionName = edition.name.toLowerCase().replace(/ /g, "-") || edition.id.toString();
+        navigate({ to: `/game/${gameName}/edition/${editionName}/${value}` as any });
+      } else if (game) {
+        const gameName = game.name.toLowerCase().replace(/ /g, "-") || game.id.toString();
+        navigate({ to: `/game/${gameName}/${value}` as any });
+      } else {
+        navigate({ to: `/${value}` as any });
+      }
     },
-    [navigate],
+    [navigate, game, edition],
   );
 
   const order: TabValue[] = useMemo(() => {

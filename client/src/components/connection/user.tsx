@@ -53,7 +53,7 @@ export function User() {
 
   const handleDisconnect = useCallback(() => {
     disconnect();
-    navigate({ to: "/", search: { tab: undefined, filter: undefined } });
+    navigate({ to: "/", search: { filter: undefined } });
   }, [disconnect, navigate]);
 
   if (!isConnected || !account || !name) return null;

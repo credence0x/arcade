@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useArcade } from "./arcade";
-import { useParams, useSearch } from "@tanstack/react-router";
+import { useParams, useSearch, useRouterState } from "@tanstack/react-router";
 import { useAddressByUsernameQuery } from "@cartridge/ui/utils/api/cartridge";
 import { getChecksumAddress } from "starknet";
 
@@ -22,13 +22,33 @@ export const useProject = () => {
 
   const params = useParams({ strict: false });
   const search = useSearch({ strict: false });
+  const routerState = useRouterState();
 
   const gameParam = params.game as string | undefined;
   const editionParam = params.edition as string | undefined;
   const playerParam = params.player as string | undefined;
   const collectionParam = params.collection as string | undefined;
 
-  const tab = search.tab as string | undefined;
+  // Extract tab from the route path
+  const tab = useMemo(() => {
+    const pathname = routerState.location.pathname;
+    const segments = pathname.split('/').filter(Boolean);
+    
+    // The tab is the last segment if it's one of the known tab names
+    const lastSegment = segments[segments.length - 1];
+    const knownTabs = [
+      'inventory', 'achievements', 'activity',
+      'leaderboard', 'marketplace', 'guilds', 'about',
+      'items', 'holders'
+    ];
+    
+    if (knownTabs.includes(lastSegment)) {
+      return lastSegment;
+    }
+    
+    return undefined;
+  }, [routerState.location.pathname]);
+
   const filter = search.filter as string | undefined;
 
   const { data: playerData } = useAddressByUsernameQuery(

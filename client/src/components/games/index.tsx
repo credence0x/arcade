@@ -12,7 +12,7 @@ import { useArcade } from "@/hooks/arcade";
 import { usePlayerGameStats, usePlayerStats } from "@/hooks/achievements";
 import { Register } from "./register";
 import { GameModel, RoleType } from "@cartridge/arcade";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import arcade from "@/assets/arcade-logo.png";
 import banner from "@/assets/banner.png";
 import ArcadeGameSelect from "../modules/game-select";
@@ -22,7 +22,6 @@ import { Update } from "./update";
 import { useOwnerships } from "@/hooks/ownerships";
 import { useAccount } from "@starknet-react/core";
 import { useProject } from "@/hooks/project";
-import { joinPaths } from "@/helpers";
 import ArcadeMenuButton from "../modules/menu-button";
 import { Publish } from "./publish";
 import { Whitelist } from "./whitelist";
@@ -191,22 +190,8 @@ export const Game = ({
   }, [editions, game]);
   const { earnings: totalEarnings } = usePlayerStats();
   const { earnings: gameEarnings } = usePlayerGameStats(projects);
-  const { close } = useSidebar();
 
-  const routerState = useRouterState();
-  const pathname = routerState.location.pathname;
-  const navigate = useNavigate();
-  const handleClick = useCallback(() => {
-    // Update the url params
-    let newPath = pathname;
-    const gameName = `${game?.name.toLowerCase().replace(/ /g, "-") || id}`;
-    newPath = newPath.replace(/\/game\/[^/]+/, "");
-    newPath = newPath.replace(/\/edition\/[^/]+/, "");
-    if (id !== 0) newPath = joinPaths(`/game/${gameName}`, newPath);
-    navigate({ to: newPath || "/" });
-    // Close sidebar on mobile when a game is selected
-    close();
-  }, [game, pathname, navigate, close]);
+  const gameName = useMemo(() => `${game?.name.toLowerCase().replace(/ /g, "-") || id}`, [game, id]);
 
   const setWhitelisted = useCallback(
     (status: boolean) => {
@@ -238,58 +223,63 @@ export const Game = ({
 
   if (!!game && !whitelisted && !owner && !admin) return null;
 
+  const navigationLink = `/game/${gameName}`;
+
   return (
     <div className="flex items-center gap-2">
       <div
         data-active={active}
         className="grow rounded border border-transparent data-[active=true]:border-primary transition-colors duration-300 ease-in-out"
       >
-        <ArcadeGameSelect
-          name={name}
-          logo={icon}
-          cover={cover}
-          points={game ? gameEarnings : totalEarnings}
-          active={active}
-          onClick={handleClick}
-          variant="darkest"
-          downlighted={!whitelisted}
-          icon={
-            whitelisted ? undefined : published ? "fa-rocket" : "fa-eye-slash"
-          }
-          className="grow rounded"
-        />
+        <Link to={navigationLink}>
+          <ArcadeGameSelect
+            name={name}
+            logo={icon}
+            cover={cover}
+            points={game ? gameEarnings : totalEarnings}
+            active={active}
+            variant="darkest"
+            downlighted={!whitelisted}
+            icon={
+              whitelisted ? undefined : published ? "fa-rocket" : "fa-eye-slash"
+            }
+            className="grow rounded"
+          />
+        </Link>
       </div>
-      {game && (admin || owner) && (
-        <Select>
-          <div className="flex justify-end items-center self-center">
-            <ArcadeMenuButton
-              active={false}
-              className="bg-background-150 border border-background-200 hover:text-foreground-100"
-            >
-              <DotsIcon size="sm" />
-            </ArcadeMenuButton>
-          </div>
-          <SelectContent className="bg-background-100">
-            {game && owner && <Update key={game.id} game={game} />}
-            {game && owner && (
-              <Publish
-                key={game.published ? "hide" : "publish"}
-                game={game}
-                action={game.published ? "hide" : "publish"}
-                setPublished={setPublished}
-              />
-            )}
-            {game && admin && (
-              <Whitelist
-                key={game.whitelisted ? "blacklist" : "whitelist"}
-                game={game}
-                action={game.whitelisted ? "blacklist" : "whitelist"}
-                setWhitelisted={setWhitelisted}
-              />
-            )}
-          </SelectContent>
-        </Select>
-      )}
-    </div>
+      {
+        game && (admin || owner) && (
+          <Select>
+            <div className="flex justify-end items-center self-center">
+              <ArcadeMenuButton
+                active={false}
+                className="bg-background-150 border border-background-200 hover:text-foreground-100"
+              >
+                <DotsIcon size="sm" />
+              </ArcadeMenuButton>
+            </div>
+            <SelectContent className="bg-background-100">
+              {game && owner && <Update key={game.id} game={game} />}
+              {game && owner && (
+                <Publish
+                  key={game.published ? "hide" : "publish"}
+                  game={game}
+                  action={game.published ? "hide" : "publish"}
+                  setPublished={setPublished}
+                />
+              )}
+              {game && admin && (
+                <Whitelist
+                  key={game.whitelisted ? "blacklist" : "whitelist"}
+                  game={game}
+                  action={game.whitelisted ? "blacklist" : "whitelist"}
+                  setWhitelisted={setWhitelisted}
+                />
+              )}
+            </SelectContent>
+          </Select>
+        )
+      }
+    </div >
   );
 };

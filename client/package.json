@@ -19,7 +19,7 @@
     "@cartridge/penpal": "^6.2.3",
     "@cartridge/presets": "github:cartridge-gg/presets#e6a5022",
     "@cartridge/ui": "github:cartridge-gg/ui#c678487",
-    "@dojoengine/sdk": "1.6.0",
+    "@dojoengine/sdk": "1.6.8-alpha.0",
     "@dojoengine/torii-wasm": "1.6.0",
     "@hookform/resolvers": "^3.10.0",
     "@metamask/sdk": "^0.32.1",

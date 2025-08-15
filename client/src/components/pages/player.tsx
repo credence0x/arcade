@@ -43,22 +43,30 @@ export function PlayerPage() {
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
   const navigate = useNavigate();
+  const { player, game } = useProject();
+  
   const handleClick = useCallback(
     (value: string) => {
-      (navigate as any)({
-        search: { tab: value as string | undefined, filter: undefined },
-      });
+      if (game && player) {
+        const gameName = game.name.toLowerCase().replace(/ /g, "-") || game.id.toString();
+        navigate({ to: `/game/${gameName}/player/${player}/${value}` as any });
+      } else if (player) {
+        navigate({ to: `/player/${player}/${value}` as any });
+      }
     },
-    [navigate],
+    [navigate, player, game],
   );
 
   const handleClose = useCallback(() => {
     let newPath = pathname;
-    newPath = newPath.replace(/\/player\/[^/]+/, "");
-    navigate({
-      to: newPath || "/",
-      search: { tab: undefined, filter: undefined },
-    });
+    newPath = newPath.replace(/\/player\/[^/]+.*$/, "");
+    
+    // If we're in a game context, go back to the game
+    if (newPath.includes("/game/")) {
+      navigate({ to: newPath || "/inventory" as any });
+    } else {
+      navigate({ to: "/inventory" as any });
+    }
   }, [pathname, navigate]);
 
   const { rank, points } = useMemo(() => {

@@ -5,6 +5,7 @@ import "./index.css";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import { Provider } from "./context";
 
 registerSW();
 
@@ -19,5 +20,7 @@ declare module "@tanstack/react-router" {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <RouterProvider router={router} />,
+  <Provider>
+    <RouterProvider router={router} />,
+  </Provider>
 );

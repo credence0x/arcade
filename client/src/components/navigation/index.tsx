@@ -31,18 +31,12 @@ function Item({
 }) {
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
-  const search = routerState.location.search;
 
   const isActive = useMemo(() => {
-    // Check if the tab search param equals the variant
-    const searchParams = new URLSearchParams(search);
-    const tab = searchParams.get("tab");
-
-    if (tab === variant) return true;
-
-    // Default to inventory if we're on root without a tab param
-    return variant === "inventory" && pathname === "/" && !tab;
-  }, [pathname, search, variant]);
+    // Check if the current route ends with the variant
+    return pathname.endsWith(`/${variant}`) || 
+           (variant === "inventory" && pathname === "/inventory");
+  }, [pathname, variant]);
 
   if (disabled) {
     return (
@@ -58,18 +52,18 @@ function Item({
     );
   }
 
+  const linkTo = variant === "inventory" ? "/inventory" : 
+                 variant === "achievements" ? "/achievements" : 
+                 variant === "activity" ? "/activity" : "/";
+
   return (
     <Link
       className={cn(
         "flex gap-2 px-4 py-3 h-11 justify-center items-center cursor-pointer hover:opacity-[0.8] rounded border border-secondary",
         isActive ? "bg-secondary" : "bg-background",
       )}
-      to="/"
-      search={(prev) => ({
-        ...prev,
-        tab: variant === "inventory" ? undefined : variant,
-        filter: prev?.filter || undefined,
-      })}
+      to={linkTo}
+      search={{ filter: undefined }}
     >
       <Icon size="sm" variant={isActive ? "solid" : "line"} />
       <span>{title}</span>

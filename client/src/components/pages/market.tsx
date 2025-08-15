@@ -40,20 +40,29 @@ export function MarketPage() {
 
   const handleClick = useCallback(
     (value: string) => {
-      (navigate as any)({
-        search: { tab: value as string | undefined, filter: undefined },
-      });
+      if (edition && game && collectionAddress) {
+        const gameName = game.name.toLowerCase().replace(/ /g, "-") || game.id.toString();
+        const editionName = edition.name.toLowerCase().replace(/ /g, "-") || edition.id.toString();
+        navigate({ to: `/game/${gameName}/edition/${editionName}/collection/${collectionAddress}/${value}` as any });
+      } else if (game && collectionAddress) {
+        const gameName = game.name.toLowerCase().replace(/ /g, "-") || game.id.toString();
+        navigate({ to: `/game/${gameName}/collection/${collectionAddress}/${value}` as any });
+      } else if (collectionAddress) {
+        navigate({ to: `/collection/${collectionAddress}/${value}` as any });
+      }
     },
-    [navigate],
+    [navigate, pathname, game, edition, collectionAddress],
   );
 
   const handleClose = useCallback(() => {
     let newPath = pathname;
-    newPath = newPath.replace(/\/collection\/[^/]+/, "");
-    navigate({
-      to: newPath || "/",
-      search: { tab: undefined, filter: undefined },
-    });
+    newPath = newPath.replace(/\/collection\/[^/]+.*$/, "");
+
+    if (newPath) {
+      navigate({ to: newPath as any });
+    } else {
+      navigate({ to: "/inventory" as any });
+    }
   }, [pathname, navigate]);
 
   useEffect(() => {

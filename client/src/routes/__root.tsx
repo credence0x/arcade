@@ -1,12 +1,16 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { Provider } from "@/context";
 import { SonnerToaster } from "@cartridge/ui";
+import { Template } from "@/components/template"
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 export const Route = createRootRoute({
   component: () => (
-    <Provider>
-      <Outlet />
-      <SonnerToaster position="top-center" />
-    </Provider>
+    <>
+      <Template>
+        <Outlet />
+        <SonnerToaster position="top-center" />
+      </Template>
+      <TanStackRouterDevtools />
+    </>
   ),
 });

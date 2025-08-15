@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { App } from "@/components/app";
 
-export const Route = createFileRoute("/game/$game/collection/$collection")({
+export const Route = createFileRoute("/player/$player/inventory")({
   validateSearch: (search: Record<string, unknown>) => {
     return {
-      tab: search.tab as string | undefined,
       filter: search.filter as string | undefined,
     };
   },

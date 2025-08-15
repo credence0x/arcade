@@ -8,11 +8,7 @@ export const Header = ({}: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
-    <ArcadeHeader
-      onClick={() =>
-        navigate({ to: "/", search: { tab: undefined, filter: undefined } })
-      }
-    >
+    <ArcadeHeader onClick={() => navigate({ to: "/inventory", search: { filter: undefined } })}>
       <Connection />
     </ArcadeHeader>
   );

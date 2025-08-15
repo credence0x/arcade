@@ -1,11 +1,11 @@
-import { DiscoverScene } from "@/components/scenes/discover";
 import { createFileRoute } from "@tanstack/react-router";
+import { App } from "@/components/app";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/player/$player/achievements")({
   validateSearch: (search: Record<string, unknown>) => {
     return {
       filter: search.filter as string | undefined,
     };
   },
-  component: DiscoverScene,
+  component: App,
 });
