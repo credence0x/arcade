@@ -11,16 +11,16 @@ import { Link } from "@tanstack/react-router";
 import { MetadataHelper } from "@/helpers/metadata";
 import { EditionModel, GameModel } from "@cartridge/arcade";
 import placeholder from "@/assets/placeholder.svg";
-import { useSuspenseGamesQuery, useSuspenseEditionsQuery } from "@/queries/games";
+import { useGamesQuery, useEditionsQuery } from "@/queries/games";
 import { constants } from "starknet";
 // New TanStack Query imports (commented out until fully integrated)
 // import { useOrdersQuery, useSalesQuery, useMarketplaceSubscription } from "@/queries/marketplace";
 
 export const Marketplace = () => {
   // Use suspense queries for games and editions - data is guaranteed
-  const { data: games } = useSuspenseGamesQuery(constants.StarknetChainId.SN_MAIN);
-  const { data: editions } = useSuspenseEditionsQuery(constants.StarknetChainId.SN_MAIN);
-  
+  const { data: games = [] } = useGamesQuery(constants.StarknetChainId.SN_MAIN);
+  const { data: editions = [] } = useEditionsQuery(constants.StarknetChainId.SN_MAIN);
+
   // Keep collections from context (depends on Torii clients)
   const { collections } = useMarketCollections();
   const { edition } = useProject();
