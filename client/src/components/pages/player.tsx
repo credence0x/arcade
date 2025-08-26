@@ -44,11 +44,12 @@ export function PlayerPage() {
   const pathname = routerState.location.pathname;
   const navigate = useNavigate();
   const { player, game } = useProject();
-  
+
   const handleClick = useCallback(
     (value: string) => {
       if (game && player) {
-        const gameName = game.name.toLowerCase().replace(/ /g, "-") || game.id.toString();
+        const gameName =
+          game.name.toLowerCase().replace(/ /g, "-") || game.id.toString();
         navigate({ to: `/game/${gameName}/player/${player}/${value}` as any });
       } else if (player) {
         navigate({ to: `/player/${player}/${value}` as any });
@@ -60,10 +61,10 @@ export function PlayerPage() {
   const handleClose = useCallback(() => {
     let newPath = pathname;
     newPath = newPath.replace(/\/player\/[^/]+.*$/, "");
-    
+
     // If we're in a game context, go back to the game
     if (newPath.includes("/game/")) {
-      navigate({ to: newPath || "/inventory" as any });
+      navigate({ to: newPath || ("/inventory" as any) });
     } else {
       navigate({ to: "/inventory" as any });
     }

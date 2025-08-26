@@ -19,7 +19,9 @@ import { constants } from "starknet";
 export const Marketplace = () => {
   // Use suspense queries for games and editions - data is guaranteed
   const { data: games = [] } = useGamesQuery(constants.StarknetChainId.SN_MAIN);
-  const { data: editions = [] } = useEditionsQuery(constants.StarknetChainId.SN_MAIN);
+  const { data: editions = [] } = useEditionsQuery(
+    constants.StarknetChainId.SN_MAIN,
+  );
 
   // Keep collections from context (depends on Torii clients)
   const { collections } = useMarketCollections();
@@ -117,7 +119,6 @@ function Item({
   const orders = ordersData?.orders || {};
   */
 
-
   const listingCount = useMemo(() => {
     const collectionOrders = orders[collection.contract_address];
     if (!collectionOrders) return 0;
@@ -174,8 +175,7 @@ function Item({
       return `/game/${gameName}/collection/${collectionAddress}`;
     }
     return `/collection/${collectionAddress}`;
-
-  }, [edition, game, collection])
+  }, [edition, game, collection]);
 
   return (
     <div className="w-full group select-none">
