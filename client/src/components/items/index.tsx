@@ -152,7 +152,7 @@ export function Items() {
       }
 
       const entrypoints = await getEntrypoints(
-        provider.provider,
+        provider.provider as any,
         contractAddress,
       );
       const isERC1155 = entrypoints?.includes(ERC1155_ENTRYPOINT);
