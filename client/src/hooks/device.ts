@@ -6,7 +6,7 @@ enum DeviceType {
   DESKTOP,
 }
 
-const DESKTOP_WIDTH = 1192;
+const DESKTOP_WIDTH = 1200;
 
 // Helper function to detect mobile device immediately
 const isMobileDevice = () => {
