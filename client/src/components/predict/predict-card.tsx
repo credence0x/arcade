@@ -44,7 +44,7 @@ export const PredictCard = React.forwardRef<
   ) => {
     return (
       <Card
-        className={cn("w-60 rounded bg-background-200", className)}
+        className={cn("w-full min-w-60 rounded bg-background-200", className)}
         ref={ref}
         {...props}
       >
