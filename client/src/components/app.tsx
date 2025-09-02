@@ -78,7 +78,8 @@ export function App() {
                     "bg-background-125 shadow-[0px_0px_8px_0px_rgba(15,20,16,_0.50)]",
                 )}
               >
-                {location.pathname.endsWith("/vault") && tab === "predict" ? (
+                {location.pathname.endsWith("/vault") ||
+                (tab && tab.startsWith("vault-")) ? (
                   <VaultPage />
                 ) : !player ? (
                   !collection ? (
