@@ -124,6 +124,9 @@ export function MarketChart({ players }: VaultPageProps) {
             display: false,
             color: "rgba(255, 255, 255, 0.1)",
           },
+          border: {
+            display: false,
+          },
           ticks: {
             color: "#9CA3AF",
             font: {
@@ -138,6 +141,9 @@ export function MarketChart({ players }: VaultPageProps) {
           grid: {
             display: false,
             color: "rgba(255, 255, 255, 0.1)",
+          },
+          border: {
+            display: false,
           },
           ticks: {
             color: "#9CA3AF",
