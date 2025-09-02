@@ -1,22 +1,22 @@
 pub mod setup {
     // Starknet imports
 
-    use starknet::ContractAddress;
-    use starknet::testing::set_contract_address;
 
     // Dojo imports
 
     use dojo::world::{WorldStorage, WorldStorageTrait};
     use dojo_cairo_test::{
-        spawn_test_world, NamespaceDef, ContractDef, TestResource, ContractDefTrait,
-        WorldStorageTestTrait,
+        ContractDef, ContractDefTrait, NamespaceDef, TestResource, WorldStorageTestTrait,
+        spawn_test_world,
     };
 
     // Internal imports
 
     use registry::models::{index as models};
-    use registry::tests::mocks::register::{Register, IRegisterDispatcher};
     use registry::tests::mocks::collection::Collection;
+    use registry::tests::mocks::register::{IRegisterDispatcher, Register};
+    use starknet::ContractAddress;
+    use starknet::testing::set_contract_address;
 
     // Constant
 

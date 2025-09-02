@@ -6,10 +6,10 @@ pub mod types {
 }
 
 pub mod events {
-    pub mod index;
     pub mod creation;
-    pub mod progress;
+    pub mod index;
     pub mod pinning;
+    pub mod progress;
 }
 
 pub mod components {

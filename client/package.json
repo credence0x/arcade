@@ -14,8 +14,8 @@
   "dependencies": {
     "@cartridge/arcade": "workspace:*",
     "@cartridge/marketplace": "0.0.14",
-    "@cartridge/connector": "0.9.2",
-    "@cartridge/controller": "0.9.2",
+    "@cartridge/connector": "0.9.3",
+    "@cartridge/controller": "0.9.3",
     "@cartridge/penpal": "^6.2.3",
     "@cartridge/presets": "github:cartridge-gg/presets#e6a5022",
     "@cartridge/ui": "github:cartridge-gg/ui#c678487",

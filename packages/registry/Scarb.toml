@@ -6,6 +6,7 @@ edition.workspace = true
 [dependencies]
 dojo.workspace = true
 graffiti.workspace = true
+starknet.workspace = true
 collection = { path = "../collection" }
 
 [dev-dependencies]
