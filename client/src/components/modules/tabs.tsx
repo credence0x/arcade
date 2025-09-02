@@ -57,7 +57,11 @@ export type TabValue =
   | "items"
   | "holders"
   | "predict"
-  | "positions";
+  | "positions"
+  | "vault-activity"
+  | "vault-holders"
+  | "vault-comments"
+  | "vault-positions";
 
 export interface ArcadeTabsProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -81,6 +85,10 @@ export const ArcadeTabs = ({
     "guilds",
     "items",
     "holders",
+    "vault-activity",
+    "vault-holders",
+    "vault-comments",
+    "vault-positions",
   ],
   onTabClick,
   variant,
@@ -105,7 +113,12 @@ export const ArcadeTabs = ({
     const tabWidths = new Map<TabValue, { width: number; visible: boolean }>();
     hiddenRef.current.childNodes.forEach((node) => {
       const element = node as HTMLDivElement;
-      const tab = element.textContent?.toLowerCase();
+      const tabElement =
+        element.getAttribute("aria-controls")?.split("-") || [];
+      tabElement.splice(0, 3);
+
+      const tab = tabElement.join("-");
+
       if (tab) {
         const visible = order.includes(tab as TabValue);
         tabWidths.set(tab as TabValue, { width: element.offsetWidth, visible });
@@ -297,6 +310,14 @@ const Tab = ({
       return <PredictNavButton key={tab} {...props} />;
     case "positions":
       return <PositionsNavButton {...props} />;
+    case "vault-activity":
+      return <VaultActivityNavButton {...props} />;
+    case "vault-holders":
+      return <VaultHoldersNavButton {...props} />;
+    case "vault-comments":
+      return <VaultCommentsNavButton {...props} />;
+    case "vault-positions":
+      return <VaultPositionsNavButton {...props} />;
     default:
       return null;
   }
@@ -841,5 +862,185 @@ const PositionsNavButton = React.forwardRef<HTMLButtonElement, NavButtonProps>(
     );
   },
 );
+
+const VaultActivityNavButton = React.forwardRef<
+  HTMLButtonElement,
+  NavButtonProps
+>(({ value, active, size, onClick, item, isMobile }, ref) => {
+  if (isMobile) {
+    return (
+      <TabsTrigger
+        className="p-0 grow data-[state=active]:bg-background-transparent data-[state=active]:shadow-none"
+        value={value}
+        ref={ref}
+      >
+        <BottomTab status={active ? "active" : null} onClick={onClick}>
+          <PulseIcon variant="solid" size="lg" />
+        </BottomTab>
+      </TabsTrigger>
+    );
+  }
+
+  if (item) {
+    return (
+      <ArcadeMenuItem
+        ref={ref}
+        value={value}
+        Icon={<PulseIcon variant="solid" size="sm" />}
+        label="Activity"
+        active={active}
+        size={size}
+        onClick={onClick}
+      />
+    );
+  }
+
+  return (
+    <ArcadeTab
+      ref={ref}
+      value={value}
+      Icon={<PulseIcon variant="solid" size="sm" />}
+      label="Activity"
+      active={active}
+      size={size}
+      onClick={onClick}
+    />
+  );
+});
+
+const VaultHoldersNavButton = React.forwardRef<
+  HTMLButtonElement,
+  NavButtonProps
+>(({ value, active, size, onClick, item, isMobile }, ref) => {
+  if (isMobile) {
+    return (
+      <TabsTrigger
+        className="p-0 grow data-[state=active]:bg-background-transparent data-[state=active]:shadow-none"
+        value={value}
+        ref={ref}
+      >
+        <BottomTab status={active ? "active" : null} onClick={onClick}>
+          <UsersIcon variant="solid" size="lg" />
+        </BottomTab>
+      </TabsTrigger>
+    );
+  }
+
+  if (item) {
+    return (
+      <ArcadeMenuItem
+        ref={ref}
+        value={value}
+        Icon={<UsersIcon variant="solid" size="sm" />}
+        label="Holders"
+        active={active}
+        size={size}
+        onClick={onClick}
+      />
+    );
+  }
+
+  return (
+    <ArcadeTab
+      ref={ref}
+      value={value}
+      Icon={<UsersIcon variant="solid" size="sm" />}
+      label="Holders"
+      active={active}
+      size={size}
+      onClick={onClick}
+    />
+  );
+});
+
+const VaultCommentsNavButton = React.forwardRef<
+  HTMLButtonElement,
+  NavButtonProps
+>(({ value, active, size, onClick, item, isMobile }, ref) => {
+  if (isMobile) {
+    return (
+      <TabsTrigger
+        className="p-0 grow data-[state=active]:bg-background-transparent data-[state=active]:shadow-none"
+        value={value}
+        ref={ref}
+      >
+        <BottomTab status={active ? "active" : null} onClick={onClick}>
+          <ScrollIcon variant="solid" size="lg" />
+        </BottomTab>
+      </TabsTrigger>
+    );
+  }
+
+  if (item) {
+    return (
+      <ArcadeMenuItem
+        ref={ref}
+        value={value}
+        Icon={<ScrollIcon variant="solid" size="sm" />}
+        label="Comments"
+        active={active}
+        size={size}
+        onClick={onClick}
+      />
+    );
+  }
+
+  return (
+    <ArcadeTab
+      ref={ref}
+      value={value}
+      Icon={<ScrollIcon variant="solid" size="sm" />}
+      label="Comments"
+      active={active}
+      size={size}
+      onClick={onClick}
+    />
+  );
+});
+
+const VaultPositionsNavButton = React.forwardRef<
+  HTMLButtonElement,
+  NavButtonProps
+>(({ value, active, size, onClick, item, isMobile }, ref) => {
+  if (isMobile) {
+    return (
+      <TabsTrigger
+        className="p-0 grow data-[state=active]:bg-background-transparent data-[state=active]:shadow-none"
+        value={value}
+        ref={ref}
+      >
+        <BottomTab status={active ? "active" : null} onClick={onClick}>
+          <SwordsIcon variant="solid" size="lg" />
+        </BottomTab>
+      </TabsTrigger>
+    );
+  }
+
+  if (item) {
+    return (
+      <ArcadeMenuItem
+        ref={ref}
+        value={value}
+        Icon={<SwordsIcon variant="solid" size="sm" />}
+        label="My Positions"
+        active={active}
+        size={size}
+        onClick={onClick}
+      />
+    );
+  }
+
+  return (
+    <ArcadeTab
+      ref={ref}
+      value={value}
+      Icon={<SwordsIcon variant="solid" size="sm" />}
+      label="My Positions"
+      active={active}
+      size={size}
+      onClick={onClick}
+    />
+  );
+});
 
 export default ArcadeTabs;
