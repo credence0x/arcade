@@ -12,7 +12,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { UserAvatar } from "../user/avatar";
-import { BuySection } from "../vault/buy-section";
 
 // Register Chart.js components
 ChartJS.register(

@@ -27,37 +27,34 @@ export function VaultTabs({
         order={order}
         defaultValue={defaultValue as TabValue}
         onTabClick={onTabClick}
-        variant="light"
         className="h-auto"
       >
-      <div
-        className="flex justify-center gap-8 w-full"
-      >
-        <TabsContent
-          className="p-0 px-3 lg:px-6 mt-0 w-full"
-          value="vault-activity"
-        >
-          <VaultActivityScene />
-        </TabsContent>
-        <TabsContent
-          className="p-0 px-3 lg:px-6 mt-0 w-full"
-          value="vault-holders"
-        >
-          <VaultHoldersScene />
-        </TabsContent>
-        <TabsContent
-          className="p-0 px-3 lg:px-6 mt-0 w-full"
-          value="vault-comments"
-        >
-          <VaultCommentsScene />
-        </TabsContent>
-        <TabsContent
-          className="p-0 px-3 lg:px-6 mt-0 w-full"
-          value="vault-positions"
-        >
-          <VaultPositionsScene />
-        </TabsContent>
-      </div>
+        <div className="flex justify-center gap-8 w-full">
+          <TabsContent
+            className="p-0 px-3 lg:px-6 mt-0 w-full"
+            value="vault-activity"
+          >
+            <VaultActivityScene />
+          </TabsContent>
+          <TabsContent
+            className="p-0 px-3 lg:px-6 mt-0 w-full"
+            value="vault-holders"
+          >
+            <VaultHoldersScene />
+          </TabsContent>
+          <TabsContent
+            className="p-0 px-3 lg:px-6 mt-0 w-full"
+            value="vault-comments"
+          >
+            <VaultCommentsScene />
+          </TabsContent>
+          <TabsContent
+            className="p-0 px-3 lg:px-6 mt-0 w-full"
+            value="vault-positions"
+          >
+            <VaultPositionsScene />
+          </TabsContent>
+        </div>
       </ArcadeTabs>
     </div>
   );

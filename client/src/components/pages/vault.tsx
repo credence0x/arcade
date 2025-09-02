@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 import { joinPaths } from "@/helpers";
 import { TabValue } from "../modules";
+import { VaultHeader } from "../vault/header";
 
 export interface Player {
   name: string;
@@ -55,6 +56,8 @@ export function VaultPage({ players }: VaultPageProps) {
         "w-full flex flex-col gap-4 lg:p-6 lg:pb-0 p-4 overflow-y-scroll",
       )}
     >
+      <VaultHeader />
+
       <MarketChart players={players} />
 
       <BuySection />
