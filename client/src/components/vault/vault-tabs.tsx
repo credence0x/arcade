@@ -22,41 +22,43 @@ export function VaultTabs({
   ];
 
   return (
-    <ArcadeTabs
-      order={order}
-      defaultValue={defaultValue as TabValue}
-      onTabClick={onTabClick}
-      variant="light"
-    >
+    <div className="w-full">
+      <ArcadeTabs
+        order={order}
+        defaultValue={defaultValue as TabValue}
+        onTabClick={onTabClick}
+        variant="light"
+        className="h-auto"
+      >
       <div
-        className="flex justify-center gap-8 w-full h-full overflow-y-scroll"
-        style={{ scrollbarWidth: "none" }}
+        className="flex justify-center gap-8 w-full"
       >
         <TabsContent
-          className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+          className="p-0 px-3 lg:px-6 mt-0 w-full"
           value="vault-activity"
         >
           <VaultActivityScene />
         </TabsContent>
         <TabsContent
-          className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+          className="p-0 px-3 lg:px-6 mt-0 w-full"
           value="vault-holders"
         >
           <VaultHoldersScene />
         </TabsContent>
         <TabsContent
-          className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+          className="p-0 px-3 lg:px-6 mt-0 w-full"
           value="vault-comments"
         >
           <VaultCommentsScene />
         </TabsContent>
         <TabsContent
-          className="p-0 px-3 lg:px-6 mt-0 grow w-full"
+          className="p-0 px-3 lg:px-6 mt-0 w-full"
           value="vault-positions"
         >
           <VaultPositionsScene />
         </TabsContent>
       </div>
-    </ArcadeTabs>
+      </ArcadeTabs>
+    </div>
   );
 }
