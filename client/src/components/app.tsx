@@ -2,6 +2,7 @@ import { Games } from "@/components/games";
 import { SceneLayout } from "@/components/scenes/layout";
 import { GamePage } from "./pages/game";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { PlayerPage } from "./pages/player";
 import { cn } from "@cartridge/ui/utils";
 import { useSidebar } from "@/hooks/sidebar";
@@ -13,11 +14,13 @@ import { useDevice } from "@/hooks/device";
 import { MarketPage } from "./pages/market";
 import { Filters } from "./filters";
 import { UserCard } from "./user/user-card";
+import { VaultPage } from "./pages/vault";
 
 export function App() {
   const { isOpen, toggle, handleTouchMove, handleTouchStart } = useSidebar();
   const { setPlayer } = useArcade();
-  const { player, collection } = useProject();
+  const { player, collection, tab } = useProject();
+  const location = useLocation();
 
   const { isPWA, isMobile } = useDevice();
 
@@ -75,7 +78,9 @@ export function App() {
                     "bg-background-125 shadow-[0px_0px_8px_0px_rgba(15,20,16,_0.50)]",
                 )}
               >
-                {!player ? (
+                {location.pathname.endsWith("/vault") && tab === "predict" ? (
+                  <VaultPage />
+                ) : !player ? (
                   !collection ? (
                     <GamePage />
                   ) : (

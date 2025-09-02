@@ -29,7 +29,7 @@ export function GamePage() {
   const handleClick = useCallback(
     (value: string) => {
       let pathname = location.pathname;
-      pathname = pathname.replace(/\/tab\/[^/]+/, "");
+      pathname = pathname.replace(/\/tab\/.*$/, "");
       pathname = joinPaths(pathname, `/tab/${value}`);
       navigate(pathname || "/");
     },

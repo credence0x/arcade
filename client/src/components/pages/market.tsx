@@ -40,7 +40,7 @@ export function MarketPage() {
   const handleClick = useCallback(
     (value: string) => {
       let pathname = location.pathname;
-      pathname = pathname.replace(/\/tab\/[^/]+/, "");
+      pathname = pathname.replace(/\/tab\/.*$/, "");
       pathname = joinPaths(pathname, `/tab/${value}`);
       navigate(pathname || "/");
     },
@@ -50,7 +50,7 @@ export function MarketPage() {
   const handleClose = useCallback(() => {
     let pathname = location.pathname;
     pathname = pathname.replace(/\/collection\/[^/]+/, "");
-    pathname = pathname.replace(/\/tab\/[^/]+/, "");
+    pathname = pathname.replace(/\/tab\/.*$/, "");
     navigate(pathname || "/");
   }, [location, navigate]);
 

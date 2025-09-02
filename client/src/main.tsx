@@ -16,7 +16,9 @@ createRoot(document.getElementById("root")!).render(
           <Route path="tab/:tab" element={<App />} />
         </Route>
         <Route path="game/:game" element={<App />}>
-          <Route path="tab/:tab" element={<App />} />
+          <Route path="tab/:tab" element={<App />}>
+            <Route path="vault" element={<App />} />
+          </Route>
           <Route path="collection/:collection" element={<App />}>
             <Route path="tab/:tab" element={<App />} />
           </Route>

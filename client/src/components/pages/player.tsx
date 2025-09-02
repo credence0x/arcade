@@ -62,7 +62,7 @@ export function PlayerPage() {
   const handleClick = useCallback(
     (value: string) => {
       let pathname = location.pathname;
-      pathname = pathname.replace(/\/tab\/[^/]+/, "");
+      pathname = pathname.replace(/\/tab\/.*$/, "");
       pathname = joinPaths(pathname, `/tab/${value}`);
       navigate(pathname || "/");
     },
@@ -72,7 +72,7 @@ export function PlayerPage() {
   const handleClose = useCallback(() => {
     let pathname = location.pathname;
     pathname = pathname.replace(/\/player\/[^/]+/, "");
-    pathname = pathname.replace(/\/tab\/[^/]+/, "");
+    pathname = pathname.replace(/\/tab\/.*$/, "");
     navigate(pathname || "/");
   }, [location, navigate]);
 
