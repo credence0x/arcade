@@ -6,13 +6,12 @@ import {
   Button,
   cn,
   TabsContent,
-  TabValue,
   TimesIcon,
   UserAddIcon,
   UserCheckIcon,
 } from "@cartridge/ui";
 import { ActivityScene } from "../scenes/activity";
-import { ArcadeTabs } from "../modules";
+import { ArcadeTabs, TabValue } from "../modules";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUsername, useUsernames } from "@/hooks/account";
 import { useAddress } from "@/hooks/address";

@@ -57,7 +57,7 @@ export function VaultPage({ players }: VaultPageProps) {
     >
       <MarketChart players={players} />
 
-      {/*<BuySection />*/}
+      <BuySection />
 
       <VaultTabs
         defaultValue={defaultValue as TabValue}

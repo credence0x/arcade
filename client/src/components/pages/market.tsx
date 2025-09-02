@@ -6,12 +6,11 @@ import {
   Button,
   cn,
   TabsContent,
-  TabValue,
   Thumbnail,
   TimesIcon,
   VerifiedIcon,
 } from "@cartridge/ui";
-import { ArcadeTabs } from "../modules";
+import { ArcadeTabs, TabValue } from "../modules";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useProject } from "@/hooks/project";
 import { joinPaths } from "@/helpers";
