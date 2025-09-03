@@ -86,9 +86,10 @@ export function MarketChart({ players }: VaultPageProps) {
         data: mockData.map((d) => d.playerData[player.name]),
         borderColor: player.color,
         backgroundColor: player.color,
+        borderWidth: 1,
         pointRadius: (ctx: ScriptableContext<"line">) => {
           // Only show point at the last data point
-          return ctx.dataIndex === ctx.dataset.data.length - 1 ? 4 : 0;
+          return ctx.dataIndex === ctx.dataset.data.length - 1 ? 3 : 0;
         },
         pointHoverRadius: 6,
         fill: false,
