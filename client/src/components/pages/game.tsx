@@ -36,19 +36,24 @@ export function GamePage() {
     [location, navigate],
   );
 
+  const isPreview = useMemo(() => {
+    return window.location.href.toLowerCase().includes(".preview.cartridge.gg");
+  }, []);
+
   const order: TabValue[] = useMemo(() => {
     const tabs: TabValue[] = game
       ? ["activity", "leaderboard", "marketplace", "guilds", "predict", "about"]
       : ["activity", "leaderboard", "marketplace", "predict"];
 
-    if (process.env.NODE_ENV !== "development") {
+    // not in dev AND not preview deployments
+    if (process.env.NODE_ENV !== "development" && !isPreview) {
       // Remove predict tab in production for now
       const predictIndex = tabs.indexOf("predict");
       tabs.splice(predictIndex, 1);
     }
 
     return tabs;
-  }, [game]);
+  }, [game, isPreview]);
 
   const defaultValue = useMemo(() => {
     if (!order.includes(tab as TabValue)) return "activity";

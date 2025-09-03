@@ -33,6 +33,12 @@ export function PlayerPage() {
   const { account, connector, isConnected } = useAccount();
   const { provider, follows } = useArcade();
   const { edition, tab } = useProject();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isPreview = useMemo(() => {
+    return window.location.href.toLowerCase().includes(".preview.cartridge.gg");
+  }, []);
 
   const order: TabValue[] = useMemo(() => {
     const order = [
@@ -42,22 +48,21 @@ export function PlayerPage() {
       "positions",
     ] as TabValue[];
 
-    if (process.env.NODE_ENV !== "development") {
+    // not in dev AND not preview deployments
+    if (process.env.NODE_ENV !== "development" && !isPreview) {
       // Remove predict tab in production for now
       const predictIndex = order.indexOf("positions");
       order.splice(predictIndex, 1);
     }
 
     return order;
-  }, []);
+  }, [isPreview]);
 
   const defaultValue = useMemo(() => {
     if (!order.includes(tab as TabValue)) return "inventory";
     return tab;
   }, [tab, order]);
 
-  const location = useLocation();
-  const navigate = useNavigate();
   const handleClick = useCallback(
     (value: string) => {
       let pathname = location.pathname;
