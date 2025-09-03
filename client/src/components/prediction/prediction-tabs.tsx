@@ -1,24 +1,24 @@
 import { TabsContent } from "@cartridge/ui";
 import { ArcadeTabs, TabValue } from "../modules";
-import { VaultActivityScene } from "../scenes/vault-activity";
-import { VaultHoldersScene } from "../scenes/vault-holders";
-import { VaultCommentsScene } from "../scenes/vault-comments";
-import { VaultPositionsScene } from "../scenes/vault-positions";
+import { PredictionActivityScene } from "../scenes/prediction-activity";
+import { PredictionHoldersScene } from "../scenes/prediction-holders";
+import { PredictionCommentsScene } from "../scenes/prediction-comments";
+import { PredictionPositionsScene } from "../scenes/prediction-positions";
 
-export interface VaultTabsProps {
+export interface PredictionTabsProps {
   defaultValue?: TabValue;
   onTabClick?: (tab: TabValue) => void;
 }
 
-export function VaultTabs({
-  defaultValue = "vault-activity",
+export function PredictionTabs({
+  defaultValue = "prediction-activity",
   onTabClick,
-}: VaultTabsProps) {
+}: PredictionTabsProps) {
   const order: TabValue[] = [
-    "vault-activity",
-    "vault-holders",
-    "vault-comments",
-    "vault-positions",
+    "prediction-activity",
+    "prediction-holders",
+    "prediction-comments",
+    "prediction-positions",
   ];
 
   return (
@@ -32,27 +32,27 @@ export function VaultTabs({
         <div className="flex justify-center gap-8 w-full px-6">
           <TabsContent
             className="p-0 py-3 lg:py-6 mt-0 w-full"
-            value="vault-activity"
+            value="prediction-activity"
           >
-            <VaultActivityScene />
+            <PredictionActivityScene />
           </TabsContent>
           <TabsContent
             className="p-0 py-3 lg:py-6 mt-0 w-full"
-            value="vault-holders"
+            value="prediction-holders"
           >
-            <VaultHoldersScene />
+            <PredictionHoldersScene />
           </TabsContent>
           <TabsContent
             className="p-0 py-3 lg:py-6 mt-0 w-full"
-            value="vault-comments"
+            value="prediction-comments"
           >
-            <VaultCommentsScene />
+            <PredictionCommentsScene />
           </TabsContent>
           <TabsContent
             className="p-0 py-3 lg:py-6 mt-0 w-full"
-            value="vault-positions"
+            value="prediction-positions"
           >
-            <VaultPositionsScene />
+            <PredictionPositionsScene />
           </TabsContent>
         </div>
       </ArcadeTabs>

@@ -3,7 +3,7 @@ import { UserAvatar } from "../user/avatar";
 import React, { HTMLAttributes, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const VaultHeader = React.forwardRef<
+export const PredictionHeader = React.forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
@@ -12,14 +12,14 @@ export const VaultHeader = React.forwardRef<
 
   const handleClose = useCallback(() => {
     let pathname = location.pathname;
-    pathname = pathname.replace(/\/tab\/vault-[^/]+$/, "");
-    pathname = pathname.replace(/\/vault$/, "");
+    pathname = pathname.replace(/\/tab\/prediction-[^/]+$/, "");
+    pathname = pathname.replace(/\/prediction$/, "");
     navigate(pathname || "/");
   }, [location, navigate]);
 
   return (
     <div
-      id="vault-header"
+      id="prediction-header"
       className={cn("flex items-start justify-between self-stretch", className)}
       ref={ref}
       {...props}

@@ -1,10 +1,10 @@
 import { cn } from "@cartridge/ui";
-import { BuySection, MarketChart, VaultTabs } from "../vault";
+import { BuySection, MarketChart, PredictionTabs } from "../prediction";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 import { joinPaths } from "@/helpers";
 import { TabValue } from "../modules";
-import { VaultHeader } from "../vault/header";
+import { PredictionHeader } from "../prediction/header";
 
 export interface Player {
   name: string;
@@ -13,11 +13,11 @@ export interface Player {
   variance: number; // Amount of randomization (+/-)
 }
 
-export interface VaultPageProps {
+export interface PredictionPageProps {
   players?: Player[];
 }
 
-export function VaultPage({ players }: VaultPageProps) {
+export function PredictionPage({ players }: PredictionPageProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -38,16 +38,16 @@ export function VaultPage({ players }: VaultPageProps) {
       const tab = tabMatch[1] as TabValue;
       if (
         [
-          "vault-activity",
-          "vault-holders",
-          "vault-comments",
-          "vault-positions",
+          "prediction-activity",
+          "prediction-holders",
+          "prediction-comments",
+          "prediction-positions",
         ].includes(tab)
       ) {
         return tab;
       }
     }
-    return "vault-activity";
+    return "prediction-activity";
   }, [location]);
 
   return (
@@ -56,14 +56,14 @@ export function VaultPage({ players }: VaultPageProps) {
       style={{ scrollbarWidth: "none" }}
     >
       <div className="w-full flex flex-col gap-4 lg:p-6 lg:pb-0 p-4">
-        <VaultHeader />
+        <PredictionHeader />
 
         <MarketChart players={players} />
 
         <BuySection />
       </div>
 
-      <VaultTabs
+      <PredictionTabs
         defaultValue={defaultValue as TabValue}
         onTabClick={handleTabClick}
       />

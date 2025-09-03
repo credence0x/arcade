@@ -51,8 +51,8 @@ export const PredictCard = React.forwardRef<
       if (!game) return navigate("/");
 
       const gameName = game.name.toLowerCase().replace(/ /g, "-");
-      const vaultPath = `/game/${gameName}/tab/vault-activity`;
-      navigate(vaultPath);
+      const predictionPath = `/game/${gameName}/prediction/tab/prediction-activity`;
+      navigate(predictionPath);
     };
 
     return (

@@ -1,5 +1,5 @@
-import { PositionsLabel } from "../vault/positions-label";
-import { VaultPositionCard } from "../vault/positions-row";
+import { PositionsLabel } from "../prediction/positions-label";
+import { PredictionPositionCard } from "../prediction/positions-row";
 
 const MOCKDATA = [
   {
@@ -38,13 +38,13 @@ const MOCKDATA = [
   },
 ];
 
-export const VaultPositionsScene = () => {
+export const PredictionPositionsScene = () => {
   return (
     <div className="w-full h-full self-stretch flex flex-col gap-3 rounded overflow-clip">
       <PositionsLabel />
 
       {MOCKDATA.map((item, index) => (
-        <VaultPositionCard key={index} {...item} />
+        <PredictionPositionCard key={index} {...item} />
       ))}
     </div>
   );

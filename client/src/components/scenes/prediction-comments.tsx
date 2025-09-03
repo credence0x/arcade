@@ -1,5 +1,5 @@
 import { Button, Input } from "@cartridge/ui";
-import { CommentRow, CommentRowProps } from "../vault/comment-row";
+import { CommentRow, CommentRowProps } from "../prediction/comment-row";
 import { useCallback, useState } from "react";
 import { useUsername } from "@/hooks/account";
 import { useAddress } from "@/hooks/address";
@@ -32,7 +32,7 @@ const MOCKDATA = [
   },
 ] satisfies Array<CommentRowProps>;
 
-export const VaultCommentsScene = () => {
+export const PredictionCommentsScene = () => {
   const [comments, setComments] = useState<Array<CommentRowProps>>(MOCKDATA);
   const { address } = useAddress();
   const { username } = useUsername({ address });

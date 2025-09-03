@@ -1,4 +1,4 @@
-import { VaultActivityFeed } from "../vault/activity-feed";
+import { PredictionActivityFeed } from "../prediction/activity-feed";
 
 const MOCKDATA = {
   username: "fortunaragem",
@@ -7,11 +7,11 @@ const MOCKDATA = {
   timestamp: "2 days ago",
 };
 
-export const VaultActivityScene = () => {
+export const PredictionActivityScene = () => {
   return (
     <div className="w-full h-full self-stretch flex flex-col gap-px rounded overflow-clip">
       {Array.from({ length: 5 }).map((_, index) => (
-        <VaultActivityFeed key={index} {...MOCKDATA} />
+        <PredictionActivityFeed key={index} {...MOCKDATA} />
       ))}
     </div>
   );

@@ -1,5 +1,5 @@
-import { HolderLabel } from "../vault/holder-label";
-import { HolderRow, THolders } from "../vault/holder-row";
+import { HolderLabel } from "../prediction/holder-label";
+import { HolderRow, THolders } from "../prediction/holder-row";
 
 const MOCKDATA = [
   {
@@ -39,7 +39,7 @@ const MOCKDATA = [
   },
 ] satisfies Array<THolders>;
 
-export const VaultHoldersScene = () => {
+export const PredictionHoldersScene = () => {
   return (
     <div className="w-full h-full self-stretch flex flex-col gap-3 rounded overflow-clip">
       <HolderLabel />

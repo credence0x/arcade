@@ -35,11 +35,11 @@ interface ChartData {
   playerData: Record<string, number>;
 }
 
-export interface VaultPageProps {
+export interface PredictionPageProps {
   players?: Player[];
 }
 
-export function MarketChart({ players }: VaultPageProps) {
+export function MarketChart({ players }: PredictionPageProps) {
   const chartRef = useRef<ChartJS<"line">>(null);
 
   // Default players if none provided

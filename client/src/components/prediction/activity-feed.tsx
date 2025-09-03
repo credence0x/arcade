@@ -9,7 +9,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   timestamp: string;
 }
 
-export const VaultActivityFeed = React.forwardRef<HTMLDivElement, Props>(
+export const PredictionActivityFeed = React.forwardRef<HTMLDivElement, Props>(
   ({ username, total, itemName, timestamp, className, ...props }, ref) => {
     return (
       <div

@@ -10,7 +10,7 @@ import {
   Thumbnail,
 } from "@cartridge/ui";
 
-export const VaultSidebar = () => {
+export const PredictionSidebar = () => {
   const { isMobile } = useDevice();
   const { isOpen, handleTouchStart, handleTouchMove } = useSidebar();
 

@@ -58,10 +58,10 @@ export type TabValue =
   | "holders"
   | "predict"
   | "positions"
-  | "vault-activity"
-  | "vault-holders"
-  | "vault-comments"
-  | "vault-positions";
+  | "prediction-activity"
+  | "prediction-holders"
+  | "prediction-comments"
+  | "prediction-positions";
 
 export interface ArcadeTabsProps
   extends React.HTMLAttributes<HTMLDivElement>,
@@ -85,10 +85,10 @@ export const ArcadeTabs = ({
     "guilds",
     "items",
     "holders",
-    "vault-activity",
-    "vault-holders",
-    "vault-comments",
-    "vault-positions",
+    "prediction-activity",
+    "prediction-holders",
+    "prediction-comments",
+    "prediction-positions",
   ],
   onTabClick,
   variant,
@@ -310,14 +310,14 @@ const Tab = ({
       return <PredictNavButton key={tab} {...props} />;
     case "positions":
       return <PositionsNavButton {...props} />;
-    case "vault-activity":
-      return <VaultActivityNavButton {...props} />;
-    case "vault-holders":
-      return <VaultHoldersNavButton {...props} />;
-    case "vault-comments":
-      return <VaultCommentsNavButton {...props} />;
-    case "vault-positions":
-      return <VaultPositionsNavButton {...props} />;
+    case "prediction-activity":
+      return <PredictionActivityNavButton {...props} />;
+    case "prediction-holders":
+      return <PredictionHoldersNavButton {...props} />;
+    case "prediction-comments":
+      return <PredictionCommentsNavButton {...props} />;
+    case "prediction-positions":
+      return <PredictionPositionsNavButton {...props} />;
     default:
       return null;
   }
@@ -863,7 +863,7 @@ const PositionsNavButton = React.forwardRef<HTMLButtonElement, NavButtonProps>(
   },
 );
 
-const VaultActivityNavButton = React.forwardRef<
+const PredictionActivityNavButton = React.forwardRef<
   HTMLButtonElement,
   NavButtonProps
 >(({ value, active, size, onClick, item, isMobile }, ref) => {
@@ -908,7 +908,7 @@ const VaultActivityNavButton = React.forwardRef<
   );
 });
 
-const VaultHoldersNavButton = React.forwardRef<
+const PredictionHoldersNavButton = React.forwardRef<
   HTMLButtonElement,
   NavButtonProps
 >(({ value, active, size, onClick, item, isMobile }, ref) => {
@@ -953,7 +953,7 @@ const VaultHoldersNavButton = React.forwardRef<
   );
 });
 
-const VaultCommentsNavButton = React.forwardRef<
+const PredictionCommentsNavButton = React.forwardRef<
   HTMLButtonElement,
   NavButtonProps
 >(({ value, active, size, onClick, item, isMobile }, ref) => {
@@ -998,7 +998,7 @@ const VaultCommentsNavButton = React.forwardRef<
   );
 });
 
-const VaultPositionsNavButton = React.forwardRef<
+const PredictionPositionsNavButton = React.forwardRef<
   HTMLButtonElement,
   NavButtonProps
 >(({ value, active, size, onClick, item, isMobile }, ref) => {

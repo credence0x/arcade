@@ -3,7 +3,7 @@ import { UserAvatar } from "../user/avatar";
 import { cn } from "@/lib/utils";
 import React from "react";
 
-export interface VaultPositionCardProps {
+export interface PredictionPositionCardProps {
   description: string;
 
   // User Info
@@ -19,9 +19,9 @@ export interface VaultPositionCardProps {
   earnTokenAmount: string | number;
 }
 
-export const VaultPositionCard = React.forwardRef<
+export const PredictionPositionCard = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VaultPositionCardProps
+  React.HTMLAttributes<HTMLDivElement> & PredictionPositionCardProps
 >(
   (
     {
