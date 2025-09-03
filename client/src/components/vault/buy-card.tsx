@@ -22,7 +22,7 @@ export const BuyCard = React.forwardRef<HTMLDivElement, Props>(
           <Thumbnail
             icon={<UserAvatar username={name} />}
             rounded
-            size="sm"
+            size="md"
             variant="lighter"
           />
           <p className="text-foreground-100 text-sm font-normal">{name}</p>

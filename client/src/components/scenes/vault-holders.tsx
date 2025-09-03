@@ -1,4 +1,3 @@
-import { UserAvatar } from "../user/avatar";
 import { HolderLabel } from "../vault/holder-label";
 import { HolderRow, THolders } from "../vault/holder-row";
 

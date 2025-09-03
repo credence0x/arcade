@@ -16,7 +16,9 @@ export const VaultActivityFeed = React.forwardRef<HTMLDivElement, Props>(
         id="activity-feed-event"
         className={cn(
           "bg-background-200 flex items-start justify-between self-stretch px-3 py-2",
+          className,
         )}
+        ref={ref}
         {...props}
       >
         <div className="flex items-center gap-1.5">
