@@ -51,7 +51,7 @@ export function App() {
               className={cn(
                 "fixed lg:relative h-full w-full flex flex-col overflow-hidden px-0 lg:pb-0",
                 "transition-transform duration-300 ease-in-out",
-                isPWA ? "pb-[90px]" : "pb-[84px]",
+                isPWA ? "pb-[77px]" : "pb-[71px]",
                 isOpen
                   ? "translate-x-[min(calc(100vw-64px),360px)]"
                   : "translate-x-0",
