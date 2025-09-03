@@ -52,16 +52,16 @@ export function VaultPage({ players }: VaultPageProps) {
 
   return (
     <div
-      className={cn(
-        "w-full flex flex-col gap-4 lg:p-6 lg:pb-0 p-4 overflow-y-scroll",
-      )}
+      className={cn("gap-4 overflow-y-scroll")}
       style={{ scrollbarWidth: "none" }}
     >
-      <VaultHeader />
+      <div className="w-full flex flex-col gap-4 lg:p-6 lg:pb-0 p-4">
+        <VaultHeader />
 
-      <MarketChart players={players} />
+        <MarketChart players={players} />
 
-      <BuySection />
+        <BuySection />
+      </div>
 
       <VaultTabs
         defaultValue={defaultValue as TabValue}

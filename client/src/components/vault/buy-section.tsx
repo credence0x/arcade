@@ -35,7 +35,10 @@ export const BuySection = React.forwardRef<
   HTMLAttributes<HTMLDivElement>
 >(({ className }, ref) => {
   return (
-    <div ref={ref} className={cn("flex flex-col w-full gap-px", className)}>
+    <div
+      ref={ref}
+      className={cn("flex flex-col w-full gap-px pb-4", className)}
+    >
       {MOCKDATA.map((item, index) => (
         <BuyCard key={index} {...item} />
       ))}

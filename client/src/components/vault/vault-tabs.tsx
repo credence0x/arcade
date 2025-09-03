@@ -29,7 +29,7 @@ export function VaultTabs({
         onTabClick={onTabClick}
         className="h-auto"
       >
-        <div className="flex justify-center gap-8 w-full">
+        <div className="flex justify-center gap-8 w-full px-6">
           <TabsContent
             className="p-0 py-3 lg:py-6 mt-0 w-full"
             value="vault-activity"
