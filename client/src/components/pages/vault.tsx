@@ -55,6 +55,7 @@ export function VaultPage({ players }: VaultPageProps) {
       className={cn(
         "w-full flex flex-col gap-4 lg:p-6 lg:pb-0 p-4 overflow-y-scroll",
       )}
+      style={{ scrollbarWidth: "none" }}
     >
       <VaultHeader />
 

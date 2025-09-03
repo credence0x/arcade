@@ -15,6 +15,7 @@ import { MarketPage } from "./pages/market";
 import { Filters } from "./filters";
 import { UserCard } from "./user/user-card";
 import { VaultPage } from "./pages/vault";
+import { VaultSidebar } from "./games/vault-sidebar";
 
 export function App() {
   const { isOpen, toggle, handleTouchMove, handleTouchStart } = useSidebar();
@@ -54,7 +55,13 @@ export function App() {
             <div className="lg:space-y-4 h-full flex flex-col">
               {!isMobile && <UserCard />}
               <div className="flex-1 overflow-hidden">
-                {!collection ? <Games /> : <Filters />}
+                {tab && tab.startsWith("vault") ? (
+                  <VaultSidebar />
+                ) : !collection ? (
+                  <Games />
+                ) : (
+                  <Filters />
+                )}
               </div>
             </div>
 
