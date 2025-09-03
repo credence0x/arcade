@@ -142,9 +142,12 @@ export function Discover({ edition }: { edition?: EditionModel }) {
                   ),
               };
             })
-            .filter((item) => item !== null) || []
+            .filter(
+              (item): item is NonNullable<typeof item> => item !== null,
+            ) || []
         );
       })
+      .filter((item): item is NonNullable<typeof item> => item !== null)
       .sort((a, b) => b.timestamp - a.timestamp);
     if (!data) return;
     const newEvents: Events = {
