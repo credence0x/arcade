@@ -1,5 +1,4 @@
-import { Button, Input, Thumbnail } from "@cartridge/ui";
-import { UserAvatar } from "../user/avatar";
+import { Button, Input } from "@cartridge/ui";
 import { CommentRow, CommentRowProps } from "../vault/comment-row";
 import { useCallback, useState } from "react";
 import { useUsername } from "@/hooks/account";

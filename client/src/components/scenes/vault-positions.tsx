@@ -1,19 +1,53 @@
-import { Empty } from "@cartridge/ui";
+import { Thumbnail } from "@cartridge/ui";
+import { PositionsLabel } from "../vault/positions-label";
+import { UserAvatar } from "../user/avatar";
+import { VaultPositionCard } from "../vault/positions-row";
+
+const MOCKDATA = [
+  {
+    description: "to win Season 1 of Blitz Eternum",
+
+    // User Info
+    username: "bal7hazar",
+    userAvatarClassName: "",
+
+    // Balance Token/Asset Info
+    balanceTokenIcon:
+      "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/a3bfe959-50c4-4f89-0aef-b19207d82a00/logo",
+    balanceTokenAmount: 902,
+
+    // To Earn Token/Asset Info
+    earnTokenIcon:
+      "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/a3bfe959-50c4-4f89-0aef-b19207d82a00/logo",
+    earnTokenAmount: 6300,
+  },
+  {
+    description: "to win Season 1 of Blitz Eternum",
+
+    // User Info
+    username: "clicksave",
+    userAvatarClassName: "",
+
+    // Balance Token/Asset Info
+    balanceTokenIcon:
+      "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/a3bfe959-50c4-4f89-0aef-b19207d82a00/logo",
+    balanceTokenAmount: 902,
+
+    // To Earn Token/Asset Info
+    earnTokenIcon:
+      "https://imagedelivery.net/0xPAQaDtnQhBs8IzYRIlNg/a3bfe959-50c4-4f89-0aef-b19207d82a00/logo",
+    earnTokenAmount: 6300,
+  },
+];
 
 export const VaultPositionsScene = () => {
   return (
-    <div className="w-full h-full flex flex-col gap-4 p-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-foreground-200">My Vault Positions</h2>
-      </div>
-      
-      <div className="flex-1 flex items-center justify-center">
-        <Empty
-          title="No positions yet"
-          icon="inventory"
-          className="h-full py-3 lg:py-6"
-        />
-      </div>
+    <div className="w-full h-full self-stretch flex flex-col gap-3 rounded overflow-clip">
+      <PositionsLabel />
+
+      {MOCKDATA.map((item, index) => (
+        <VaultPositionCard key={index} {...item} />
+      ))}
     </div>
   );
 };
