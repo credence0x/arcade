@@ -1,6 +1,4 @@
-import { Thumbnail } from "@cartridge/ui";
 import { PositionsLabel } from "../vault/positions-label";
-import { UserAvatar } from "../user/avatar";
 import { VaultPositionCard } from "../vault/positions-row";
 
 const MOCKDATA = [
