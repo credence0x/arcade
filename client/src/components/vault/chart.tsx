@@ -128,7 +128,7 @@ export function MarketChart({ players }: VaultPageProps) {
             display: false,
           },
           ticks: {
-            color: "#9CA3AF",
+            color: "#505050",
             font: {
               size: 12,
             },
@@ -146,12 +146,12 @@ export function MarketChart({ players }: VaultPageProps) {
             display: false,
           },
           ticks: {
-            color: "#9CA3AF",
+            color: "#505050",
             font: {
               size: 12,
             },
             callback: (value) => `${value}%`,
-            stepSize: 4,
+            stepSize: 7,
           },
         },
       },
