@@ -994,6 +994,7 @@ const PredictionCommentsNavButton = React.forwardRef<
       active={active}
       size={size}
       onClick={onClick}
+      badge={10}
     />
   );
 });
@@ -1039,6 +1040,7 @@ const PredictionPositionsNavButton = React.forwardRef<
       active={active}
       size={size}
       onClick={onClick}
+      badge={2}
     />
   );
 });
