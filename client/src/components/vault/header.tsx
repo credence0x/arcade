@@ -1,9 +1,12 @@
-import { Button, ClockIcon, Thumbnail, TimesIcon } from "@cartridge/ui";
+import { Button, ClockIcon, cn, Thumbnail, TimesIcon } from "@cartridge/ui";
 import { UserAvatar } from "../user/avatar";
-import React, { useCallback } from "react";
+import React, { HTMLAttributes, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export const VaultHeader = React.forwardRef(() => {
+export const VaultHeader = React.forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -17,7 +20,9 @@ export const VaultHeader = React.forwardRef(() => {
   return (
     <div
       id="vault-header"
-      className="flex items-start justify-between self-stretch"
+      className={cn("flex items-start justify-between self-stretch", className)}
+      ref={ref}
+      {...props}
     >
       <div className="flex items-center justify-between self-stretch pb-3">
         <div id="game-page-label" className="flex items-end gap-4">
