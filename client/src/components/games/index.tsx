@@ -26,13 +26,16 @@ import { Publish } from "./publish";
 import { Whitelist } from "./whitelist";
 import { useGamesQuery, useOwnershipsQuery } from "@/queries";
 import { constants } from "starknet";
+import { useGames } from "@/collections/arcade";
+import { usePlayerLeaderboard } from "@/collections";
 
 export const Games = () => {
   const { address } = useAccount();
   const [search, setSearch] = useState("");
   const { game } = useProject();
+  const games = useGames();
   const { data: ownerships = [] } = useOwnershipsQuery();
-  const { data: games } = useGamesQuery(constants.StarknetChainId.SN_MAIN);
+  // const { data: games } = useGamesQuery(constants.StarknetChainId.SN_MAIN);
   const { isOpen, handleTouchStart, handleTouchMove } = useSidebar();
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const isPWA = useMediaQuery("(display-mode: standalone)");
@@ -173,6 +176,12 @@ export const Game = ({
   const { accesses, editions } = useArcade();
   const [game, setGame] = useState<GameModel | null>(null);
 
+  const gameName = useMemo(
+    () => `${game?.name.toLowerCase().replace(/ /g, "-") || id}`,
+    [game, id],
+  );
+  const gameEarnings = usePlayerLeaderboard(gameName);
+
   const access = useMemo(() => {
     return accesses.find(
       (access) => BigInt(access.address) === BigInt(address || "0x1"),
@@ -186,23 +195,11 @@ export const Game = ({
     );
   }, [access]);
 
-  const projects = useMemo(() => {
-    return editions
-      .filter((edition) => edition.gameId === game?.id)
-      .map((edition) => edition.config.project);
-  }, [editions, game]);
-  const { earnings: totalEarnings } = usePlayerStats();
-  const { earnings: gameEarnings } = usePlayerGameStats(projects);
-
-  const gameName = useMemo(
-    () => `${game?.name.toLowerCase().replace(/ /g, "-") || id}`,
-    [game, id],
-  );
 
   const setWhitelisted = useCallback(
     (status: boolean) => {
       if (!game) return;
-      const newEdition = game.clone();
+      const newEdition = game;
       newEdition.whitelisted = status;
       setGame(newEdition);
     },
@@ -212,7 +209,7 @@ export const Game = ({
   const setPublished = useCallback(
     (status: boolean) => {
       if (!game) return;
-      const newEdition = game.clone();
+      const newEdition = game;
       newEdition.published = status;
       setGame(newEdition);
     },
@@ -224,7 +221,7 @@ export const Game = ({
       setGame(null);
       return;
     }
-    setGame(original.clone());
+    setGame(original);
   }, [original]);
   const navigationLink = useMemo(() => {
     if (0 === id) {
@@ -246,7 +243,9 @@ export const Game = ({
             name={name}
             logo={icon}
             cover={cover}
-            points={game ? gameEarnings : totalEarnings}
+            // FIX: CHANGE WITH REAL IMPL
+            // points={game ? gameEarnings : totalEarnings}
+            points={400}
             active={active}
             variant="darkest"
             downlighted={!whitelisted}
